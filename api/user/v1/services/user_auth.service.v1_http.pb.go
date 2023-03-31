@@ -18,8 +18,8 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationSrvUserAuthLoginByEmail = "/aircraft.mall.api.userservicev1.SrvUserAuth/LoginByEmail"
-const OperationSrvUserAuthPing = "/aircraft.mall.api.userservicev1.SrvUserAuth/Ping"
+const OperationSrvUserAuthLoginByEmail = "/service.api.userservicev1.SrvUserAuth/LoginByEmail"
+const OperationSrvUserAuthPing = "/service.api.userservicev1.SrvUserAuth/Ping"
 
 type SrvUserAuthHTTPServer interface {
 	LoginByEmail(context.Context, *resources.LoginByEmailReq) (*resources.LoginResp, error)

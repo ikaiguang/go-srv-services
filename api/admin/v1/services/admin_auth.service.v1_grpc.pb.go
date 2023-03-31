@@ -39,7 +39,7 @@ func NewSrvAdminAuthClient(cc grpc.ClientConnInterface) SrvAdminAuthClient {
 
 func (c *srvAdminAuthClient) LoginByEmail(ctx context.Context, in *resources.LoginByEmailReq, opts ...grpc.CallOption) (*resources.LoginResp, error) {
 	out := new(resources.LoginResp)
-	err := c.cc.Invoke(ctx, "/aircraft.mall.api.adminservicev1.SrvAdminAuth/LoginByEmail", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/service.api.adminservicev1.SrvAdminAuth/LoginByEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (c *srvAdminAuthClient) LoginByEmail(ctx context.Context, in *resources.Log
 
 func (c *srvAdminAuthClient) Ping(ctx context.Context, in *resources.PingReq, opts ...grpc.CallOption) (*resources.PingResp, error) {
 	out := new(resources.PingResp)
-	err := c.cc.Invoke(ctx, "/aircraft.mall.api.adminservicev1.SrvAdminAuth/Ping", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/service.api.adminservicev1.SrvAdminAuth/Ping", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func _SrvAdminAuth_LoginByEmail_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/aircraft.mall.api.adminservicev1.SrvAdminAuth/LoginByEmail",
+		FullMethod: "/service.api.adminservicev1.SrvAdminAuth/LoginByEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SrvAdminAuthServer).LoginByEmail(ctx, req.(*resources.LoginByEmailReq))
@@ -117,7 +117,7 @@ func _SrvAdminAuth_Ping_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/aircraft.mall.api.adminservicev1.SrvAdminAuth/Ping",
+		FullMethod: "/service.api.adminservicev1.SrvAdminAuth/Ping",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SrvAdminAuthServer).Ping(ctx, req.(*resources.PingReq))
@@ -129,7 +129,7 @@ func _SrvAdminAuth_Ping_Handler(srv interface{}, ctx context.Context, dec func(i
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var SrvAdminAuth_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "aircraft.mall.api.adminservicev1.SrvAdminAuth",
+	ServiceName: "service.api.adminservicev1.SrvAdminAuth",
 	HandlerType: (*SrvAdminAuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

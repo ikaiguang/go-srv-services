@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package aircraft.mall.api.adminenumv1;
+package service.api.adminenumv1;
 
 option go_package = "github.com/ikaiguang/go-srv-services/api/admin/v1/enums;adminenumv1";
 option java_multiple_files = true;

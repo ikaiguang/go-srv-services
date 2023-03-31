@@ -39,7 +39,7 @@ func NewSrvUserAuthClient(cc grpc.ClientConnInterface) SrvUserAuthClient {
 
 func (c *srvUserAuthClient) LoginByEmail(ctx context.Context, in *resources.LoginByEmailReq, opts ...grpc.CallOption) (*resources.LoginResp, error) {
 	out := new(resources.LoginResp)
-	err := c.cc.Invoke(ctx, "/aircraft.mall.api.userservicev1.SrvUserAuth/LoginByEmail", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/service.api.userservicev1.SrvUserAuth/LoginByEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (c *srvUserAuthClient) LoginByEmail(ctx context.Context, in *resources.Logi
 
 func (c *srvUserAuthClient) Ping(ctx context.Context, in *resources.PingReq, opts ...grpc.CallOption) (*resources.PingResp, error) {
 	out := new(resources.PingResp)
-	err := c.cc.Invoke(ctx, "/aircraft.mall.api.userservicev1.SrvUserAuth/Ping", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/service.api.userservicev1.SrvUserAuth/Ping", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func _SrvUserAuth_LoginByEmail_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/aircraft.mall.api.userservicev1.SrvUserAuth/LoginByEmail",
+		FullMethod: "/service.api.userservicev1.SrvUserAuth/LoginByEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SrvUserAuthServer).LoginByEmail(ctx, req.(*resources.LoginByEmailReq))
@@ -117,7 +117,7 @@ func _SrvUserAuth_Ping_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/aircraft.mall.api.userservicev1.SrvUserAuth/Ping",
+		FullMethod: "/service.api.userservicev1.SrvUserAuth/Ping",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SrvUserAuthServer).Ping(ctx, req.(*resources.PingReq))
@@ -129,7 +129,7 @@ func _SrvUserAuth_Ping_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var SrvUserAuth_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "aircraft.mall.api.userservicev1.SrvUserAuth",
+	ServiceName: "service.api.userservicev1.SrvUserAuth",
 	HandlerType: (*SrvUserAuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

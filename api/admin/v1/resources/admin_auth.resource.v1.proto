@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package aircraft.mall.api.adminv1;
+package service.api.adminv1;
 
 option go_package = "github.com/ikaiguang/go-srv-services/api/admin/v1/resources;adminv1";
 option java_multiple_files = true;

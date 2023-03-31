@@ -14,17 +14,22 @@ info:
 # make run app=xxx
 .PHONY: run
 run:
-	go run ./app/${app}/service/cmd/main/... -conf=./app/${app}/service/configs
+	go run ./app/${app}-service/cmd/main/... -conf=./app/${app}-service/configs
 
 # make migrate app=xxx
 .PHONY: migrate
 migrate:
-	go run ./app/${app}/service/cmd/migration/... -conf=./app/${app}/service/configs
+	go run ./app/${app}-service/cmd/migration/... -conf=./app/${app}-service/configs
 
-# make proto path=api/xxx
-.PHONY: proto
-proto:
-	go run ./cmd/proto/... -path=${path}
+# make api path=xxx
+.PHONY: api
+api:
+	go run ./cmd/proto/... -path=./api/${path}
+
+# make config service=xxx
+.PHONY: config
+config:
+	go run ./cmd/proto/... -path=./app/${service}-service/internal/conf
 
 .PHONY: ping
 ping:
