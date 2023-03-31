@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package aircraft.mall.api.usererrorv1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/user/v1/errors;usererrorv1";
+option java_multiple_files = true;
+option java_package = "service.api.usererrorv1";
+option java_outer_classname = "ServiceApiUserErrorV1";
+
+// ERROR user error
+enum ERROR {
+  // USER_UNKNOWN 未知错误
+  USER_UNKNOWN = 0;
+
+  // USER_NOT_EXIST 用户不存在
+  USER_NOT_EXIST = 10001;
+  // USER_EXIST 用户已存在
+  USER_EXIST = 10002;
+  // USER_NAME_INVALID 用户名不合法
+  USER_NAME_INVALID = 10003;
+  // USER_NAME_EXIST 用户名已存在
+  USER_NAME_EXIST = 10004;
+  // USER_PASSWORD_INVALID 用户密码不合法
+  USER_PASSWORD_INVALID = 10005;
+  // USER_PASSWORD_INCORRECT 用户密码不正确
+  USER_PASSWORD_INCORRECT = 10006;
+  // USER_TOKEN_INVALID 令牌已失效
+  USER_TOKEN_INVALID = 10007;
+  // USER_ACCOUNT_EXPIRE 账户已过期
+  USER_ACCOUNT_EXPIRE = 10008;
+}

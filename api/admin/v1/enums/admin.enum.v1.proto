@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package aircraft.mall.api.adminenumv1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/admin/v1/enums;adminenumv1";
+option java_multiple_files = true;
+option java_package = "service.api.adminenumv1";
+option java_outer_classname = "ServiceApiAdminEnumV1";
+
+// AdminInitEnum AdminInitEnum enum
+message AdminInitEnum {
+  // AdminInit AdminInit enum
+  enum AdminInit {
+    // UNSPECIFIED 未指定
+    UNSPECIFIED = 0;
+  }
+}
+
+// AdminStatusEnum 用户状态
+message AdminStatusEnum {
+  // UserStatus 枚举值
+  enum AdminStatus {
+    // UNSPECIFIED 未指定
+    UNSPECIFIED = 0;
+
+    // INACTIVATED 未激活
+    INACTIVATED = 1;
+    // ENABLE 启用
+    ENABLE = 2;
+    // DISABLE 禁用
+    DISABLE = 3;
+    // BLACKLIST 黑名单
+    BLACKLIST = 4;
+    // DELETED 已删除
+    DELETED = 5;
+  }
+}
+
+// AdminGenderEnum 用户性别
+message AdminGenderEnum {
+  // UserGender 枚举值
+  enum AdminGender {
+    // UNSPECIFIED 未指定
+    UNSPECIFIED = 0;
+
+    // MALE 男
+    MALE = 1;
+    // FEMALE 女
+    FEMALE = 2;
+    // SECRET 密码
+    SECRET = 3;
+  }
+}

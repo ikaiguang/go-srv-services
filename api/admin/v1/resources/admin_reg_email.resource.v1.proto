@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package aircraft.mall.api.adminv1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/admin/v1/resources;adminv1";
+option java_multiple_files = true;
+option java_package = "service.api.adminv1";
+option java_outer_classname = "ServiceApiAdminV1";
+
+import "github.com/ikaiguang/go-srv-kit/api/page/v1/page.v1.proto";
+
+/**
+ *
+ * @apiDefine AdminRegEmail admin_reg_email
+ *
+ * @apiSuccess (AdminRegEmail) {uint64} id ID
+ * @apiSuccess (AdminRegEmail) {string} admin_email 管理员手机号码
+ * @apiSuccess (AdminRegEmail) {string} created_time 创建时间
+ * @apiSuccess (AdminRegEmail) {string} updated_time 最后修改时间
+ * @apiSuccess (AdminRegEmail) {string} admin_uuid uuid
+ *
+ */
+
+// AdminRegEmail ENGINE InnoDB CHARSET utf8mb4 COMMENT '管理员-注册-邮箱'
+message AdminRegEmail {
+  // id ID
+  uint64 id = 1;
+  // admin_email 管理员手机号码
+  string admin_email = 2;
+  // created_time 创建时间
+  string created_time = 3;
+  // updated_time 最后修改时间
+  string updated_time = 4;
+  // admin_uuid uuid
+  string admin_uuid = 5;
+}
+
+/**
+ *
+ * @apiDefine AdminRegEmailSaveReq AdminRegEmailSaveReq
+ *
+ * @apiParam (AdminRegEmailSaveReq) {uint64} id ID
+ * @apiParam (AdminRegEmailSaveReq) {string} admin_email 管理员手机号码
+ * @apiParam (AdminRegEmailSaveReq) {string} created_time 创建时间
+ * @apiParam (AdminRegEmailSaveReq) {string} updated_time 最后修改时间
+ * @apiParam (AdminRegEmailSaveReq) {string} admin_uuid uuid
+ *
+ */
+
+// AdminRegEmailSaveReq save
+message AdminRegEmailSaveReq {
+  // id ID
+  uint64 id = 1;
+  // admin_email 管理员手机号码
+  string admin_email = 2;
+  // created_time 创建时间
+  string created_time = 3;
+  // updated_time 最后修改时间
+  string updated_time = 4;
+  // admin_uuid uuid
+  string admin_uuid = 5;
+}
+
+/**
+ *
+ * @apiDefine AdminRegEmailIdReq AdminRegEmailIdReq
+ *
+ * @apiParam (AdminRegEmailIdReq) {int64} admin_reg_email_id id
+ *
+ */
+
+// AdminRegEmailIdReq id
+message AdminRegEmailIdReq {
+  // admin_reg_email_id id
+  int64 admin_reg_email_id = 1;
+}
+
+/**
+ *
+ * @apiDefine AdminRegEmailIdsReq AdminRegEmailIdsReq
+ *
+ * @apiParam (AdminRegEmailIdsReq) {int64-array} admin_reg_email_ids ids
+ *
+ */
+
+// AdminRegEmailIdsReq ids
+message AdminRegEmailIdsReq {
+  // admin_reg_email_ids ids
+  repeated int64 admin_reg_email_ids = 1;
+}
+
+/**
+ *
+ * @apiDefine AdminRegEmailListReq AdminRegEmailListReq
+ *
+ * @apiParam (AdminRegEmailListReq) {kit.api.pagev1.PageRequest} page_request paging request
+ *
+ */
+
+// AdminRegEmailListReq list
+message AdminRegEmailListReq {
+  // page_request paging request
+  kit.api.pagev1.PageRequest page_request = 1;
+}
+
+/**
+ *
+ * @apiDefine AdminRegEmailListResp AdminRegEmailListResp
+ *
+ * @apiSuccess (AdminRegEmailListResp) {AdminRegEmail-array} list AdminRegEmail-array
+ * @apiSuccess (AdminRegEmailListResp) {kit.api.pagev1.PageResponse} page_info paging response
+ *
+ */
+
+// AdminRegEmailListResp list
+message AdminRegEmailListResp {
+  // list AdminRegEmail-array
+  repeated AdminRegEmail list = 1;
+  // page_info paging response
+  kit.api.pagev1.PageResponse page_info = 2;
+}
+
+/**
+ *
+ * @apiDefine AdminRegEmailProcessResult AdminRegEmailProcessResult
+ *
+ * @apiSuccess (AdminRegEmailProcessResult) {bool} success true or false
+ *
+ */
+
+// AdminRegEmailProcessResult process result
+message AdminRegEmailProcessResult {
+  // success true or false
+  bool success = 1;
+}

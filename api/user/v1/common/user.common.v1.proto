@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package aircraft.mall.api.usercommonv1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/user/v1/common;usercommonv1";
+option java_multiple_files = true;
+option java_package = "service.api.usercommonv1";
+option java_outer_classname = "ServiceApiUserCommonV1";
+
+/**
+ *
+ * @apiDefine UserCommonEnum UserCommonEnum
+ *
+ */
+
+/**
+ *
+ * @apiDefine UserCommon UserCommon
+ *
+ */
+
+// UserCommonEnum UserCommonEnum enum
+message UserCommonEnum {
+  // UserCommon UserCommon enum
+  enum UserCommon {
+    // UNSPECIFIED 未指定
+    UNSPECIFIED = 0;
+  }
+}
