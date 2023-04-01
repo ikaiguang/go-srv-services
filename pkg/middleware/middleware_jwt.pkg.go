@@ -7,8 +7,9 @@ import (
 	jwt "github.com/golang-jwt/jwt/v4"
 
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
-	setuppkg "github.com/ikaiguang/go-srv-kit/example/pkg/setup"
 	authutil "github.com/ikaiguang/go-srv-kit/kratos/auth"
+
+	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 
 // NewWhiteListMatcher 路由白名单

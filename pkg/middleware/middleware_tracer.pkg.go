@@ -1,13 +1,13 @@
 package middlewarepkg
 
 import (
+	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/sdk/resource"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 
-	setuppkg "github.com/ikaiguang/go-srv-kit/example/pkg/setup"
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
+	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 
 // SetTracerProvider set trace provider
