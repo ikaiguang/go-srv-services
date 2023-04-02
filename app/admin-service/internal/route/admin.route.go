@@ -5,7 +5,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 	stdlog "log"
 
-	adminservicev1 "github.com/ikaiguang/go-srv-services/api/admin/v1/services"
+	adminservicev1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/services"
 	services "github.com/ikaiguang/go-srv-services/app/admin-service/internal/application/service"
 	datas "github.com/ikaiguang/go-srv-services/app/admin-service/internal/infra/data"
 	"github.com/ikaiguang/go-srv-services/app/admin-service/internal/setup"

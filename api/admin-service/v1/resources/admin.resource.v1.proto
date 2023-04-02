@@ -1,0 +1,205 @@
+syntax = "proto3";
+
+package service.api.adminv1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/admin-service/v1/resources;adminv1";
+option java_multiple_files = true;
+option java_package = "service.api.adminv1";
+option java_outer_classname = "ServiceApiAdminV1";
+
+import "github.com/ikaiguang/go-srv-kit/api/page/v1/page.v1.proto";
+
+/**
+ *
+ * @apiDefine Admin admin
+ *
+ * @apiSuccess (Admin) {uint64} id ID
+ * @apiSuccess (Admin) {string} admin_uuid uuid
+ * @apiSuccess (Admin) {string} created_time 创建时间
+ * @apiSuccess (Admin) {string} updated_time 最后修改时间
+ * @apiSuccess (Admin) {string} deleted_time 删除时间
+ * @apiSuccess (Admin) {bool} is_deleted 是否已删除
+ * @apiSuccess (Admin) {string} admin_email 邮箱
+ * @apiSuccess (Admin) {string} admin_nickname 昵称
+ * @apiSuccess (Admin) {string} admin_avatar 头像
+ * @apiSuccess (Admin) {string} admin_gender 性别
+ * @apiSuccess (Admin) {string} admin_status 状态
+ * @apiSuccess (Admin) {string} active_begin_time 激活开始时间
+ * @apiSuccess (Admin) {string} active_end_time 激活结束时间
+ * @apiSuccess (Admin) {string} disable_time 禁用时间
+ * @apiSuccess (Admin) {string} blacklist_time 黑名单时间
+ * @apiSuccess (Admin) {string} register_from 注册来源
+ *
+ */
+
+// Admin ENGINE InnoDB CHARSET utf8mb4 COMMENT '管理员'
+message Admin {
+  // id ID
+  uint64 id = 1;
+  // admin_uuid uuid
+  string admin_uuid = 2;
+  // created_time 创建时间
+  string created_time = 3;
+  // updated_time 最后修改时间
+  string updated_time = 4;
+  // deleted_time 删除时间
+  string deleted_time = 5;
+  // is_deleted 是否已删除
+  bool is_deleted = 6;
+  // admin_email 邮箱
+  string admin_email = 7;
+  // admin_nickname 昵称
+  string admin_nickname = 8;
+  // admin_avatar 头像
+  string admin_avatar = 9;
+  // admin_gender 性别
+  string admin_gender = 10;
+  // admin_status 状态
+  string admin_status = 11;
+  // active_begin_time 激活开始时间
+  string active_begin_time = 12;
+  // active_end_time 激活结束时间
+  string active_end_time = 13;
+  // disable_time 禁用时间
+  string disable_time = 14;
+  // blacklist_time 黑名单时间
+  string blacklist_time = 15;
+  // password_hash 密码
+  // string password_hash = 16;
+  // register_from 注册来源
+  string register_from = 17;
+}
+
+/**
+ *
+ * @apiDefine AdminSaveReq AdminSaveReq
+ *
+ * @apiParam (AdminSaveReq) {uint64} id ID
+ * @apiParam (AdminSaveReq) {string} admin_uuid uuid
+ * @apiParam (AdminSaveReq) {string} created_time 创建时间
+ * @apiParam (AdminSaveReq) {string} updated_time 最后修改时间
+ * @apiParam (AdminSaveReq) {string} deleted_time 删除时间
+ * @apiParam (AdminSaveReq) {bool} is_deleted 是否已删除
+ * @apiParam (AdminSaveReq) {string} admin_email 邮箱
+ * @apiParam (AdminSaveReq) {string} admin_nickname 昵称
+ * @apiParam (AdminSaveReq) {string} admin_avatar 头像
+ * @apiParam (AdminSaveReq) {string} admin_gender 性别
+ * @apiParam (AdminSaveReq) {string} admin_status 状态
+ * @apiParam (AdminSaveReq) {string} active_begin_time 激活开始时间
+ * @apiParam (AdminSaveReq) {string} active_end_time 激活结束时间
+ * @apiParam (AdminSaveReq) {string} disable_time 禁用时间
+ * @apiParam (AdminSaveReq) {string} blacklist_time 黑名单时间
+ * @apiParam (AdminSaveReq) {string} register_from 注册来源
+ *
+ */
+
+// AdminSaveReq save
+message AdminSaveReq {
+  // id ID
+  uint64 id = 1;
+  // admin_uuid uuid
+  string admin_uuid = 2;
+  // created_time 创建时间
+  string created_time = 3;
+  // updated_time 最后修改时间
+  string updated_time = 4;
+  // deleted_time 删除时间
+  string deleted_time = 5;
+  // is_deleted 是否已删除
+  bool is_deleted = 6;
+  // admin_email 邮箱
+  string admin_email = 7;
+  // admin_nickname 昵称
+  string admin_nickname = 8;
+  // admin_avatar 头像
+  string admin_avatar = 9;
+  // admin_gender 性别
+  string admin_gender = 10;
+  // admin_status 状态
+  string admin_status = 11;
+  // active_begin_time 激活开始时间
+  string active_begin_time = 12;
+  // active_end_time 激活结束时间
+  string active_end_time = 13;
+  // disable_time 禁用时间
+  string disable_time = 14;
+  // blacklist_time 黑名单时间
+  string blacklist_time = 15;
+  // password_hash 密码
+  //  string password_hash = 16;
+  // register_from 注册来源
+  string register_from = 17;
+}
+
+/**
+ *
+ * @apiDefine AdminIdReq AdminIdReq
+ *
+ * @apiParam (AdminIdReq) {int64} admin_id id
+ *
+ */
+
+// AdminIdReq id
+message AdminIdReq {
+  // admin_id id
+  int64 admin_id = 1;
+}
+
+/**
+ *
+ * @apiDefine AdminIdsReq AdminIdsReq
+ *
+ * @apiParam (AdminIdsReq) {int64-array} admin_ids ids
+ *
+ */
+
+// AdminIdsReq ids
+message AdminIdsReq {
+  // admin_ids ids
+  repeated int64 admin_ids = 1;
+}
+
+/**
+ *
+ * @apiDefine AdminListReq AdminListReq
+ *
+ * @apiParam (AdminListReq) {kit.api.pagev1.PageRequest} page_request paging request
+ *
+ */
+
+// AdminListReq list
+message AdminListReq {
+  // page_request paging request
+  kit.api.pagev1.PageRequest page_request = 1;
+}
+
+/**
+ *
+ * @apiDefine AdminListResp AdminListResp
+ *
+ * @apiSuccess (AdminListResp) {Admin-array} list Admin-array
+ * @apiSuccess (AdminListResp) {kit.api.pagev1.PageResponse} page_info paging response
+ *
+ */
+
+// AdminListResp list
+message AdminListResp {
+  // list Admin-array
+  repeated Admin list = 1;
+  // page_info paging response
+  kit.api.pagev1.PageResponse page_info = 2;
+}
+
+/**
+ *
+ * @apiDefine AdminProcessResult AdminProcessResult
+ *
+ * @apiSuccess (AdminProcessResult) {bool} success true or false
+ *
+ */
+
+// AdminProcessResult process result
+message AdminProcessResult {
+  // success true or false
+  bool success = 1;
+}

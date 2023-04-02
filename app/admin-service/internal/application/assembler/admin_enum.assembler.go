@@ -3,7 +3,7 @@
 package assemblers
 
 import (
-	adminenumv1 "github.com/ikaiguang/go-srv-services/api/admin/v1/enums"
+	adminenumv1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/enums"
 )
 
 // ToAdminGenderEnum ...

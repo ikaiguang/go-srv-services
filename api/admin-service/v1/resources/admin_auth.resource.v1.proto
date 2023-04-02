@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package service.api.adminv1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/admin-service/v1/resources;adminv1";
+option java_multiple_files = true;
+option java_package = "service.api.adminv1";
+option java_outer_classname = "ServiceApiAdminV1";
+
+import "github.com/ikaiguang/go-srv-services/api/admin-service/v1/enums/admin.enum.v1.proto";
+
+// Info 用户信息
+message Info {
+  uint64 id = 1;
+  string admin_uuid = 2;
+  string admin_nickname = 3;
+  string admin_avatar = 4;
+  adminenumv1.AdminGenderEnum.AdminGender admin_gender = 5;
+  adminenumv1.AdminStatusEnum.AdminStatus admin_status = 6;
+}
+
+// LoginResp 用户登录
+message LoginResp {
+  Info admin_info = 1;
+  string token = 2;
+}
+
+// LoginReq 用户登录
+message LoginReq {
+  string username = 1;
+  string password = 2;
+  string code = 3;
+}
+
+// LoginByEmailReq 用户登录
+message LoginByEmailReq {
+  string email = 1;
+  string password = 2;
+  string code = 3;
+}
+
+// RegisterReq 用户注册
+message RegisterReq {
+  string username = 1;
+  string password = 2;
+  string code = 3;
+}
+
+// InfoReq 用户信息
+message InfoReq {}
+
+// ChangePasswordReq 修改密码
+message ChangePasswordReq {
+  string old_password = 1;
+  string new_password = 2;
+  string new_password_confirm = 3;
+}
+
+// ChangePasswordResp 修改密码
+message ChangePasswordResp {}
+
+// ChangeAvatarReq 修改头像
+message ChangeAvatarReq { string admin_avatar = 2; }
+
+// ChangeAvatarResp 修改头像
+message ChangeAvatarResp {}
+
+// ChangeMobileReq 修改手机号
+message ChangeMobileReq { string admin_mobile = 2; }
+
+// ChangeMobileResp 修改手机号
+message ChangeMobileResp {}
+
+// ChangeEmailReq 修改邮箱
+message ChangeEmailReq { string admin_email = 2; }
+
+// ChangeEmailResp 修改邮箱
+message ChangeEmailResp {}
+
+// ChangeNicknameReq 修改昵称
+message ChangeNicknameReq { string admin_nickname = 2; }
+
+// ChangeNicknameResp 修改昵称
+message ChangeNicknameResp {}
+
+// ChangeGenderReq 修改性别
+message ChangeGenderReq { adminenumv1.AdminGenderEnum.AdminGender admin_gender = 6; }
+
+// ChangeGenderResp 修改性别
+message ChangeGenderResp {}
+
+// PingReq ...
+message PingReq { string message = 1; }
+
+// PingResp ...
+message PingResp { string message = 1; }

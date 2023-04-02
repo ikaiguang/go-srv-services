@@ -5,7 +5,7 @@ package assemblers
 import (
 	timeutil "github.com/ikaiguang/go-srv-kit/kit/time"
 
-	userv1 "github.com/ikaiguang/go-srv-services/api/user/v1/resources"
+	userv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources"
 	entities "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/entity"
 )
 

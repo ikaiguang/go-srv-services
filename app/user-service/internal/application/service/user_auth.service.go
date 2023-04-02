@@ -14,9 +14,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 
-	usererrorv1 "github.com/ikaiguang/go-srv-services/api/user/v1/errors"
-	userv1 "github.com/ikaiguang/go-srv-services/api/user/v1/resources"
-	userservicev1 "github.com/ikaiguang/go-srv-services/api/user/v1/services"
+	usererrorv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/errors"
+	userv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources"
+	userservicev1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/services"
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/application/assembler"
 	repos "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/repo"
 )

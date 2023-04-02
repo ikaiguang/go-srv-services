@@ -11,25 +11,25 @@ info:
 	@echo "==> GIT_BRANCH: $(GIT_BRANCH)"
 	@echo "==> GIT_VERSION: $(GIT_VERSION)"
 
-# make run app=xxx
+# make run service=xxx
 .PHONY: run
 run:
-	go run ./app/${app}-service/cmd/main/... -conf=./app/${app}-service/configs
+	go run ./app/${service}/cmd/main/... -conf=./app/${service}/configs
 
-# make migrate app=xxx
+# make migrate service=xxx
 .PHONY: migrate
 migrate:
-	go run ./app/${app}-service/cmd/migration/... -conf=./app/${app}-service/configs
+	go run ./app/${service}/cmd/migration/... -conf=./app/${service}/configs
 
-# make api path=xxx
+# make api service=xxx
 .PHONY: api
 api:
-	go run ./cmd/proto/... -path=./api/${path}
+	go run ./cmd/proto/... -path=./api/${service}
 
 # make config service=xxx
 .PHONY: config
 config:
-	go run ./cmd/proto/... -path=./app/${service}-service/internal/conf
+	go run ./cmd/proto/... -path=./app/${service}/internal/conf
 
 .PHONY: ping
 ping:

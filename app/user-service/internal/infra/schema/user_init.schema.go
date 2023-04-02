@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 	"time"
 
-	userenumv1 "github.com/ikaiguang/go-srv-services/api/user/v1/enums"
+	userenumv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/enums"
 )
 
 // Initialize 初始化

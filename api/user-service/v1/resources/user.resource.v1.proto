@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+package service.api.userv1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources;userv1";
+option java_multiple_files = true;
+option java_package = "service.api.userv1";
+option java_outer_classname = "ServiceApiUserV1";
+
+import "github.com/ikaiguang/go-srv-kit/api/page/v1/page.v1.proto";
+
+/**
+ *
+ * @apiDefine User user
+ *
+ * @apiSuccess (User) {uint64} id ID
+ * @apiSuccess (User) {string} user_uuid uuid
+ * @apiSuccess (User) {string} created_time 创建时间
+ * @apiSuccess (User) {string} updated_time 最后修改时间
+ * @apiSuccess (User) {string} deleted_time 删除时间
+ * @apiSuccess (User) {bool} is_deleted 是否已删除
+ * @apiSuccess (User) {string} user_email 邮箱
+ * @apiSuccess (User) {string} user_nickname 昵称
+ * @apiSuccess (User) {string} user_avatar 头像
+ * @apiSuccess (User) {string} user_gender 性别
+ * @apiSuccess (User) {string} user_status 状态
+ * @apiSuccess (User) {string} active_begin_time 激活开始时间
+ * @apiSuccess (User) {string} active_end_time 激活结束时间
+ * @apiSuccess (User) {string} disable_time 禁用时间
+ * @apiSuccess (User) {string} blacklist_time 黑名单时间
+ * @apiSuccess (Admin) {string} register_from 注册来源
+ *
+ */
+
+// User ENGINE InnoDB CHARSET utf8mb4 COMMENT '用户'
+message User {
+  // id ID
+  uint64 id = 1;
+  // user_uuid uuid
+  string user_uuid = 2;
+  // created_time 创建时间
+  string created_time = 3;
+  // updated_time 最后修改时间
+  string updated_time = 4;
+  // deleted_time 删除时间
+  string deleted_time = 5;
+  // is_deleted 是否已删除
+  bool is_deleted = 6;
+  // user_email 邮箱
+  string user_email = 7;
+  // user_nickname 昵称
+  string user_nickname = 8;
+  // user_avatar 头像
+  string user_avatar = 9;
+  // user_gender 性别
+  string user_gender = 10;
+  // user_status 状态
+  string user_status = 11;
+  // active_begin_time 激活开始时间
+  string active_begin_time = 12;
+  // active_end_time 激活结束时间
+  string active_end_time = 13;
+  // disable_time 禁用时间
+  string disable_time = 14;
+  // blacklist_time 黑名单时间
+  string blacklist_time = 15;
+  // password_hash 密码
+  // string password_hash = 16;
+  // register_from 注册来源
+  string register_from = 17;
+}
+
+/**
+ *
+ * @apiDefine UserSaveReq UserSaveReq
+ *
+ * @apiParam (UserSaveReq) {uint64} id ID
+ * @apiParam (UserSaveReq) {string} user_uuid uuid
+ * @apiParam (UserSaveReq) {string} created_time 创建时间
+ * @apiParam (UserSaveReq) {string} updated_time 最后修改时间
+ * @apiParam (UserSaveReq) {string} deleted_time 删除时间
+ * @apiParam (UserSaveReq) {bool} is_deleted 是否已删除
+ * @apiParam (UserSaveReq) {string} user_email 邮箱
+ * @apiParam (UserSaveReq) {string} user_nickname 昵称
+ * @apiParam (UserSaveReq) {string} user_avatar 头像
+ * @apiParam (UserSaveReq) {string} user_gender 性别
+ * @apiParam (UserSaveReq) {string} user_status 状态
+ * @apiParam (UserSaveReq) {string} active_begin_time 激活开始时间
+ * @apiParam (UserSaveReq) {string} active_end_time 激活结束时间
+ * @apiParam (UserSaveReq) {string} disable_time 禁用时间
+ * @apiParam (UserSaveReq) {string} blacklist_time 黑名单时间
+ *
+ */
+
+// UserSaveReq save
+message UserSaveReq {
+  // id ID
+  uint64 id = 1;
+  // user_uuid uuid
+  string user_uuid = 2;
+  // created_time 创建时间
+  string created_time = 3;
+  // updated_time 最后修改时间
+  string updated_time = 4;
+  // deleted_time 删除时间
+  string deleted_time = 5;
+  // is_deleted 是否已删除
+  bool is_deleted = 6;
+  // user_email 邮箱
+  string user_email = 7;
+  // user_nickname 昵称
+  string user_nickname = 8;
+  // user_avatar 头像
+  string user_avatar = 9;
+  // user_gender 性别
+  string user_gender = 10;
+  // user_status 状态
+  string user_status = 11;
+  // active_begin_time 激活开始时间
+  string active_begin_time = 12;
+  // active_end_time 激活结束时间
+  string active_end_time = 13;
+  // disable_time 禁用时间
+  string disable_time = 14;
+  // blacklist_time 黑名单时间
+  string blacklist_time = 15;
+}
+
+/**
+ *
+ * @apiDefine UserIdReq UserIdReq
+ *
+ * @apiParam (UserIdReq) {int64} user_id id
+ *
+ */
+
+// UserIdReq id
+message UserIdReq {
+  // user_id id
+  int64 user_id = 1;
+}
+
+/**
+ *
+ * @apiDefine UserIdsReq UserIdsReq
+ *
+ * @apiParam (UserIdsReq) {int64-array} user_ids ids
+ *
+ */
+
+// UserIdsReq ids
+message UserIdsReq {
+  // user_ids ids
+  repeated int64 user_ids = 1;
+}
+
+/**
+ *
+ * @apiDefine UserListReq UserListReq
+ *
+ * @apiParam (UserListReq) {kit.api.page.pagev1.PageRequest} page_request paging request
+ *
+ */
+
+// UserListReq list
+message UserListReq {
+  // page_request paging request
+  kit.api.pagev1.PageRequest page_request = 1;
+}
+
+/**
+ *
+ * @apiDefine UserListResp UserListResp
+ *
+ * @apiSuccess (UserListResp) {User-array} list User-array
+ * @apiSuccess (UserListResp) {kit.api.page.pagev1.PageResponse} page_info paging response
+ *
+ */
+
+// UserListResp list
+message UserListResp {
+  // list User-array
+  repeated User list = 1;
+  // page_info paging response
+  kit.api.pagev1.PageResponse page_info = 2;
+}
+
+/**
+ *
+ * @apiDefine UserProcessResult UserProcessResult
+ *
+ * @apiSuccess (UserProcessResult) {bool} success true or false
+ *
+ */
+
+// UserProcessResult process result
+message UserProcessResult {
+  // success true or false
+  bool success = 1;
+}

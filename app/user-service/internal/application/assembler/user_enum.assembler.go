@@ -3,7 +3,7 @@
 package assemblers
 
 import (
-	userenumv1 "github.com/ikaiguang/go-srv-services/api/user/v1/enums"
+	userenumv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/enums"
 )
 
 // ToUserGenderEnum ...

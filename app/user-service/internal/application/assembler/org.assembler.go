@@ -5,15 +5,16 @@ package assemblers
 import (
 	timeutil "github.com/ikaiguang/go-srv-kit/kit/time"
 
-	orgv1 "github.com/ikaiguang/go-srv-services/api/org/v1/resources"
+	userv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources"
+
 	entities "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/entity"
 )
 
 var _ = timeutil.YmdHms
 
 // AssembleListOrg assemble listOrg
-func AssembleListOrg(dataModels []*entities.Org) []*orgv1.Org {
-	var newDataModels = make([]*orgv1.Org, len(dataModels))
+func AssembleListOrg(dataModels []*entities.Org) []*userv1.Org {
+	var newDataModels = make([]*userv1.Org, len(dataModels))
 	for index := range dataModels {
 		newDataModels[index] = AssembleOrg(dataModels[index])
 	}
@@ -21,8 +22,8 @@ func AssembleListOrg(dataModels []*entities.Org) []*orgv1.Org {
 }
 
 // AssembleOrg assemble Org
-func AssembleOrg(dataModel *entities.Org) *orgv1.Org {
-	newDataModel := &orgv1.Org{
+func AssembleOrg(dataModel *entities.Org) *userv1.Org {
+	newDataModel := &userv1.Org{
 		Id:          dataModel.Id,                                  // ID
 		OrgUuid:     dataModel.OrgUuid,                             // uuid
 		CreatedTime: dataModel.CreatedTime.Format(timeutil.YmdHms), // 创建时间

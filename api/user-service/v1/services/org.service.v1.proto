@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package service.api.userservicev1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/user-service/v1/services;userservicev1";
+option java_multiple_files = true;
+option java_package = "service.api.userservicev1";
+option java_outer_classname = "ServiceApiUserServiceV1";
+
+import "google/api/annotations.proto";
+import "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources/org.resource.v1.proto";
+
+// SrvOrg Org service
+service SrvOrg {}
