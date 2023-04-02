@@ -31,9 +31,10 @@ api:
 config:
 	go run ./cmd/proto/... -path=./app/${service}/internal/conf
 
+# ping 请注意端口号
 .PHONY: ping
 ping:
-	curl http://127.0.0.1:8081/api/v1/ping/hello && \
+	curl http://127.0.0.1:11101/api/v1/ping/hello && \
     echo "\n" && \
-    curl http://127.0.0.1:8081/api/v1/ping/error && \
+    curl http://127.0.0.1:11201/api/v1/ping/error && \
     echo "\n"

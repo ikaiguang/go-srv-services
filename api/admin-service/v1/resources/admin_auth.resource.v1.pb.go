@@ -7,7 +7,7 @@
 package adminv1
 
 import (
-	enums "github.com/ikaiguang/go-srv-services/api/admin/v1/enums"
+	enums "github.com/ikaiguang/go-srv-services/api/admin-service/v1/enums"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

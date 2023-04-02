@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service.api.adminenumv1;
 
-option go_package = "github.com/ikaiguang/go-srv-services/api/admin/v1/enums;adminenumv1";
+option go_package = "github.com/ikaiguang/go-srv-services/api/admin-service/v1/enums;adminenumv1";
 option java_multiple_files = true;
 option java_package = "service.api.adminenumv1";
 option java_outer_classname = "ServiceApiAdminEnumV1";
