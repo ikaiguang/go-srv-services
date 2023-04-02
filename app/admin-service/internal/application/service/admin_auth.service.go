@@ -45,7 +45,8 @@ func (s *adminAuth) LoginByEmail(ctx context.Context, in *adminv1.LoginByEmailRe
 	}
 
 	// 验证密码
-	if err := s.authSrv.ComparePassword(adminModel.PasswordHash, in.Password); err != nil {
+	err = s.authSrv.ComparePassword(adminModel.PasswordHash, in.Password)
+	if err != nil {
 		return out, err
 	}
 
