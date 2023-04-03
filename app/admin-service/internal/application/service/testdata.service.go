@@ -29,7 +29,7 @@ type testdata struct {
 // NewTestdataService .
 func NewTestdataService(logger log.Logger, wssSrv *services.WebsocketSrv) testdataservicev1.SrvTestdataServer {
 	return &testdata{
-		log:    log.NewHelper(logger),
+		log:    log.NewHelper(log.With(logger, "module", "admin/application/service/testdata")),
 		wssSrv: wssSrv,
 	}
 }

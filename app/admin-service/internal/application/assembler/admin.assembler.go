@@ -11,17 +11,17 @@ import (
 
 var _ = timeutil.YmdHms
 
-// AssembleListAdmin assemble listAdmin
-func AssembleListAdmin(dataModels []*entities.Admin) []*adminv1.Admin {
+// AdminList assemble listAdmin
+func (s *Assembler) AdminList(dataModels []*entities.Admin) []*adminv1.Admin {
 	var newDataModels = make([]*adminv1.Admin, len(dataModels))
 	for index := range dataModels {
-		newDataModels[index] = AssembleAdmin(dataModels[index])
+		newDataModels[index] = s.Admin(dataModels[index])
 	}
 	return newDataModels
 }
 
-// AssembleAdmin assemble Admin
-func AssembleAdmin(dataModel *entities.Admin) *adminv1.Admin {
+// Admin assemble Admin
+func (s *Assembler) Admin(dataModel *entities.Admin) *adminv1.Admin {
 	newDataModel := &adminv1.Admin{
 		Id:            dataModel.Id,                                  // ID
 		AdminUuid:     dataModel.AdminUuid,                           // uuid

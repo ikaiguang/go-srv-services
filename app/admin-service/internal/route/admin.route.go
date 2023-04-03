@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	logutil "github.com/ikaiguang/go-srv-kit/log"
 	stdlog "log"
 
 	adminservicev1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/services"
@@ -13,21 +14,24 @@ import (
 )
 
 // RegisterAdminRoutes 注册路由
-func RegisterAdminRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Server) (err error) {
+func RegisterAdminRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Server) {
 	// 日志
 	logger, _, err := engineHandler.Logger()
 	if err != nil {
-		return err
+		logutil.Fatal(err)
+		return
 	}
 
 	// 数据库
 	dbConn, err := engineHandler.GetPostgresGormDB()
 	if err != nil {
-		return err
+		logutil.Fatal(err)
+		return
 	}
 	redisCC, err := engineHandler.GetRedisClient()
 	if err != nil {
-		return err
+		logutil.Fatal(err)
+		return
 	}
 	authTokenRepo := engineHandler.GetAuthTokenRepo(redisCC)
 
@@ -52,5 +56,5 @@ func RegisterAdminRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.S
 	adminservicev1.RegisterSrvAdminAuthHTTPServer(hs, adminAuthSrv)
 	adminservicev1.RegisterSrvAdminAuthServer(gs, adminAuthSrv)
 
-	return err
+	return
 }

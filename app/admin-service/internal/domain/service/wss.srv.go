@@ -18,7 +18,7 @@ type WebsocketSrv struct {
 // NewWebsocketSrv ...
 func NewWebsocketSrv(logger log.Logger) *WebsocketSrv {
 	return &WebsocketSrv{
-		log: log.NewHelper(logger),
+		log: log.NewHelper(log.With(logger, "module", "admin/domain/service/websocket")),
 	}
 }
 
@@ -53,11 +53,11 @@ func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) er
 		messageType, messageBytes, wsErr := cc.ReadMessage()
 		if wsErr != nil {
 			if websocketutil.IsCloseError(wsErr) {
-				s.log.Infow("websocket close", wsErr.Error())
+				s.log.WithContext(ctx).Infow("websocket close", wsErr.Error())
 				break
 			}
 			err := errorutil.InternalServer(errorv1.ERROR_CONNECTION.String(), "ws读取信息失败", wsErr)
-			s.log.Error(err)
+			s.log.WithContext(ctx).Error(err)
 			return err
 		}
 
@@ -72,7 +72,7 @@ func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) er
 		needCloseConn, err := s.processWsMessage(ctx, wsMessage)
 		if err != nil {
 			err = errorutil.InternalServer(errorv1.ERROR_INTERNAL_SERVER.String(), "ws处理信息失败", err)
-			s.log.Error(err)
+			s.log.WithContext(ctx).Error(err)
 			return err
 		}
 
@@ -80,11 +80,11 @@ func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) er
 		err = cc.WriteMessage(messageType, messageBytes)
 		if err != nil {
 			if websocketutil.IsCloseError(wsErr) {
-				s.log.Infow("websocket close", wsErr.Error())
+				s.log.WithContext(ctx).Infow("websocket close", wsErr.Error())
 				break
 			}
 			err = errorutil.InternalServer(errorv1.ERROR_INTERNAL_SERVER.String(), "JSON编码错误", err)
-			s.log.Error(err)
+			s.log.WithContext(ctx).Error(err)
 			return err
 		}
 
@@ -98,8 +98,8 @@ func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) er
 
 // processWsMessage 处理ws-message
 func (s *WebsocketSrv) processWsMessage(ctx context.Context, wsMessage *WsMessage) (needCloseConn bool, err error) {
-	s.log.Infow("ws-message type", wsMessage.Type)
-	s.log.Infow("ws-message message", string(wsMessage.Content))
+	s.log.WithContext(ctx).Infow("ws-message type", wsMessage.Type)
+	s.log.WithContext(ctx).Infow("ws-message message", string(wsMessage.Content))
 	if string(wsMessage.Content) == "close" {
 		needCloseConn = true
 	}

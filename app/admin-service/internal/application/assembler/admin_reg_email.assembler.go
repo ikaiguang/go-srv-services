@@ -11,17 +11,17 @@ import (
 
 var _ = timeutil.YmdHms
 
-// AssembleListAdminRegEmail assemble listAdminRegEmail
-func AssembleListAdminRegEmail(dataModels []*entities.AdminRegEmail) []*adminv1.AdminRegEmail {
+// AdminRegEmailList assemble listAdminRegEmail
+func (s *Assembler) AdminRegEmailList(dataModels []*entities.AdminRegEmail) []*adminv1.AdminRegEmail {
 	var newDataModels = make([]*adminv1.AdminRegEmail, len(dataModels))
 	for index := range dataModels {
-		newDataModels[index] = AssembleAdminRegEmail(dataModels[index])
+		newDataModels[index] = s.AdminRegEmail(dataModels[index])
 	}
 	return newDataModels
 }
 
-// AssembleAdminRegEmail assemble AdminRegEmail
-func AssembleAdminRegEmail(dataModel *entities.AdminRegEmail) *adminv1.AdminRegEmail {
+// AdminRegEmail assemble AdminRegEmail
+func (s *Assembler) AdminRegEmail(dataModel *entities.AdminRegEmail) *adminv1.AdminRegEmail {
 	newDataModel := &adminv1.AdminRegEmail{
 		Id:          dataModel.Id,                                  // ID
 		AdminEmail:  dataModel.AdminEmail,                          // 管理员手机号码

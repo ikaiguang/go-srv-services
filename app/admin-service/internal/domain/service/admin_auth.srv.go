@@ -16,7 +16,6 @@ import (
 
 	adminerrorv1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/errors"
 	adminv1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/resources"
-	assemblers "github.com/ikaiguang/go-srv-services/app/admin-service/internal/application/assembler"
 	entities "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/entity"
 	repos "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/repo"
 )
@@ -39,7 +38,7 @@ func NewAdminAuthSrv(
 ) *AdminAuthSrv {
 	return &AdminAuthSrv{
 		authTokenRepo:     authTokenRepo,
-		log:               log.NewHelper(logger),
+		log:               log.NewHelper(log.With(logger, "module", "admin/domain/service/admin_auth")),
 		adminRepo:         adminRepo,
 		adminRegEmailRepo: adminRegEmailRepo,
 	}
@@ -104,8 +103,8 @@ func (s *AdminAuthSrv) SignToken(ctx context.Context, adminModel *entities.Admin
 		AdminUuid:     adminModel.AdminUuid,
 		AdminNickname: adminModel.AdminNickname,
 		AdminAvatar:   adminModel.AdminAvatar,
-		AdminGender:   assemblers.ToAdminGenderEnum(adminModel.AdminGender),
-		AdminStatus:   assemblers.ToAdminStatusEnum(adminModel.AdminStatus),
+		AdminGender:   ToAdminGenderEnum(adminModel.AdminGender),
+		AdminStatus:   ToAdminStatusEnum(adminModel.AdminStatus),
 	}
 	anyData, err := anypb.New(adminInfo)
 	if err != nil {

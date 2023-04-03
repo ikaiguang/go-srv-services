@@ -27,6 +27,6 @@ func RegisterRootRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Se
 
 	stdlog.Println("|*** 注册路由：Root(/)")
 	hs.Handle("/", router)
-	
+
 	return
 }

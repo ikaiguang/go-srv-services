@@ -25,7 +25,7 @@ func NewAdminAuthService(
 	authSrv *srvs.AdminAuthSrv,
 ) adminservicev1.SrvAdminAuthServer {
 	return &adminAuth{
-		log:     log.NewHelper(logger),
+		log:     log.NewHelper(log.With(logger, "module", "admin/application/service/admin_auth")),
 		authSrv: authSrv,
 	}
 }

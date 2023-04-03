@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/gorilla/mux"
@@ -9,10 +8,12 @@ import (
 
 	pingv1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/resources"
 	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
+
+	"github.com/ikaiguang/go-srv-services/app/admin-service/internal/setup"
 )
 
 // RegisterRootRoutes 注册路由
-func RegisterRootRoutes(hs *http.Server, gs *grpc.Server, logger log.Logger) (err error) {
+func RegisterRootRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Server) {
 	router := mux.NewRouter()
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		data := &pingv1.PingResp{
@@ -26,5 +27,4 @@ func RegisterRootRoutes(hs *http.Server, gs *grpc.Server, logger log.Logger) (er
 
 	stdlog.Println("|*** 注册路由：Root(/)")
 	hs.Handle("/", router)
-	return err
 }
