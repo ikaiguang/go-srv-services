@@ -2,10 +2,10 @@ package services
 
 import (
 	"context"
-
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/rs/xid"
+	stdhttp "net/http"
 
 	errorv1 "github.com/ikaiguang/go-srv-kit/api/error/v1"
 	testdatav1 "github.com/ikaiguang/go-srv-kit/api/testdata/v1/resources"
@@ -28,7 +28,7 @@ type testdata struct {
 // NewTestdataService .
 func NewTestdataService(logger log.Logger, wssSrv *services.WebsocketSrv) testdataservicev1.SrvTestdataServer {
 	return &testdata{
-		log:    log.NewHelper(logger),
+		log:    log.NewHelper(log.With(logger, "module", "user/application/service/testdata")),
 		wssSrv: wssSrv,
 	}
 }
@@ -38,8 +38,17 @@ func (s *testdata) Websocket(ctx context.Context, in *testdatav1.TestReq) (resp 
 	// http
 	httpContext, isHTTPContext := contextutil.MatchHTTPContext(ctx)
 	if isHTTPContext {
-		//return s.exportApp(httpContext, req)
-		s.ws(httpContext, in)
+		if httpContext.Request() == nil || httpContext.Request().Method != stdhttp.MethodGet {
+			err = errorutil.InternalServer(errorv1.ERROR_METHOD_NOT_ALLOWED.String(), "ERROR_METHOD_NOT_ALLOWED")
+			s.log.WithContext(ctx).Error(err)
+			return resp, err
+		}
+
+		// ws
+		err = s.wss(httpContext, httpContext.Response(), httpContext.Request())
+		if err != nil {
+			return resp, err
+		}
 		resp = &testdatav1.TestResp{
 			Message: xid.New().String(),
 		}
@@ -57,13 +66,13 @@ type WsMessage struct {
 	Content []byte
 }
 
-// ws ws
-func (s *testdata) ws(ctx http.Context, in *testdatav1.TestReq) {
+// wss ws
+func (s *testdata) wss(ctx context.Context, w http.ResponseWriter, r *http.Request) (err error) {
 	// 升级连接
-	cc, err := websocketutil.UpgradeConn(ctx.Response(), ctx.Request(), ctx.Response().Header())
+	cc, err := websocketutil.UpgradeConn(w, r, w.Header())
 	if err != nil {
 		err = errorutil.InternalServer(errorv1.ERROR_CONNECTION.String(), "upgrade conn failed", err)
-		s.log.Error(err)
+		s.log.WithContext(ctx).Error(err)
 		return
 	}
 	defer func() { _ = cc.Close() }()
@@ -71,7 +80,7 @@ func (s *testdata) ws(ctx http.Context, in *testdatav1.TestReq) {
 	// 处理消息
 	err = s.wssSrv.ProcessWssMsg(ctx, cc)
 	if err != nil {
-		return
+		return err
 	}
-	return
+	return err
 }

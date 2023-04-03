@@ -8,5 +8,5 @@ server:
   grpc:
     enable: true
     network:
-    addr: 0.0.0.0:11201
+    addr: 0.0.0.0:11202
     timeout: 60s

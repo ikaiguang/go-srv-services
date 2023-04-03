@@ -7,6 +7,7 @@ import (
 	errorv1 "github.com/ikaiguang/go-srv-kit/api/error/v1"
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
 	websocketutil "github.com/ikaiguang/go-srv-kit/kratos/websocket"
+	stdhttp "net/http"
 )
 
 // WebsocketSrv ...
@@ -25,6 +26,25 @@ func NewWebsocketSrv(logger log.Logger) *WebsocketSrv {
 type WsMessage struct {
 	Type    int
 	Content []byte
+}
+
+// Wss ws
+func (s *WebsocketSrv) Wss(ctx context.Context, w stdhttp.ResponseWriter, r *stdhttp.Request) (err error) {
+	// 升级连接
+	cc, err := websocketutil.UpgradeConn(w, r, w.Header())
+	if err != nil {
+		err = errorutil.InternalServer(errorv1.ERROR_CONNECTION.String(), "upgrade conn failed", err)
+		s.log.WithContext(ctx).Error(err)
+		return
+	}
+	defer func() { _ = cc.Close() }()
+
+	// 处理消息
+	err = s.ProcessWssMsg(ctx, cc)
+	if err != nil {
+		return err
+	}
+	return err
 }
 
 func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) error {

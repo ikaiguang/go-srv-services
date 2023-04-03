@@ -11,17 +11,17 @@ import (
 
 var _ = timeutil.YmdHms
 
-// AssembleListUserRegMobile assemble listUserRegMobile
-func AssembleListUserRegMobile(dataModels []*entities.UserRegMobile) []*userv1.UserRegMobile {
+// UserRegMobileList assemble listUserRegMobile
+func (s *Assembler) UserRegMobileList(dataModels []*entities.UserRegMobile) []*userv1.UserRegMobile {
 	var newDataModels = make([]*userv1.UserRegMobile, len(dataModels))
 	for index := range dataModels {
-		newDataModels[index] = AssembleUserRegMobile(dataModels[index])
+		newDataModels[index] = s.UserRegMobile(dataModels[index])
 	}
 	return newDataModels
 }
 
-// AssembleUserRegMobile assemble UserRegMobile
-func AssembleUserRegMobile(dataModel *entities.UserRegMobile) *userv1.UserRegMobile {
+// UserRegMobile assemble UserRegMobile
+func (s *Assembler) UserRegMobile(dataModel *entities.UserRegMobile) *userv1.UserRegMobile {
 	newDataModel := &userv1.UserRegMobile{
 		Id:          dataModel.Id,                                  // ID
 		UserMobile:  dataModel.UserMobile,                          // 用户手机号码

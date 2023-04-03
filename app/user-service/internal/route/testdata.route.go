@@ -1,9 +1,9 @@
 package routes
 
 import (
+	logutil "github.com/ikaiguang/go-srv-kit/log"
 	stdlog "log"
 
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 
@@ -11,10 +11,17 @@ import (
 
 	services "github.com/ikaiguang/go-srv-services/app/user-service/internal/application/service"
 	srvs "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/service"
+	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
 )
 
 // RegisterTestdataRoutes 注册路由
-func RegisterTestdataRoutes(hs *http.Server, gs *grpc.Server, logger log.Logger) {
+func RegisterTestdataRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Server) {
+	// 日志
+	logger, _, err := engineHandler.Logger()
+	if err != nil {
+		logutil.Fatal(err)
+		return
+	}
 
 	wssSrv := srvs.NewWebsocketSrv(logger)
 	testdata := services.NewTestdataService(logger, wssSrv)

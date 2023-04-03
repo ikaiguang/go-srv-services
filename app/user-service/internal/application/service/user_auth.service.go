@@ -25,7 +25,7 @@ func NewUserAuthService(
 	authSrv *srvs.UserAuthSrv,
 ) userservicev1.SrvUserAuthServer {
 	return &userAuth{
-		log:     log.NewHelper(logger),
+		log:     log.NewHelper(log.With(logger, "module", "user/application/service/user_auth")),
 		authSrv: authSrv,
 	}
 }

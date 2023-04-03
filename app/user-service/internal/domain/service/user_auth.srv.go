@@ -17,7 +17,6 @@ import (
 	adminerrorv1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/errors"
 	usererrorv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/errors"
 	userv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources"
-	assemblers "github.com/ikaiguang/go-srv-services/app/user-service/internal/application/assembler"
 	entities "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/entity"
 	repos "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/repo"
 )
@@ -25,8 +24,8 @@ import (
 // UserAuthSrv ...
 type UserAuthSrv struct {
 	authTokenRepo tokenutil.AuthTokenRepo
+	log           *log.Helper
 
-	log              *log.Helper
 	userRepo         repos.UserRepo
 	userRegEmailRepo repos.UserRegEmailRepo
 }
@@ -39,7 +38,7 @@ func NewUserAuthSrv(
 ) *UserAuthSrv {
 	return &UserAuthSrv{
 		authTokenRepo:    authTokenRepo,
-		log:              log.NewHelper(logger),
+		log:              log.NewHelper(log.With(logger, "module", "user/domain/service/user_auth")),
 		userRepo:         userRepo,
 		userRegEmailRepo: userRegEmailRepo,
 	}
@@ -103,8 +102,8 @@ func (s *UserAuthSrv) SignToken(ctx context.Context, userModel *entities.User) (
 		UserUuid:     userModel.UserUuid,
 		UserNickname: userModel.UserNickname,
 		UserAvatar:   userModel.UserAvatar,
-		UserGender:   assemblers.ToUserGenderEnum(userModel.UserGender),
-		UserStatus:   assemblers.ToUserStatusEnum(userModel.UserStatus),
+		UserGender:   ToUserGenderEnum(userModel.UserGender),
+		UserStatus:   ToUserStatusEnum(userModel.UserStatus),
 	}
 	anyData, err := anypb.New(userInfo)
 	if err != nil {

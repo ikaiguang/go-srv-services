@@ -12,17 +12,17 @@ import (
 
 var _ = timeutil.YmdHms
 
-// AssembleListOrg assemble listOrg
-func AssembleListOrg(dataModels []*entities.Org) []*userv1.Org {
+// OrgList assemble listOrg
+func (s *Assembler) OrgList(dataModels []*entities.Org) []*userv1.Org {
 	var newDataModels = make([]*userv1.Org, len(dataModels))
 	for index := range dataModels {
-		newDataModels[index] = AssembleOrg(dataModels[index])
+		newDataModels[index] = s.Org(dataModels[index])
 	}
 	return newDataModels
 }
 
-// AssembleOrg assemble Org
-func AssembleOrg(dataModel *entities.Org) *userv1.Org {
+// Org assemble Org
+func (s *Assembler) Org(dataModel *entities.Org) *userv1.Org {
 	newDataModel := &userv1.Org{
 		Id:          dataModel.Id,                                  // ID
 		OrgUuid:     dataModel.OrgUuid,                             // uuid

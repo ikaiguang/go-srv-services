@@ -11,17 +11,17 @@ import (
 
 var _ = timeutil.YmdHms
 
-// AssembleListUserRegUsername assemble listUserRegUsername
-func AssembleListUserRegUsername(dataModels []*entities.UserRegUsername) []*userv1.UserRegUsername {
+// UserRegUsernameList assemble listUserRegUsername
+func (s *Assembler) UserRegUsernameList(dataModels []*entities.UserRegUsername) []*userv1.UserRegUsername {
 	var newDataModels = make([]*userv1.UserRegUsername, len(dataModels))
 	for index := range dataModels {
-		newDataModels[index] = AssembleUserRegUsername(dataModels[index])
+		newDataModels[index] = s.UserRegUsername(dataModels[index])
 	}
 	return newDataModels
 }
 
-// AssembleUserRegUsername assemble UserRegUsername
-func AssembleUserRegUsername(dataModel *entities.UserRegUsername) *userv1.UserRegUsername {
+// UserRegUsername assemble UserRegUsername
+func (s *Assembler) UserRegUsername(dataModel *entities.UserRegUsername) *userv1.UserRegUsername {
 	newDataModel := &userv1.UserRegUsername{
 		Id:          dataModel.Id,                                  // ID
 		UserName:    dataModel.UserName,                            // 用户名
