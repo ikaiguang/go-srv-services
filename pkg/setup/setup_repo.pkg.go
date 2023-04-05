@@ -2,7 +2,6 @@ package setuppkg
 
 import (
 	strerrors "errors"
-	"fmt"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/hashicorp/consul/api"
@@ -48,16 +47,30 @@ type LoggerPrefixField struct {
 	ServerIP   string `json:"serverIP"`
 }
 
-// String returns the string representation of LoggerPrefixField.
+// String 日志前缀
 func (s *LoggerPrefixField) String() string {
 	strSlice := []string{
-		"name:" + fmt.Sprintf("%q", s.AppName),
-		"version:" + fmt.Sprintf("%q", s.AppVersion),
-		"env:" + fmt.Sprintf("%q", s.AppEnv),
-		"envBranch:" + fmt.Sprintf("%q", s.AppBranch),
-		"serverIP:" + fmt.Sprintf("%q", s.ServerIP),
+		"name=" + `"` + s.AppName + `"`,
+		"hostname=" + `"` + s.Hostname + `"`,
+		"env=" + `"` + s.AppEnv + `"`,
+		"branch=" + `"` + s.AppBranch + `"`,
+		"version=" + `"` + s.AppVersion + `"`,
 	}
 	return strings.Join(strSlice, " ")
+}
+
+// Prefix 日志前缀
+func (s *LoggerPrefixField) Prefix() []interface{} {
+	ss := []string{
+		"hostname=" + `"` + s.Hostname + `"`,
+		"env=" + `"` + s.AppEnv + `"`,
+		"branch=" + `"` + s.AppBranch + `"`,
+		"version=" + `"` + s.AppVersion + `"`,
+	}
+	return []interface{}{
+		"service", s.AppName,
+		"app", strings.Join(ss, " "),
+	}
 }
 
 // Config 配置

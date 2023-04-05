@@ -15,11 +15,6 @@ func (s *engines) Close() (err error) {
 	defer stdlog.Println("|==================== 退出程序 结束 ====================|")
 
 	var errInfos []string
-	defer func() {
-		if len(errInfos) > 0 {
-			err = pkgerrors.New(strings.Join(errInfos, "；\n"))
-		}
-	}()
 
 	// 发生Panic
 	defer func() {
@@ -30,7 +25,7 @@ func (s *engines) Close() (err error) {
 
 		// Panic
 		if len(errInfos) > 0 {
-			stdlog.Printf("|*** 退出程序：发生Panic：\n%s\n", strings.Join(errInfos, "\n"))
+			stdlog.Printf("|*** 退出程序：发生错误：\n%s\n", strings.Join(errInfos, "\n"))
 		}
 		stdlog.Printf("|*** 退出程序：发生Panic：%v\n", panicRecover)
 	}()
