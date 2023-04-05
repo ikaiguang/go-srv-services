@@ -96,22 +96,14 @@ func (s *AdminAuthSrv) ComparePassword(hashPassword, password string) error {
 }
 
 // SignToken token
-func (s *AdminAuthSrv) SignToken(ctx context.Context, adminModel *entities.Admin) (out *adminv1.LoginResp, err error) {
+func (s *AdminAuthSrv) SignToken(ctx context.Context, adminModel *entities.Admin, adminInfo *adminv1.Info) (signedString string, err error) {
 	// 管理员信息
-	adminInfo := &adminv1.Info{
-		Id:            adminModel.Id,
-		AdminUuid:     adminModel.AdminUuid,
-		AdminNickname: adminModel.AdminNickname,
-		AdminAvatar:   adminModel.AdminAvatar,
-		AdminGender:   ToAdminGenderEnum(adminModel.AdminGender),
-		AdminStatus:   ToAdminStatusEnum(adminModel.AdminStatus),
-	}
 	anyData, err := anypb.New(adminInfo)
 	if err != nil {
 		reason := errorv1.ERROR_INTERNAL_SERVER.String()
 		message := "服务内部错误"
 		err = errorutil.InternalServer(reason, message, err)
-		return out, err
+		return signedString, err
 	}
 
 	// token claims
@@ -120,7 +112,7 @@ func (s *AdminAuthSrv) SignToken(ctx context.Context, adminModel *entities.Admin
 			ExpiresAt: authutil.DefaultExpireTime(),
 		},
 		Payload: &authv1.Payload{
-			Uid: adminModel.AdminUuid,
+			Uid: adminInfo.AdminUuid,
 			Tt:  authv1.TokenTypeEnum_ADMIN,
 			Lp:  authv1.PlatformEnum_WEB,
 			Lt:  authv1.LimitTypeEnum_ONLY_ONE,
@@ -141,23 +133,17 @@ func (s *AdminAuthSrv) SignToken(ctx context.Context, adminModel *entities.Admin
 		reason := errorv1.ERROR_INTERNAL_SERVER.String()
 		message := "服务内部错误"
 		err = errorutil.InternalServer(reason, message, err)
-		return out, err
+		return signedString, err
 	}
 
 	// generate token
 	signingSecret := s.authTokenRepo.SigningSecret(ctx, authClaims.Payload.Tt, adminModel.PasswordHash)
-	signedString, err := s.authTokenRepo.SignedToken(authClaims, signingSecret)
+	signedString, err = s.authTokenRepo.SignedToken(authClaims, signingSecret)
 	if err != nil {
 		reason := errorv1.ERROR_INTERNAL_SERVER.String()
 		message := "服务内部错误"
 		err = errorutil.InternalServer(reason, message, err)
-		return out, err
+		return signedString, err
 	}
-
-	// 响应
-	out = &adminv1.LoginResp{
-		AdminInfo: adminInfo,
-		Token:     signedString,
-	}
-	return out, err
+	return signedString, err
 }

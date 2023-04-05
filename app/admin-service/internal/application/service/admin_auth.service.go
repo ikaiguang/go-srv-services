@@ -8,6 +8,7 @@ import (
 
 	adminv1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/resources"
 	adminservicev1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/services"
+	assemblers "github.com/ikaiguang/go-srv-services/app/admin-service/internal/application/assembler"
 	srvs "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/service"
 )
 
@@ -15,8 +16,9 @@ import (
 type adminAuth struct {
 	adminservicev1.UnimplementedSrvAdminAuthServer
 
-	log     *log.Helper
-	authSrv *srvs.AdminAuthSrv
+	log       *log.Helper
+	assembler *assemblers.Assembler
+	authSrv   *srvs.AdminAuthSrv
 }
 
 // NewAdminAuthService ...
@@ -50,7 +52,15 @@ func (s *adminAuth) LoginByEmail(ctx context.Context, in *adminv1.LoginByEmailRe
 		return out, err
 	}
 
-	return s.authSrv.SignToken(ctx, adminModel)
+	// 签证
+	authInfo := s.assembler.AuthInfo(adminModel)
+	signedString, err := s.authSrv.SignToken(ctx, adminModel, authInfo)
+	if err != nil {
+		return out, err
+	}
+	
+	out = s.assembler.LoginResp(authInfo, signedString)
+	return out, err
 }
 
 // Ping ping pong
