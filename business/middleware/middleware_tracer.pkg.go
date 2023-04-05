@@ -1,12 +1,12 @@
-package middlewarepkg
+package middlewareutil
 
 import (
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/sdk/resource"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 
+	apputil "github.com/ikaiguang/go-srv-services/business/app"
 	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 

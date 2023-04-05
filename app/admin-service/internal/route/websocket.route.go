@@ -8,9 +8,9 @@ import (
 	stdlog "log"
 	stdhttp "net/http"
 
-	errorv1 "github.com/ikaiguang/go-srv-kit/api/error/v1"
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
 
+	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 	srvs "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/service"
 	"github.com/ikaiguang/go-srv-services/app/admin-service/internal/setup"
 )
@@ -50,7 +50,7 @@ func NewWsHandler(wsSrv *srvs.WebsocketSrv) *WsHandler {
 // TestWebsocket ...
 func (s *WsHandler) TestWebsocket(w http.ResponseWriter, r *http.Request) {
 	if r.Method != stdhttp.MethodGet {
-		err := errorutil.InternalServer(errorv1.ERROR_METHOD_NOT_ALLOWED.String(), "ERROR_METHOD_NOT_ALLOWED")
+		err := errorutil.InternalServer(commonv1.ERROR_METHOD_NOT_ALLOWED.String(), "ERROR_METHOD_NOT_ALLOWED")
 		w.WriteHeader(stdhttp.StatusBadRequest)
 		_, _ = w.Write([]byte(err.Error()))
 		return

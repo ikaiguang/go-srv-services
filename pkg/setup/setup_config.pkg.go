@@ -9,9 +9,9 @@ import (
 	stdlog "log"
 
 	confv1 "github.com/ikaiguang/go-srv-kit/api/conf/v1"
-	envv1 "github.com/ikaiguang/go-srv-kit/api/env/v1"
-	configv1 "github.com/ikaiguang/go-srv-kit/example/api/config/v1"
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
+
+	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
+	apputil "github.com/ikaiguang/go-srv-services/business/app"
 )
 
 const (
@@ -63,10 +63,10 @@ type configuration struct {
 	// handler 配置处理手柄
 	handler config.Config
 	// conf 配置引导文件
-	conf *configv1.Bootstrap
+	conf *commonv1.Bootstrap
 
 	// env app环境
-	env envv1.Env
+	env commonv1.EnvEnum_Env
 
 	// enableDebug 是否启用 调试模式
 	enableDebug bool
@@ -97,7 +97,7 @@ func (s *configuration) New(opts ...config.Option) (err error) {
 	}
 
 	// 读取配置文件
-	s.conf = &configv1.Bootstrap{}
+	s.conf = &commonv1.Bootstrap{}
 	if err = s.handler.Scan(s.conf); err != nil {
 		err = pkgerrors.WithStack(err)
 		return
@@ -124,7 +124,7 @@ func (s *configuration) New(opts ...config.Option) (err error) {
 // initialization 初始化
 func (s *configuration) initialization() {
 	// app环境
-	s.env = envv1.Env_PRODUCTION
+	s.env = commonv1.EnvEnum_PRODUCTION
 	if s.conf.App != nil {
 		// app环境
 		s.env = s.ParseEnv(s.conf.App.Env)
@@ -146,12 +146,12 @@ func (s *configuration) initialization() {
 }
 
 // ParseEnv 解析环境
-func (s *configuration) ParseEnv(appEnv string) envv1.Env {
+func (s *configuration) ParseEnv(appEnv string) commonv1.EnvEnum_Env {
 	return apputil.ParseEnv(appEnv)
 }
 
 // IsEnvDebug 是否调试模式
-func (s *configuration) IsEnvDebug(appEnv envv1.Env) bool {
+func (s *configuration) IsEnvDebug(appEnv commonv1.EnvEnum_Env) bool {
 	return apputil.IsDebugMode(appEnv)
 }
 
@@ -166,7 +166,7 @@ func (s *configuration) Close() error {
 }
 
 // Env app环境
-func (s *configuration) Env() envv1.Env {
+func (s *configuration) Env() commonv1.EnvEnum_Env {
 	return s.env
 }
 

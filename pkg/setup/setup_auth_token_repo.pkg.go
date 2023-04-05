@@ -5,7 +5,7 @@ import (
 	stdlog "log"
 	"sync"
 
-	tokenutil "github.com/ikaiguang/go-srv-kit/kratos/token"
+	tokenutil "github.com/ikaiguang/go-srv-services/business/token"
 )
 
 // GetAuthTokenRepo 验证Token工具

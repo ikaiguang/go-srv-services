@@ -64,35 +64,35 @@ message StatusEnum {
 // Platform 平台标识
 message PlatformEnum {
   enum Platform {
-    // UNKNOWN 未知
-    UNKNOWN = 0;
+    // UNSPECIFIED 未指定
+    UNSPECIFIED = 0;
 
     // COMPUTER 电脑端
-    COMPUTER = 1;
+    COMPUTER = 100;
     // MOBILE 移动端
-    MOBILE = 2;
+    MOBILE = 101;
     // SERVICE 服务端
-    SERVICE = 3;
+    SERVICE = 102;
 
     // ANDROID 安卓系统
-    ANDROID = 100;
+    ANDROID = 200;
     // IOS 苹果系统
-    IOS = 101;
+    IOS = 201;
 
     // WEB 网页
-    WEB = 200;
+    WEB = 300;
     // H5 网页
-    H5 = 201;
+    H5 = 301;
     // APPLET 小程序
-    APPLET = 203;
+    APPLET = 303;
     // APP 应用
-    APP = 204;
+    APP = 304;
     // ANDROID_APP 安卓应用
-    ANDROID_APP = 205;
+    ANDROID_APP = 305;
     // IOS_APP 苹果应用
-    IOS_APP = 206;
+    IOS_APP = 306;
     // IPAD_APP 平板应用
-    IPAD_APP = 207;
+    IPAD_APP = 307;
   }
 }
 

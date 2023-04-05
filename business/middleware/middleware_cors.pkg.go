@@ -1,4 +1,4 @@
-package middlewarepkg
+package middlewareutil
 
 import (
 	"github.com/gorilla/handlers"

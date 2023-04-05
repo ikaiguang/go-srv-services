@@ -1,6 +1,6 @@
 # app 程序
 app:
-  name: go-srv-kit
+  name: user-service
   version: v1.0.0
   # env 开发环境；值：DEVELOP、TESTING、PREVIEW、PRODUCTION
   env: develop

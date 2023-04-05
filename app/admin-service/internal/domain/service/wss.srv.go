@@ -4,10 +4,11 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/gorilla/websocket"
-	errorv1 "github.com/ikaiguang/go-srv-kit/api/error/v1"
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
 	websocketutil "github.com/ikaiguang/go-srv-kit/kratos/websocket"
 	stdhttp "net/http"
+
+	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 )
 
 // WebsocketSrv ...
@@ -33,7 +34,7 @@ func (s *WebsocketSrv) Wss(ctx context.Context, w stdhttp.ResponseWriter, r *std
 	// 升级连接
 	cc, err := websocketutil.UpgradeConn(w, r, w.Header())
 	if err != nil {
-		err = errorutil.InternalServer(errorv1.ERROR_CONNECTION.String(), "upgrade conn failed", err)
+		err = errorutil.InternalServer(commonv1.ERROR_CONNECTION.String(), "upgrade conn failed", err)
 		s.log.WithContext(ctx).Error(err)
 		return
 	}
@@ -56,7 +57,7 @@ func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) er
 				s.log.WithContext(ctx).Infow("websocket close", wsErr.Error())
 				break
 			}
-			err := errorutil.InternalServer(errorv1.ERROR_CONNECTION.String(), "ws读取信息失败", wsErr)
+			err := errorutil.InternalServer(commonv1.ERROR_CONNECTION.String(), "ws读取信息失败", wsErr)
 			s.log.WithContext(ctx).Error(err)
 			return err
 		}
@@ -71,7 +72,7 @@ func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) er
 		// 处理
 		needCloseConn, err := s.processWsMessage(ctx, wsMessage)
 		if err != nil {
-			err = errorutil.InternalServer(errorv1.ERROR_INTERNAL_SERVER.String(), "ws处理信息失败", err)
+			err = errorutil.InternalServer(commonv1.ERROR_INTERNAL_SERVER.String(), "ws处理信息失败", err)
 			s.log.WithContext(ctx).Error(err)
 			return err
 		}
@@ -83,7 +84,7 @@ func (s *WebsocketSrv) ProcessWssMsg(ctx context.Context, cc *websocket.Conn) er
 				s.log.WithContext(ctx).Infow("websocket close", wsErr.Error())
 				break
 			}
-			err = errorutil.InternalServer(errorv1.ERROR_INTERNAL_SERVER.String(), "JSON编码错误", err)
+			err = errorutil.InternalServer(commonv1.ERROR_INTERNAL_SERVER.String(), "JSON编码错误", err)
 			s.log.WithContext(ctx).Error(err)
 			return err
 		}

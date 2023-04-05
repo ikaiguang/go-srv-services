@@ -5,12 +5,12 @@ import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
 	pkgerrors "github.com/pkg/errors"
 	stdlog "log"
 
 	routes "github.com/ikaiguang/go-srv-services/app/user-service/internal/route"
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
+	apputil "github.com/ikaiguang/go-srv-services/business/app"
 )
 
 // NewApp .

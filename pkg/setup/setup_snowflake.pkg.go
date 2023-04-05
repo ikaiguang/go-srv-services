@@ -11,10 +11,11 @@ import (
 	"time"
 
 	idutil "github.com/ikaiguang/go-srv-kit/kit/id"
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
 	clientutil "github.com/ikaiguang/go-srv-kit/kratos/client"
 	apiv1 "github.com/ikaiguang/go-srv-kit/third_party/go-snowflake-node-id/api/node-id/v1/resources"
 	servicev1 "github.com/ikaiguang/go-srv-kit/third_party/go-snowflake-node-id/api/node-id/v1/services"
+
+	apputil "github.com/ikaiguang/go-srv-services/business/app"
 )
 
 // loadingSnowflakeWorker 加载雪花算法

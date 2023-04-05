@@ -9,7 +9,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 
 	iputil "github.com/ikaiguang/go-srv-kit/kit/ip"
-	authutil "github.com/ikaiguang/go-srv-kit/kratos/auth"
+
+	authutil "github.com/ikaiguang/go-srv-services/business/auth"
 )
 
 // LoggerPrefixField .

@@ -6,13 +6,11 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
-	headermiddle "github.com/ikaiguang/go-srv-kit/kratos/middleware/header"
-	logmiddle "github.com/ikaiguang/go-srv-kit/kratos/middleware/log"
 	stdlog "log"
 
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
-	middlewarepkg "github.com/ikaiguang/go-srv-services/pkg/middleware"
+	apputil "github.com/ikaiguang/go-srv-services/business/app"
+	middlewareutil "github.com/ikaiguang/go-srv-services/business/middleware"
 )
 
 var _ metadata.Option
@@ -31,7 +29,7 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	// options
 	var opts []http.ServerOption
 	//var opts = []http.ServerOption{
-	//	http.Filter(middlewarepkg.NewCORS()),
+	//	http.Filter(middlewareutil.NewCORS()),
 	//}
 	if httpConfig.Network != "" {
 		opts = append(opts, http.Network(httpConfig.Network))
@@ -56,13 +54,13 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	settingConfig := engineHandler.BaseSettingConfig()
 	if settingConfig != nil && settingConfig.EnableServiceTracer {
 		stdlog.Println("|*** 加载：服务追踪：HTTP")
-		if err = middlewarepkg.SetTracerProvider(engineHandler); err != nil {
+		if err = middlewareutil.SetTracerProvider(engineHandler); err != nil {
 			return srv, err
 		}
 		middlewareSlice = append(middlewareSlice, tracing.Server())
 	}
 	// 请求头
-	middlewareSlice = append(middlewareSlice, headermiddle.RequestHeader())
+	middlewareSlice = append(middlewareSlice, middlewareutil.RequestHeader())
 	// 中间件日志
 	middleLogger, _, err := engineHandler.LoggerMiddleware()
 	if err != nil {
@@ -70,13 +68,13 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	}
 	// 日志输出
 	//errorutil.DefaultStackTracerDepth += 2
-	middlewareSlice = append(middlewareSlice, logmiddle.ServerLog(
+	middlewareSlice = append(middlewareSlice, middlewareutil.ServerLog(
 		middleLogger,
 		//logmiddle.WithDefaultSkip(),
 	))
 	// jwt
 	//stdlog.Println("|*** 加载：JWT中间件：HTTP")
-	//jwtMiddleware, err := middlewarepkg.NewJWTMiddleware(engineHandler)
+	//jwtMiddleware, err := middlewareutil.NewJWTMiddleware(engineHandler)
 	//if err != nil {
 	//	return srv, err
 	//}

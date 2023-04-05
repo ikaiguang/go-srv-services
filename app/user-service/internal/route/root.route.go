@@ -7,9 +7,9 @@ import (
 	stdlog "log"
 
 	pingv1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/resources"
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
 
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
+	apputil "github.com/ikaiguang/go-srv-services/business/app"
 )
 
 // RegisterRootRoutes 注册路由

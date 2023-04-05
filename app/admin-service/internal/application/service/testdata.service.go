@@ -8,13 +8,13 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/rs/xid"
 
-	errorv1 "github.com/ikaiguang/go-srv-kit/api/error/v1"
 	testdatav1 "github.com/ikaiguang/go-srv-kit/api/testdata/v1/resources"
 	testdataservicev1 "github.com/ikaiguang/go-srv-kit/api/testdata/v1/services"
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
 	contextutil "github.com/ikaiguang/go-srv-kit/kratos/context"
 	websocketutil "github.com/ikaiguang/go-srv-kit/kratos/websocket"
 
+	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 	services "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/service"
 )
 
@@ -40,7 +40,7 @@ func (s *testdata) Websocket(ctx context.Context, in *testdatav1.TestReq) (resp 
 	httpContext, isHTTPContext := contextutil.MatchHTTPContext(ctx)
 	if isHTTPContext {
 		if httpContext.Request() == nil || httpContext.Request().Method != stdhttp.MethodGet {
-			err = errorutil.InternalServer(errorv1.ERROR_METHOD_NOT_ALLOWED.String(), "ERROR_METHOD_NOT_ALLOWED")
+			err = errorutil.InternalServer(commonv1.ERROR_METHOD_NOT_ALLOWED.String(), "ERROR_METHOD_NOT_ALLOWED")
 			s.log.WithContext(ctx).Error(err)
 			return resp, err
 		}
@@ -53,11 +53,11 @@ func (s *testdata) Websocket(ctx context.Context, in *testdatav1.TestReq) (resp 
 		resp = &testdatav1.TestResp{
 			Message: xid.New().String(),
 		}
-		err = errorutil.NotImplemented(errorv1.ERROR_NOT_IMPLEMENTED.String(), "unimplemented")
+		err = errorutil.NotImplemented(commonv1.ERROR_NOT_IMPLEMENTED.String(), "unimplemented")
 		return resp, err
 	}
 
-	err = errorutil.NotImplemented(errorv1.ERROR_NOT_IMPLEMENTED.String(), "unimplemented")
+	err = errorutil.NotImplemented(commonv1.ERROR_NOT_IMPLEMENTED.String(), "unimplemented")
 	return &testdatav1.TestResp{}, err
 }
 
@@ -72,7 +72,7 @@ func (s *testdata) wss(ctx context.Context, w http.ResponseWriter, r *http.Reque
 	// 升级连接
 	cc, err := websocketutil.UpgradeConn(w, r, w.Header())
 	if err != nil {
-		err = errorutil.InternalServer(errorv1.ERROR_CONNECTION.String(), "upgrade conn failed", err)
+		err = errorutil.InternalServer(commonv1.ERROR_CONNECTION.String(), "upgrade conn failed", err)
 		s.log.WithContext(ctx).Error(err)
 		return
 	}

@@ -8,10 +8,9 @@ import (
 	pkgerrors "github.com/pkg/errors"
 	stdlog "log"
 
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
-
 	routes "github.com/ikaiguang/go-srv-services/app/admin-service/internal/route"
 	"github.com/ikaiguang/go-srv-services/app/admin-service/internal/setup"
+	apputil "github.com/ikaiguang/go-srv-services/business/app"
 )
 
 // NewApp .

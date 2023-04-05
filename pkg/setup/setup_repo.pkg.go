@@ -13,8 +13,9 @@ import (
 	"strings"
 
 	confv1 "github.com/ikaiguang/go-srv-kit/api/conf/v1"
-	envv1 "github.com/ikaiguang/go-srv-kit/api/env/v1"
-	tokenutil "github.com/ikaiguang/go-srv-kit/kratos/token"
+
+	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
+	tokenutil "github.com/ikaiguang/go-srv-services/business/token"
 )
 
 var (
@@ -92,7 +93,7 @@ type Config interface {
 	BaseSettingConfig() *confv1.Base_Setting
 
 	// Env app环境
-	Env() envv1.Env
+	Env() commonv1.EnvEnum_Env
 	// IsDebugMode 是否启用 调试模式
 	IsDebugMode() bool
 	// EnableLoggingConsole 是否启用 日志输出到控制台

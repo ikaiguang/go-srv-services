@@ -10,10 +10,10 @@ import (
 	"io"
 
 	confv1 "github.com/ikaiguang/go-srv-kit/api/conf/v1"
-	envv1 "github.com/ikaiguang/go-srv-kit/api/env/v1"
-	errorv1 "github.com/ikaiguang/go-srv-kit/api/error/v1"
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
-	tokenutil "github.com/ikaiguang/go-srv-kit/kratos/token"
+
+	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
+	tokenutil "github.com/ikaiguang/go-srv-services/business/token"
 )
 
 var _ Engine = (*Unimplemented)(nil)
@@ -23,8 +23,8 @@ type Unimplemented struct{}
 
 // NotImplementedError ...
 func NotImplementedError() error {
-	reason := errorv1.ERROR_NOT_IMPLEMENTED
-	message := errorv1.ERROR_NOT_IMPLEMENTED.String()
+	reason := commonv1.ERROR_NOT_IMPLEMENTED
+	message := commonv1.ERROR_NOT_IMPLEMENTED.String()
 	err := errorutil.NotImplemented(reason.String(), message)
 	return err
 }
@@ -58,8 +58,8 @@ func (*Unimplemented) BaseSettingConfig() *confv1.Base_Setting {
 	return nil
 }
 
-func (*Unimplemented) Env() envv1.Env {
-	return envv1.Env_PRODUCTION
+func (*Unimplemented) Env() commonv1.EnvEnum_Env {
+	return commonv1.EnvEnum_PRODUCTION
 }
 
 func (*Unimplemented) IsDebugMode() bool {

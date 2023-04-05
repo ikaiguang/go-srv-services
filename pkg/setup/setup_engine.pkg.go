@@ -10,7 +10,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
-	tokenutil "github.com/ikaiguang/go-srv-kit/kratos/token"
+	tokenutil "github.com/ikaiguang/go-srv-services/business/token"
 )
 
 // engines 引擎模块

@@ -3,13 +3,13 @@ package services
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	authutil "github.com/ikaiguang/go-srv-kit/kratos/auth"
 	logutil "github.com/ikaiguang/go-srv-kit/log"
 
 	adminv1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/resources"
 	adminservicev1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/services"
 	assemblers "github.com/ikaiguang/go-srv-services/app/admin-service/internal/application/assembler"
 	srvs "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/service"
+	authutil "github.com/ikaiguang/go-srv-services/business/auth"
 )
 
 // adminAuth ...

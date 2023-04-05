@@ -1,4 +1,4 @@
-package middlewarepkg
+package middlewareutil
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	jwt "github.com/golang-jwt/jwt/v4"
 
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
-	authutil "github.com/ikaiguang/go-srv-kit/kratos/auth"
 
+	authutil "github.com/ikaiguang/go-srv-services/business/auth"
 	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 
