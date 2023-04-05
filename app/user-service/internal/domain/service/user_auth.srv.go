@@ -95,22 +95,14 @@ func (s *UserAuthSrv) ComparePassword(hashPassword, password string) error {
 }
 
 // SignToken token
-func (s *UserAuthSrv) SignToken(ctx context.Context, userModel *entities.User) (out *userv1.LoginResp, err error) {
+func (s *UserAuthSrv) SignToken(ctx context.Context, userModel *entities.User, authInfo *userv1.Info) (signedString string, err error) {
 	// 用户信息
-	userInfo := &userv1.Info{
-		Id:           userModel.Id,
-		UserUuid:     userModel.UserUuid,
-		UserNickname: userModel.UserNickname,
-		UserAvatar:   userModel.UserAvatar,
-		UserGender:   ToUserGenderEnum(userModel.UserGender),
-		UserStatus:   ToUserStatusEnum(userModel.UserStatus),
-	}
-	anyData, err := anypb.New(userInfo)
+	anyData, err := anypb.New(authInfo)
 	if err != nil {
 		reason := errorv1.ERROR_INTERNAL_SERVER.String()
 		message := "服务内部错误"
 		err = errorutil.InternalServer(reason, message, err)
-		return out, err
+		return signedString, err
 	}
 
 	// token claims
@@ -140,23 +132,17 @@ func (s *UserAuthSrv) SignToken(ctx context.Context, userModel *entities.User) (
 		reason := errorv1.ERROR_INTERNAL_SERVER.String()
 		message := "服务内部错误"
 		err = errorutil.InternalServer(reason, message, err)
-		return out, err
+		return signedString, err
 	}
 
 	// generate token
 	signingSecret := s.authTokenRepo.SigningSecret(ctx, authClaims.Payload.Tt, userModel.PasswordHash)
-	signedString, err := s.authTokenRepo.SignedToken(authClaims, signingSecret)
+	signedString, err = s.authTokenRepo.SignedToken(authClaims, signingSecret)
 	if err != nil {
 		reason := errorv1.ERROR_INTERNAL_SERVER.String()
 		message := "服务内部错误"
 		err = errorutil.InternalServer(reason, message, err)
-		return out, err
+		return signedString, err
 	}
-
-	// 响应
-	out = &userv1.LoginResp{
-		UserInfo: userInfo,
-		Token:    signedString,
-	}
-	return out, err
+	return signedString, err
 }

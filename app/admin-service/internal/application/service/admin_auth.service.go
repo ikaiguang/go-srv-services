@@ -24,11 +24,13 @@ type adminAuth struct {
 // NewAdminAuthService ...
 func NewAdminAuthService(
 	logger log.Logger,
+	assembler *assemblers.Assembler,
 	authSrv *srvs.AdminAuthSrv,
 ) adminservicev1.SrvAdminAuthServer {
 	return &adminAuth{
-		log:     log.NewHelper(log.With(logger, "module", "admin/application/service/admin_auth")),
-		authSrv: authSrv,
+		log:       log.NewHelper(log.With(logger, "module", "admin/application/service/admin_auth")),
+		assembler: assembler,
+		authSrv:   authSrv,
 	}
 }
 
@@ -58,7 +60,7 @@ func (s *adminAuth) LoginByEmail(ctx context.Context, in *adminv1.LoginByEmailRe
 	if err != nil {
 		return out, err
 	}
-	
+
 	out = s.assembler.LoginResp(authInfo, signedString)
 	return out, err
 }

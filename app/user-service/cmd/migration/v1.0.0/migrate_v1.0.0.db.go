@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 
 	dbv1_0_0_example "github.com/ikaiguang/go-srv-services/app/user-service/cmd/migration/v1.0.0/example"
-	dbv1_0_0_org "github.com/ikaiguang/go-srv-services/app/user-service/cmd/migration/v1.0.0/org"
 	dbv1_0_0_user "github.com/ikaiguang/go-srv-services/app/user-service/cmd/migration/v1.0.0/user"
 )
 
@@ -39,12 +38,6 @@ func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error)
 
 	// user
 	err = dbv1_0_0_user.Upgrade(dbConn, migrateRepo)
-	if err != nil {
-		return pkgerrors.WithStack(err)
-	}
-
-	// org
-	err = dbv1_0_0_org.Upgrade(dbConn, migrateRepo)
 	if err != nil {
 		return pkgerrors.WithStack(err)
 	}

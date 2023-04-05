@@ -7,6 +7,7 @@ import (
 	stdlog "log"
 
 	adminservicev1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/services"
+	assemblers "github.com/ikaiguang/go-srv-services/app/admin-service/internal/application/assembler"
 	services "github.com/ikaiguang/go-srv-services/app/admin-service/internal/application/service"
 	srvs "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/service"
 	datas "github.com/ikaiguang/go-srv-services/app/admin-service/internal/infra/data"
@@ -35,6 +36,9 @@ func RegisterAdminRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.S
 	}
 	authTokenRepo := engineHandler.GetAuthTokenRepo(redisCC)
 
+	// assembler
+	assembler := assemblers.NewAssembler()
+
 	// admin
 	adminRepo := datas.NewAdminRepo(dbConn)
 	adminRegEmailRepo := datas.NewAdminRegEmailRepo(dbConn)
@@ -50,6 +54,7 @@ func RegisterAdminRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.S
 	// oauth 授权
 	adminAuthSrv := services.NewAdminAuthService(
 		logger,
+		assembler,
 		authSrv,
 	)
 	stdlog.Println("|*** 注册路由：AdminAuth")

@@ -8,6 +8,7 @@ import (
 
 	userv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources"
 	userservicev1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/services"
+	assemblers "github.com/ikaiguang/go-srv-services/app/user-service/internal/application/assembler"
 	srvs "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/service"
 )
 
@@ -15,18 +16,21 @@ import (
 type userAuth struct {
 	userservicev1.UnimplementedSrvUserAuthServer
 
-	log     *log.Helper
-	authSrv *srvs.UserAuthSrv
+	log       *log.Helper
+	assembler *assemblers.Assembler
+	authSrv   *srvs.UserAuthSrv
 }
 
 // NewUserAuthService ...
 func NewUserAuthService(
 	logger log.Logger,
+	assembler *assemblers.Assembler,
 	authSrv *srvs.UserAuthSrv,
 ) userservicev1.SrvUserAuthServer {
 	return &userAuth{
-		log:     log.NewHelper(log.With(logger, "module", "user/application/service/user_auth")),
-		authSrv: authSrv,
+		log:       log.NewHelper(log.With(logger, "module", "user/application/service/user_auth")),
+		assembler: assembler,
+		authSrv:   authSrv,
 	}
 }
 
@@ -50,7 +54,15 @@ func (s *userAuth) LoginByEmail(ctx context.Context, in *userv1.LoginByEmailReq)
 		return out, err
 	}
 
-	return s.authSrv.SignToken(ctx, userModel)
+	// 签证
+	authInfo := s.assembler.AuthInfo(userModel)
+	signedString, err := s.authSrv.SignToken(ctx, userModel, authInfo)
+	if err != nil {
+		return out, err
+	}
+
+	out = s.assembler.LoginResp(authInfo, signedString)
+	return out, err
 }
 
 // Ping ping pong

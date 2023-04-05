@@ -7,6 +7,7 @@ import (
 	stdlog "log"
 
 	userservicev1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/services"
+	assemblers "github.com/ikaiguang/go-srv-services/app/user-service/internal/application/assembler"
 	services "github.com/ikaiguang/go-srv-services/app/user-service/internal/application/service"
 	srvs "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/service"
 	datas "github.com/ikaiguang/go-srv-services/app/user-service/internal/infra/data"
@@ -35,6 +36,9 @@ func RegisterUserRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Se
 	}
 	authTokenRepo := engineHandler.GetAuthTokenRepo(redisCC)
 
+	// assembler
+	assembler := assemblers.NewAssembler()
+
 	// user
 	userRepo := datas.NewUserRepo(dbConn)
 	userRegEmailRepo := datas.NewUserRegEmailRepo(dbConn)
@@ -47,7 +51,11 @@ func RegisterUserRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Se
 	)
 
 	// oauth 授权
-	userAuthSrv := services.NewUserAuthService(logger, authSrv)
+	userAuthSrv := services.NewUserAuthService(
+		logger,
+		assembler,
+		authSrv,
+	)
 	stdlog.Println("|*** 注册路由：UserAuth")
 	userservicev1.RegisterSrvUserAuthHTTPServer(hs, userAuthSrv)
 	userservicev1.RegisterSrvUserAuthServer(gs, userAuthSrv)
