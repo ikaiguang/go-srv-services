@@ -6,8 +6,8 @@ import (
 	"sync"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-redis/redis/v8"
 	"github.com/hashicorp/consul/api"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 
 	tokenutil "github.com/ikaiguang/go-srv-kit/kratos/token"
