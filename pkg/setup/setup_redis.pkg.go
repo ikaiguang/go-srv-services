@@ -11,6 +11,9 @@ import (
 
 // GetRedisClient redis 客户端
 func (s *engines) GetRedisClient() (*redis.Client, error) {
+	if s.redisClient != nil {
+		return s.redisClient, nil
+	}
 	var err error
 	s.redisClientMutex.Do(func() {
 		s.redisClient, err = s.loadingRedisClient()

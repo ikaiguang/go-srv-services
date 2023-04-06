@@ -12,7 +12,7 @@ func New(opts ...Option) (engineHandler Engine, err error) {
 	flag.Parse()
 
 	// 初始化配置手柄
-	configHandler, err := newConfigHandler(opts...)
+	configHandler, err := newConfigWithFiles(opts...)
 	if err != nil {
 		return engineHandler, pkgerrors.WithStack(err)
 	}
@@ -21,9 +21,14 @@ func New(opts ...Option) (engineHandler Engine, err error) {
 	stdlog.Println("|==================== 配置程序 开始 ====================|")
 	defer stdlog.Println("|==================== 配置程序 结束 ====================|")
 
-	// 启动手柄
-	setupHandler := NewEngine(configHandler)
+	// 初始化手柄
+	setupHandler := initEngine(configHandler)
 
+	return newEngine(setupHandler)
+}
+
+// newEngine 启动与配置
+func newEngine(setupHandler *engines) (engineHandler Engine, err error) {
 	// 设置调试工具
 	if err = setupHandler.loadingDebugUtil(); err != nil {
 		return engineHandler, err

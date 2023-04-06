@@ -3,12 +3,8 @@ package setuppkg
 import (
 	"flag"
 	"github.com/go-kratos/kratos/v2/config"
-	"github.com/go-kratos/kratos/v2/config/file"
-	"github.com/go-kratos/kratos/v2/log"
-	pkgerrors "github.com/pkg/errors"
-	stdlog "log"
-
 	confv1 "github.com/ikaiguang/go-srv-kit/api/conf/v1"
+	pkgerrors "github.com/pkg/errors"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 	apputil "github.com/ikaiguang/go-srv-services/business/app"
@@ -19,43 +15,13 @@ const (
 )
 
 var (
-	// _configFilepath 配置文件 所在的目录
-	_configFilepath string
+	_configFilepath   string // 配置文件 所在的目录
+	_configConsulPath string // 配置文件 所在的目录；例：app/cart/configs/
 )
 
 func init() {
-	flag.StringVar(&_configFilepath, "conf", "./configs", "config path, eg: -conf config.yaml")
-}
-
-// newConfigHandler 初始化配置手柄
-func newConfigHandler(setupOpts ...Option) (Config, error) {
-	if !flag.Parsed() {
-		flag.Parse()
-	}
-
-	// 启动选项
-	setupOpt := &options{}
-	for i := range setupOpts {
-		setupOpts[i](setupOpt)
-	}
-
-	stdlog.Println("|==================== 加载配置文件 开始 ====================|")
-	defer stdlog.Println()
-	defer stdlog.Println("|==================== 加载配置文件 结束 ====================|")
-	// 配置路径
-	confPath := _configFilepath
-	if setupOpt.configPath != "" {
-		confPath = setupOpt.configPath
-	} else if confPath == "" {
-		confPath = _defaultConfigFilepath
-	}
-	log.Infof("配置文件路径: %s\n", confPath)
-
-	var opts []config.Option
-	opts = append(opts, config.WithSource(
-		file.NewSource(confPath),
-	))
-	return NewConfiguration(opts...)
+	flag.StringVar(&_configFilepath, "conf", "./configs", "config path, eg: -conf ./configs")
+	flag.StringVar(&_configConsulPath, "conf-consul", "", "config path, eg: path/to/config")
 }
 
 // configuration 实现ConfigInterface
@@ -87,6 +53,15 @@ func NewConfiguration(opts ...config.Option) (Config, error) {
 
 // New 配置处理手柄
 func (s *configuration) New(opts ...config.Option) (err error) {
+	// 配置方式
+	var configType = "程序配置方式："
+	switch {
+	case _configConsulPath != "":
+		configType += "consul配置中心"
+	default:
+		configType += "文件配置"
+	}
+
 	// 处理手柄
 	s.handler = config.New(opts...)
 
@@ -108,13 +83,13 @@ func (s *configuration) New(opts ...config.Option) (err error) {
 
 	// App配置
 	if s.conf.App == nil {
-		err = pkgerrors.New("[请配置服务再启动] config key : app")
+		err = pkgerrors.New("[请配置服务再启动] config key : app；" + configType)
 		return err
 	}
 
 	// 服务配置
 	if s.conf.Server == nil {
-		err = pkgerrors.New("[请配置服务再启动] config key : server")
+		err = pkgerrors.New("[请配置服务再启动] config key : server；" + configType)
 		return err
 	}
 
@@ -186,7 +161,7 @@ func (s *configuration) EnableLoggingFile() bool {
 }
 
 // AppConfig APP配置
-func (s *configuration) AppConfig() *confv1.App {
+func (s *configuration) AppConfig() *commonv1.App {
 	return s.conf.App
 }
 
@@ -211,7 +186,7 @@ func (s *configuration) GRPCConfig() *confv1.Server_GRPC {
 	return s.conf.Server.Grpc
 }
 
-// ServerAuthConfig APP验证配置
+// BusinessAuthConfig APP验证配置
 func (s *configuration) BusinessAuthConfig() *confv1.Business_Auth {
 	if s.conf.Business == nil {
 		return nil
@@ -219,7 +194,7 @@ func (s *configuration) BusinessAuthConfig() *confv1.Business_Auth {
 	return s.conf.Business.Auth
 }
 
-// ServerSettingConfig APP设置配置
+// BaseSettingConfig APP设置配置
 func (s *configuration) BaseSettingConfig() *confv1.Base_Setting {
 	if s.conf.Base == nil {
 		return nil

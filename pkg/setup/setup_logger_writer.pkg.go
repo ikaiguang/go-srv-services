@@ -11,6 +11,9 @@ import (
 
 // LoggerFileWriter 文件日志写手柄
 func (s *engines) LoggerFileWriter() (io.Writer, error) {
+	if s.loggerFileWriter != nil {
+		return s.loggerFileWriter, nil
+	}
 	var err error
 	s.loggerFileWriterMutex.Do(func() {
 		s.loggerFileWriter, err = s.loadingLoggerFileWriter()

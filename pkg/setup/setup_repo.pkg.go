@@ -79,7 +79,7 @@ type Config interface {
 	Watch(key string, o config.Observer) error
 
 	// AppConfig APP配置
-	AppConfig() *confv1.App
+	AppConfig() *commonv1.App
 
 	// ServerConfig 服务配置
 	ServerConfig() *confv1.Server
@@ -149,8 +149,10 @@ type Engine interface {
 	GetPostgresGormDB() (*gorm.DB, error)
 	// GetRedisClient redis 客户端
 	GetRedisClient() (*redis.Client, error)
+
 	// GetConsulClient consul 客户端
 	GetConsulClient() (*api.Client, error)
+
 	// GetJaegerTraceExporter jaegerTrace
 	GetJaegerTraceExporter() (*jaeger.Exporter, error)
 

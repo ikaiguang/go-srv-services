@@ -14,6 +14,9 @@ import (
 
 // GetMySQLGormDB 数据库
 func (s *engines) GetMySQLGormDB() (*gorm.DB, error) {
+	if s.mysqlGormDB != nil {
+		return s.mysqlGormDB, nil
+	}
 	var err error
 	s.mysqlGormMutex.Do(func() {
 		s.mysqlGormDB, err = s.loadingMysqlGormDB()

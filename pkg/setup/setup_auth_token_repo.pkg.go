@@ -10,6 +10,9 @@ import (
 
 // GetAuthTokenRepo 验证Token工具
 func (s *engines) GetAuthTokenRepo(redisCC *redis.Client) tokenutil.AuthTokenRepo {
+	if s.authTokenRepo != nil {
+		return s.authTokenRepo
+	}
 	var err error
 	s.authTokenRepoMutex.Do(func() {
 		s.authTokenRepo = s.loadingAuthTokenRepo(redisCC)

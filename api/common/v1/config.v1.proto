@@ -12,7 +12,7 @@ import "github.com/ikaiguang/go-srv-kit/api/conf/v1/conf.v1.proto";
 // Bootstrap 配置引导
 message Bootstrap {
   // app application
-  kit.api.confv1.App app = 1;
+  App app = 1;
   // log 日志
   kit.api.confv1.Log log = 2;
   // data 数据
@@ -23,4 +23,24 @@ message Bootstrap {
   kit.api.confv1.Base base = 5;
   // Business 业务配置
   kit.api.confv1.Business business = 6;
+}
+
+// App application
+message App {
+  // belong_to 属于哪个项目
+  string belong_to = 1;
+  // config_type 配置类型；值：file、consul、etcd、nacos、k8s、apollo
+  string config_type = 2;
+  // name app名字
+  string name = 3;
+  // version app版本
+  string version = 4;
+  // env app 环境
+  string env = 5;
+  // env_branch 环境分支
+  string env_branch = 6;
+  // endpoints app站点
+  repeated string endpoints = 7;
+  // metadata 元数据
+  map<string, string> metadata = 8;
 }

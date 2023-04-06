@@ -67,8 +67,8 @@ type engines struct {
 	authTokenRepo      tokenutil.AuthTokenRepo
 }
 
-// NewEngine ...
-func NewEngine(conf Config) *engines {
+// initEngine ...
+func initEngine(conf Config) *engines {
 	return &engines{
 		Config: conf,
 	}

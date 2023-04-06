@@ -14,6 +14,9 @@ import (
 
 // GetPostgresGormDB 数据库
 func (s *engines) GetPostgresGormDB() (*gorm.DB, error) {
+	if s.postgresGormDB != nil {
+		return s.postgresGormDB, nil
+	}
 	var err error
 	s.postgresGormMutex.Do(func() {
 		s.postgresGormDB, err = s.loadingPostgresGormDB()

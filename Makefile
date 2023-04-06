@@ -16,6 +16,10 @@ info:
 run:
 	go run ./app/${service}/cmd/main/... -conf=./app/${service}/configs
 
+.PHONY: dev
+dev:
+	go run ./app/${service}/cmd/main/... -conf=go-srv-services/DEVELOP/main/v1.0.0/user-service
+
 # make migrate service=xxx
 .PHONY: migrate
 migrate:

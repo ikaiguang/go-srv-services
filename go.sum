@@ -69,10 +69,14 @@ github.com/fsnotify/fsnotify v1.5.4/go.mod h1:OVB6XrOHzAwXMpEM7uPOzcehqUV2UqJxmV
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
 github.com/go-kit/kit v0.9.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
+github.com/go-kratos/aegis v0.1.2/go.mod h1:jYeSQ3Gesba478zEnujOiG5QdsyF3Xk/8owFUeKcHxw=
 github.com/go-kratos/aegis v0.1.4 h1:rVLXJNohV1d2GUFi7TwPReF23clhaAtAzrz03IP6GMo=
 github.com/go-kratos/aegis v0.1.4/go.mod h1:Lk2PFCRyeYiXMJhCYgvJLXdc5AZEDk1Pik66SAIv0gY=
+github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20230326145430-f03f5f89881f h1:ZXpap+X573E7t5G1XO8vb3gWQu4Y8n4j7IQHlzwmOow=
+github.com/go-kratos/kratos/contrib/config/consul/v2 v2.0.0-20230326145430-f03f5f89881f/go.mod h1:LLA4b60yL/MLtCOsZHQTFVnFoKP/UB03+OjaogW/BG4=
 github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20230326145430-f03f5f89881f h1:2BhhKRRtZmMIIjBMajktrI+n+JnlP+ggalawzGcXitc=
 github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20230326145430-f03f5f89881f/go.mod h1:frF7e15yNrG7u/TZ1xBppfUD2eKA4SJN4lhKdyJPj34=
+github.com/go-kratos/kratos/v2 v2.4.0/go.mod h1:5acyLj4EgY428AJnZl2EwCrMV1OVlttQFBum+SghMiA=
 github.com/go-kratos/kratos/v2 v2.6.1 h1:4GSy7I7YGF93c1W83XkWAXNqY7JzNdC3t4l501rl0Xg=
 github.com/go-kratos/kratos/v2 v2.6.1/go.mod h1:OT/2NR0jpfxMgdTdIew8of9cGBab0UKaZRadcgTgqS0=
 github.com/go-logfmt/logfmt v0.3.0/go.mod h1:Qt1PoO58o5twSAckw1HlFXLmHsOX5/0LbT9GBnD5lWE=

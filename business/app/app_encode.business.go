@@ -15,6 +15,12 @@ import (
 	headerutil "github.com/ikaiguang/go-srv-kit/kratos/header"
 )
 
+const (
+	OK = 0
+
+	baseContentType = "application"
+)
+
 // ResponseEncoder http.DefaultResponseEncoder
 func ResponseEncoder(w stdhttp.ResponseWriter, r *stdhttp.Request, v interface{}) error {
 	// 在websocket时日志干扰：http: superfluous response.WriteHeader call from xxx(file:line)

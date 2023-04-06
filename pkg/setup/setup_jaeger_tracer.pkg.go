@@ -11,6 +11,9 @@ import (
 
 // GetJaegerTraceExporter jaegerTrace
 func (s *engines) GetJaegerTraceExporter() (*jaeger.Exporter, error) {
+	if s.jaegerTraceExporter != nil {
+		return s.jaegerTraceExporter, nil
+	}
 	var err error
 	s.jaegerTraceExporterMutex.Do(func() {
 		s.jaegerTraceExporter, err = s.loadingJaegerTraceExporter()

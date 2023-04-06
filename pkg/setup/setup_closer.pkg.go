@@ -1,6 +1,7 @@
 package setuppkg
 
 import (
+	"context"
 	"fmt"
 	stdlog "log"
 	"strings"
@@ -69,8 +70,21 @@ func (s *engines) Close() (err error) {
 		}
 	}
 
-	//s.consulClient
-	//s.jaegerTraceExporter
+	// s.consulClient
+	if s.consulClient != nil {
+		//stdlog.Println("|*** 退出程序：关闭：consulClient")
+		//errorPrefix := "consulClient.Close error : "
+	}
+
+	// s.jaegerTraceExporter
+	if s.jaegerTraceExporter != nil {
+		stdlog.Println("|*** 退出程序：关闭：jaegerTraceExporter")
+		errorPrefix := "jaegerTraceExporter.Shutdown error : "
+		err := s.jaegerTraceExporter.Shutdown(context.Background())
+		if err != nil {
+			errInfos = append(errInfos, errorPrefix+err.Error())
+		}
+	}
 
 	// 雪花算法
 	if s.snowflakeStopChannel != nil {

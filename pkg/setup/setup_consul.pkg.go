@@ -21,6 +21,21 @@ func (s *engines) GetConsulClient() (*api.Client, error) {
 	return s.consulClient, err
 }
 
+// SetConsulClient consul 客户端
+//func (s *engines) SetConsulClient(cc *api.Client) {
+//	if cc == nil {
+//		return
+//	}
+//	var hasSet bool
+//	s.consulClientMutex.Do(func() {
+//		hasSet = true
+//		s.consulClient = cc
+//	})
+//	if !hasSet {
+//		s.consulClient = cc
+//	}
+//}
+
 // loadingConsulClient consul 客户端
 func (s *engines) loadingConsulClient() (*api.Client, error) {
 	if s.Config.ConsulConfig() == nil {
