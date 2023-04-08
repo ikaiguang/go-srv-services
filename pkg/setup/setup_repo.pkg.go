@@ -16,6 +16,7 @@ import (
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 	tokenutil "github.com/ikaiguang/go-srv-services/business/token"
+	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
 )
 
 var (
@@ -150,6 +151,10 @@ type Engine interface {
 	// GetRedisClient redis 客户端
 	GetRedisClient() (*redis.Client, error)
 
+	// SetRegistryType 设置 服务注册类型
+	SetRegistryType(rt registrypkg.RegistryType)
+	// RegistryType 服务注册类型
+	RegistryType() registrypkg.RegistryType
 	// GetConsulClient consul 客户端
 	GetConsulClient() (*api.Client, error)
 

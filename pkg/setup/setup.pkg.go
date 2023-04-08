@@ -3,6 +3,8 @@ package setuppkg
 import (
 	"flag"
 	stdlog "log"
+
+	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
 )
 
 // New 启动与配置
@@ -33,14 +35,14 @@ func New(opts ...Option) (engineHandler Engine, err error) {
 	stdlog.Println("|==================== 配置程序 开始 ====================|")
 	defer stdlog.Println("|==================== 配置程序 结束 ====================|")
 
-	// 初始化手柄
-	setupHandler := initEngine(configHandler)
-
-	return newEngine(setupHandler)
+	return newEngine(configHandler)
 }
 
 // newEngine 启动与配置
-func newEngine(setupHandler *engines) (engineHandler Engine, err error) {
+func newEngine(configHandler Config) (engineHandler Engine, err error) {
+	// 初始化手柄
+	setupHandler := initEngine(configHandler)
+
 	// 设置调试工具
 	if err = setupHandler.loadingDebugUtil(); err != nil {
 		return engineHandler, err
@@ -74,6 +76,9 @@ func newEngine(setupHandler *engines) (engineHandler Engine, err error) {
 		// 验证Token工具
 		_ = setupHandler.GetAuthTokenRepo(redisCC)
 	}
+
+	// 服务注册
+	setupHandler.SetRegistryType(registrypkg.RegistryTypeLocal)
 
 	// consul 客户端
 	if cfg := setupHandler.Config.ConsulConfig(); cfg != nil && cfg.Enable {

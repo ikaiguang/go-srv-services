@@ -11,11 +11,15 @@ import (
 	"gorm.io/gorm"
 
 	tokenutil "github.com/ikaiguang/go-srv-services/business/token"
+	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
 )
 
 // engines 引擎模块
 type engines struct {
 	Config
+
+	// registryType 服务注册类型
+	registryType registrypkg.RegistryType
 
 	// loggerPrefixFieldMutex 日志前缀
 	loggerPrefixFieldMutex sync.Once

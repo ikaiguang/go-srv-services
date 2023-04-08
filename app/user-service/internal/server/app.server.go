@@ -77,6 +77,7 @@ func NewApp(engineHandler setup.Engine) (app *kratos.App, err error) {
 		if err != nil {
 			return app, err
 		}
+		engineHandler.SetRegistryType(registrypkg.RegistryTypeConsul)
 		appOptions = append(appOptions, kratos.Registrar(r))
 	}
 

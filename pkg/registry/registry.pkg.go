@@ -5,6 +5,13 @@ import (
 	"github.com/hashicorp/consul/api"
 )
 
+type RegistryType string
+
+const (
+	RegistryTypeLocal  RegistryType = "local"
+	RegistryTypeConsul RegistryType = "consul"
+)
+
 // NewConsulRegistry consul
 func NewConsulRegistry(consulClient *api.Client) (*consul.Registry, error) {
 	var opts = []consul.Option{
