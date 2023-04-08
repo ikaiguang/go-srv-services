@@ -17,11 +17,11 @@ func RegisterRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Server
 	RegisterRootRoutes(engineHandler, hs, gs)
 
 	// websocket
-	RegisterWssRoutes(engineHandler, hs, gs)
+	//RegisterWssRoutes(engineHandler, hs, gs)
 
 	// testdata
 	RegisterPingRoutes(engineHandler, hs, gs)
-	RegisterTestdataRoutes(engineHandler, hs, gs)
+	//RegisterTestdataRoutes(engineHandler, hs, gs)
 
 	// user
 	RegisterUserRoutes(engineHandler, hs, gs)

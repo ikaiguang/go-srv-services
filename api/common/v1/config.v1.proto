@@ -29,18 +29,16 @@ message Bootstrap {
 message App {
   // belong_to 属于哪个项目
   string belong_to = 1;
-  // config_type 配置类型；值：file、consul、etcd、nacos、k8s、apollo
-  string config_type = 2;
   // name app名字
-  string name = 3;
+  string name = 2;
   // version app版本
-  string version = 4;
+  string version = 3;
   // env app 环境
-  string env = 5;
+  string env = 4;
   // env_branch 环境分支
-  string env_branch = 6;
+  string env_branch = 5;
   // endpoints app站点
-  repeated string endpoints = 7;
+  repeated string endpoints = 6;
   // metadata 元数据
-  map<string, string> metadata = 8;
+  map<string, string> metadata = 7;
 }

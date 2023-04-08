@@ -30,7 +30,7 @@ func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error)
 	//	}
 	//}()
 
-	// admin
+	// example
 	err = dbv1_0_0_example.Upgrade(dbConn, migrateRepo)
 	if err != nil {
 		return pkgerrors.WithStack(err)

@@ -15,7 +15,7 @@ import (
 	websocketutil "github.com/ikaiguang/go-srv-kit/kratos/websocket"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	services "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/service"
+	srvs "github.com/ikaiguang/go-srv-services/app/admin-service/internal/domain/service"
 )
 
 // testdata .
@@ -23,11 +23,11 @@ type testdata struct {
 	testdataservicev1.UnimplementedSrvTestdataServer
 
 	log    *log.Helper
-	wssSrv *services.WebsocketSrv
+	wssSrv *srvs.WebsocketSrv
 }
 
 // NewTestdataService .
-func NewTestdataService(logger log.Logger, wssSrv *services.WebsocketSrv) testdataservicev1.SrvTestdataServer {
+func NewTestdataService(logger log.Logger, wssSrv *srvs.WebsocketSrv) testdataservicev1.SrvTestdataServer {
 	return &testdata{
 		log:    log.NewHelper(log.With(logger, "module", "admin/application/service/testdata")),
 		wssSrv: wssSrv,

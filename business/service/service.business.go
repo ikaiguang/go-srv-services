@@ -1,4 +1,4 @@
-package service
+package serviceutil
 
 // ServerName 服务名称
 type (
