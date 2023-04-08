@@ -9,8 +9,8 @@ import (
 	stdlog "log"
 
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
-	apputil "github.com/ikaiguang/go-srv-services/business/app"
 	middlewareutil "github.com/ikaiguang/go-srv-services/business/middleware"
+	"github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 var _ metadata.Option
@@ -42,8 +42,8 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	}
 
 	// 响应
-	opts = append(opts, http.ResponseEncoder(apputil.ResponseEncoder))
-	opts = append(opts, http.ErrorEncoder(apputil.ErrorEncoder))
+	opts = append(opts, http.ResponseEncoder(apppkg.ResponseEncoder))
+	opts = append(opts, http.ErrorEncoder(apppkg.ErrorEncoder))
 
 	// ===== 中间件 =====
 	var middlewareSlice = []middleware.Middleware{

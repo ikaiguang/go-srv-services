@@ -2,7 +2,6 @@ package setuppkg
 
 import (
 	"flag"
-	pkgerrors "github.com/pkg/errors"
 	stdlog "log"
 )
 
@@ -11,10 +10,23 @@ func New(opts ...Option) (engineHandler Engine, err error) {
 	// parses the command-line flags
 	flag.Parse()
 
-	// 初始化配置手柄
-	configHandler, err := newConfigWithFiles(opts...)
-	if err != nil {
-		return engineHandler, pkgerrors.WithStack(err)
+	// 配置方式
+	var (
+		configHandler Config
+	)
+	switch {
+	case _configConsulPath != "":
+		// 初始化配置手柄
+		configHandler, _, err = newConfigWithConsul(opts...)
+		if err != nil {
+			return engineHandler, err
+		}
+	default:
+		// 初始化配置手柄
+		configHandler, err = newConfigWithFiles(opts...)
+		if err != nil {
+			return engineHandler, err
+		}
 	}
 
 	// 开始配置

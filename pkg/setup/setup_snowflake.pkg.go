@@ -15,7 +15,7 @@ import (
 	apiv1 "github.com/ikaiguang/go-srv-kit/third_party/go-snowflake-node-id/api/node-id/v1/resources"
 	servicev1 "github.com/ikaiguang/go-srv-kit/third_party/go-snowflake-node-id/api/node-id/v1/services"
 
-	apputil "github.com/ikaiguang/go-srv-services/business/app"
+	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 // loadingSnowflakeWorker 加载雪花算法
@@ -32,7 +32,7 @@ func (s *engines) loadingSnowflakeWorker() error {
 		http.WithMiddleware(
 			recovery.Recovery(),
 		),
-		http.WithResponseDecoder(apputil.ResponseDecoder),
+		http.WithResponseDecoder(apppkg.ResponseDecoder),
 		http.WithEndpoint(workerConfig.Endpoint),
 	}
 	if workerConfig.WithDiscovery {
@@ -54,7 +54,7 @@ func (s *engines) loadingSnowflakeWorker() error {
 	// 雪花算法ID
 	appConfig := s.AppConfig()
 	workerReq := &apiv1.GetNodeIdReq{
-		InstanceId:   apputil.ID(appConfig),
+		InstanceId:   apppkg.ID(appConfig),
 		InstanceName: appConfig.Name,
 		Endpoints:    appConfig.Endpoints,
 		Metadata:     appConfig.Metadata,

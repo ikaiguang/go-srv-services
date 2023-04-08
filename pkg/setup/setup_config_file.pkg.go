@@ -32,8 +32,6 @@ func newConfigWithFiles(setupOpts ...Option) (Config, error) {
 
 	var opts []config.Option
 	stdlog.Println("|*** 加载：配置文件路径: ", confPath)
-	opts = append(opts, config.WithSource(
-		file.NewSource(confPath),
-	))
+	opts = append(opts, config.WithSource(file.NewSource(confPath)))
 	return NewConfiguration(opts...)
 }

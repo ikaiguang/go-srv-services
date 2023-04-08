@@ -18,7 +18,7 @@ run:
 
 .PHONY: dev
 dev:
-	go run ./app/${service}/cmd/main/... -conf=go-srv-services/DEVELOP/main/v1.0.0/user-service
+	go run ./app/${service}/cmd/main/... -conf-consul=./app/${service}/configs/consul
 
 # make migrate service=xxx
 .PHONY: migrate
@@ -34,6 +34,11 @@ api:
 .PHONY: config
 config:
 	go run ./cmd/proto/... -path=./app/${service}/internal/conf
+
+# make consul-config service=xxx
+.PHONY: consul-config
+consul-config:
+	go run ./cmd/consul-config/... -conf=./app/${service}/configs
 
 # ping 请注意端口号
 # 注意，请先运行服务

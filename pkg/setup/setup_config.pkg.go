@@ -7,7 +7,7 @@ import (
 	pkgerrors "github.com/pkg/errors"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	apputil "github.com/ikaiguang/go-srv-services/business/app"
+	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 const (
@@ -45,23 +45,14 @@ type configuration struct {
 // NewConfiguration 配置处理手柄
 func NewConfiguration(opts ...config.Option) (Config, error) {
 	handler := &configuration{}
-	if err := handler.New(opts...); err != nil {
+	if err := handler.init(opts...); err != nil {
 		return nil, err
 	}
 	return handler, nil
 }
 
-// New 配置处理手柄
-func (s *configuration) New(opts ...config.Option) (err error) {
-	// 配置方式
-	var configType = "程序配置方式："
-	switch {
-	case _configConsulPath != "":
-		configType += "consul配置中心"
-	default:
-		configType += "文件配置"
-	}
-
+// init 初始化
+func (s *configuration) init(opts ...config.Option) (err error) {
 	// 处理手柄
 	s.handler = config.New(opts...)
 
@@ -78,26 +69,18 @@ func (s *configuration) New(opts ...config.Option) (err error) {
 		return
 	}
 
-	// 初始化
-	s.initialization()
-
 	// App配置
 	if s.conf.App == nil {
-		err = pkgerrors.New("[请配置服务再启动] config key : app；" + configType)
+		err = pkgerrors.New("[请配置服务再启动] config key : app")
 		return err
 	}
 
 	// 服务配置
 	if s.conf.Server == nil {
-		err = pkgerrors.New("[请配置服务再启动] config key : server；" + configType)
+		err = pkgerrors.New("[请配置服务再启动] config key : server")
 		return err
 	}
 
-	return
-}
-
-// initialization 初始化
-func (s *configuration) initialization() {
 	// app环境
 	s.env = commonv1.EnvEnum_PRODUCTION
 	if s.conf.App != nil {
@@ -118,16 +101,18 @@ func (s *configuration) initialization() {
 			s.enableLoggingFile = s.conf.Log.File.Enable
 		}
 	}
+
+	return err
 }
 
 // ParseEnv 解析环境
 func (s *configuration) ParseEnv(appEnv string) commonv1.EnvEnum_Env {
-	return apputil.ParseEnv(appEnv)
+	return apppkg.ParseEnv(appEnv)
 }
 
 // IsEnvDebug 是否调试模式
 func (s *configuration) IsEnvDebug(appEnv commonv1.EnvEnum_Env) bool {
-	return apputil.IsDebugMode(appEnv)
+	return apppkg.IsDebugMode(appEnv)
 }
 
 // Watch 监听

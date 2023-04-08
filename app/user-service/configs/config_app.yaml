@@ -1,5 +1,10 @@
 # app 程序
 app:
+  # belong_to 属于哪个项目
+  belong_to: go-srv-services
+  # config_type 配置类型；值：file、consul、etcd、nacos、k8s、apollo
+  config_type: consul
+  # name 服务名称
   name: user-service
   version: v1.0.0
   # env 开发环境；值：DEVELOP、TESTING、PREVIEW、PRODUCTION

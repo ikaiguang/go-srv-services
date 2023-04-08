@@ -1,6 +1,6 @@
 // Package apputil
 // from github.com/go-kratos/kratos/v2/encoding/json
-package apputil
+package apppkg
 
 import (
 	stdjson "encoding/json"

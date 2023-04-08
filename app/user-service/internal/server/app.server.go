@@ -1,7 +1,6 @@
 package servers
 
 import (
-	consul "github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
@@ -10,7 +9,8 @@ import (
 
 	routes "github.com/ikaiguang/go-srv-services/app/user-service/internal/route"
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
-	apputil "github.com/ikaiguang/go-srv-services/business/app"
+	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
+	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
 )
 
 // NewApp .
@@ -54,7 +54,7 @@ func NewApp(engineHandler setup.Engine) (app *kratos.App, err error) {
 	// app
 	var (
 		appConfig  = engineHandler.AppConfig()
-		appID      = apputil.ID(appConfig)
+		appID      = apppkg.ID(appConfig)
 		appOptions = []kratos.Option{
 			kratos.ID(appID),
 			kratos.Name(appID),
@@ -73,7 +73,10 @@ func NewApp(engineHandler setup.Engine) (app *kratos.App, err error) {
 		if err != nil {
 			return app, err
 		}
-		r := consul.New(consulClient)
+		r, err := registrypkg.NewConsulRegistry(consulClient)
+		if err != nil {
+			return app, err
+		}
 		appOptions = append(appOptions, kratos.Registrar(r))
 	}
 

@@ -9,7 +9,7 @@ import (
 	pingv1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/resources"
 
 	"github.com/ikaiguang/go-srv-services/app/admin-service/internal/setup"
-	apputil "github.com/ikaiguang/go-srv-services/business/app"
+	"github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 // RegisterRootRoutes 注册路由
@@ -19,9 +19,9 @@ func RegisterRootRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Se
 		data := &pingv1.PingResp{
 			Message: "Hello World!",
 		}
-		err := apputil.ResponseEncoder(w, r, data)
+		err := apppkg.ResponseEncoder(w, r, data)
 		if err != nil {
-			apputil.ErrorEncoder(w, r, err)
+			apppkg.ErrorEncoder(w, r, err)
 		}
 	})
 

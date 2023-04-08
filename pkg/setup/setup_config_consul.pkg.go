@@ -11,7 +11,7 @@ import (
 	stdlog "log"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	apputil "github.com/ikaiguang/go-srv-services/business/app"
+	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 // newConfigWithConsul 初始化配置手柄
@@ -31,13 +31,13 @@ func newConfigWithConsul(setupOpts ...Option) (configImpl Config, consulClient *
 	defer stdlog.Println("|==================== 初始化Consul配置中心 结束 ====================|")
 
 	// 配置路径
-	confPath := _configConsulPath
+	filePath := _configConsulPath
 	if setupOpt.configPath != "" {
-		confPath = setupOpt.configPath
+		filePath = setupOpt.configPath
 	}
-	stdlog.Println("|*** 加载：Consul初始化配置文件路径: ", confPath)
+	stdlog.Println("|*** 加载：Consul初始化配置文件路径: ", filePath)
 	configHandler := config.New(config.WithSource(
-		file.NewSource(confPath),
+		file.NewSource(filePath),
 	))
 
 	// 加载配置
@@ -55,13 +55,13 @@ func newConfigWithConsul(setupOpts ...Option) (configImpl Config, consulClient *
 
 	// App配置
 	if cfg.App == nil {
-		err = pkgerrors.New("[请配置服务再启动] config key : app")
+		err = pkgerrors.New("[请配置服务再启动] consul key : app")
 		return configImpl, consulClient, err
 	}
 
 	// 服务配置
 	if cfg.Base == nil || cfg.Base.Consul == nil {
-		err = pkgerrors.New("[请配置服务再启动] config key : base.consul")
+		err = pkgerrors.New("[请配置服务再启动] consul key : base.consul")
 		return configImpl, consulClient, err
 	}
 
@@ -74,7 +74,9 @@ func newConfigWithConsul(setupOpts ...Option) (configImpl Config, consulClient *
 	}
 
 	// 配置source
-	cs, err := consul.New(consulClient, consul.WithPath(apputil.ConfigPath(cfg.App)))
+	consulKeyPath := apppkg.ConfigPath(cfg.App)
+	stdlog.Println("|*** 加载：Consul配置文件路径：", consulKeyPath)
+	cs, err := consul.New(consulClient, consul.WithPath(consulKeyPath))
 	if err != nil {
 		err = pkgerrors.WithStack(err)
 		return configImpl, consulClient, err
@@ -87,7 +89,6 @@ func newConfigWithConsul(setupOpts ...Option) (configImpl Config, consulClient *
 	// config impl
 	configImpl, err = NewConfiguration(opts...)
 	if err != nil {
-		err = pkgerrors.WithStack(err)
 		return configImpl, consulClient, err
 	}
 	return configImpl, consulClient, err

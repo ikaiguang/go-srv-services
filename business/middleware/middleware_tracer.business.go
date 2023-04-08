@@ -6,7 +6,7 @@ import (
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 
-	apputil "github.com/ikaiguang/go-srv-services/business/app"
+	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 
@@ -26,7 +26,7 @@ func SetTracerProvider(engineHandler setuppkg.Engine) error {
 		tracesdk.WithBatcher(exp),
 		// Record information about this application in an Resource.
 		tracesdk.WithResource(resource.NewSchemaless(
-			semconv.ServiceNameKey.String(apputil.ID(appConfig)),
+			semconv.ServiceNameKey.String(apppkg.ID(appConfig)),
 			//attribute.String("env", appConfig.Env),
 			//attribute.String("version", appConfig.Version),
 			//attribute.String("branch", appConfig.EnvBranch),

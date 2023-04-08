@@ -1,4 +1,4 @@
-package apputil
+package apppkg
 
 // ResponseInterface .
 type ResponseInterface interface {
