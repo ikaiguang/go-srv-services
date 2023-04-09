@@ -13,14 +13,7 @@ import (
 )
 
 // NewWhiteListMatcher 路由白名单
-func NewWhiteListMatcher() selector.MatchFunc {
-
-	// 白名单
-	whiteList := make(map[string]bool)
-
-	// 测试
-	whiteList["/kit.api.pingservicev1.SrvPing/Ping"] = true
-
+func NewWhiteListMatcher(whiteList map[string]struct{}) selector.MatchFunc {
 	return func(ctx context.Context, operation string) bool {
 		//if tr, ok := contextutil.MatchHTTPServerContext(ctx); ok {
 		//	if _, ok := whiteList[tr.Request().URL.Path]; ok {
@@ -36,7 +29,7 @@ func NewWhiteListMatcher() selector.MatchFunc {
 }
 
 // NewJWTMiddleware jwt中间
-func NewJWTMiddleware(engineHandler setuppkg.Engine) (m middleware.Middleware, err error) {
+func NewJWTMiddleware(engineHandler setuppkg.Engine, whiteList map[string]struct{}) (m middleware.Middleware, err error) {
 	// redis
 	redisCC, err := engineHandler.GetRedisClient()
 	if err != nil {
@@ -52,7 +45,7 @@ func NewJWTMiddleware(engineHandler setuppkg.Engine) (m middleware.Middleware, e
 			authutil.WithValidator(authTokenRepo.ValidateFunc()),
 		),
 	).
-		Match(NewWhiteListMatcher()).
+		Match(NewWhiteListMatcher(whiteList)).
 		Build()
 
 	return m, err

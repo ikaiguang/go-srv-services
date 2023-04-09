@@ -61,7 +61,7 @@ func NewGRPCServer(engineHandler setup.Engine) (srv *grpc.Server, err error) {
 	))
 	// jwt
 	//stdlog.Println("|*** 加载：JWT中间件：GRPC")
-	jwtMiddleware, err := middlewareutil.NewJWTMiddleware(engineHandler)
+	jwtMiddleware, err := middlewareutil.NewJWTMiddleware(engineHandler, getAuthWhiteList())
 	if err != nil {
 		return srv, err
 	}

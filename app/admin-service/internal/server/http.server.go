@@ -70,7 +70,7 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	))
 	// jwt
 	//stdlog.Println("|*** 加载：JWT中间件：HTTP")
-	jwtMiddleware, err := middlewareutil.NewJWTMiddleware(engineHandler)
+	jwtMiddleware, err := middlewareutil.NewJWTMiddleware(engineHandler, getAuthWhiteList())
 	if err != nil {
 		return srv, err
 	}
