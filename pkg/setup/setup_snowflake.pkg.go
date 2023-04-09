@@ -4,7 +4,9 @@ import (
 	"context"
 	"github.com/bwmarrin/snowflake"
 	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
+	"github.com/go-kratos/kratos/v2/middleware/metadata"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	pkgerrors "github.com/pkg/errors"
 	stdlog "log"
@@ -28,9 +30,16 @@ func (s *engines) loadingSnowflakeWorker() error {
 	stdlog.Printf("|*** 加载：雪花算法")
 
 	// http 选项
+	logger, _, err := s.LoggerMiddleware()
+	if err != nil {
+		return err
+	}
 	var httpOptions = []http.ClientOption{
 		http.WithMiddleware(
 			recovery.Recovery(),
+			metadata.Client(),
+			tracing.Client(),
+			apppkg.ClientLog(logger),
 		),
 		http.WithResponseDecoder(apppkg.ResponseDecoder),
 		http.WithEndpoint(workerConfig.Endpoint),

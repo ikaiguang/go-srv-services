@@ -68,7 +68,7 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	}
 	// 日志输出
 	//errorutil.DefaultStackTracerDepth += 2
-	middlewareSlice = append(middlewareSlice, middlewareutil.ServerLog(
+	middlewareSlice = append(middlewareSlice, apppkg.ServerLog(
 		middleLogger,
 		//logmiddle.WithDefaultSkip(),
 	))

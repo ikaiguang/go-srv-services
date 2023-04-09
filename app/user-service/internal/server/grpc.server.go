@@ -10,6 +10,7 @@ import (
 
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
 	middlewareutil "github.com/ikaiguang/go-srv-services/business/middleware"
+	loggingpkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 var _ metadata.Option
@@ -58,7 +59,7 @@ func NewGRPCServer(engineHandler setup.Engine) (srv *grpc.Server, err error) {
 	}
 	// 日志输出
 	//errorutil.DefaultStackTracerDepth += 2
-	middlewareSlice = append(middlewareSlice, middlewareutil.ServerLog(
+	middlewareSlice = append(middlewareSlice, loggingpkg.ServerLog(
 		middleLogger,
 		//logmiddle.WithDefaultSkip(),
 	))
