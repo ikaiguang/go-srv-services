@@ -17,7 +17,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	serviceutil "github.com/ikaiguang/go-srv-services/business/service"
+	serviceutil "github.com/ikaiguang/go-srv-services/business-util/service"
 	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
 	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"

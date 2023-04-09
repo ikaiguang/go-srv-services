@@ -6,7 +6,7 @@ import (
 	confv1 "github.com/ikaiguang/go-srv-kit/api/conf/v1"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	authutil "github.com/ikaiguang/go-srv-services/business/auth"
+	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
 )
 
 // Option token option.

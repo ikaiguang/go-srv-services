@@ -4,7 +4,7 @@ import (
 	pingservicev1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/services"
 
 	userservicev1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/services"
-	serviceutil "github.com/ikaiguang/go-srv-services/business/service"
+	serviceutil "github.com/ikaiguang/go-srv-services/business-util/service"
 	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 

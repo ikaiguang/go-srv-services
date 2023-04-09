@@ -15,7 +15,7 @@ import (
 	confv1 "github.com/ikaiguang/go-srv-kit/api/conf/v1"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	tokenutil "github.com/ikaiguang/go-srv-services/business/token"
+	tokenutil "github.com/ikaiguang/go-srv-services/business-util/token"
 	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
 )
 

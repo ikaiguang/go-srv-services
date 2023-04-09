@@ -1,15 +1,14 @@
 package servers
 
 import (
-	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/metadata"
-	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	stdlog "log"
 
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
-	middlewareutil "github.com/ikaiguang/go-srv-services/business/middleware"
+	middlewareutil "github.com/ikaiguang/go-srv-services/business-util/middleware"
+	serviceutil "github.com/ikaiguang/go-srv-services/business-util/service"
 	"github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
@@ -46,10 +45,7 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	opts = append(opts, http.ErrorEncoder(apppkg.ErrorEncoder))
 
 	// ===== 中间件 =====
-	var middlewareSlice = []middleware.Middleware{
-		recovery.Recovery(),
-		//metadata.Server(),
-	}
+	var middlewareSlice = serviceutil.NewDefaultMiddlewares()
 	// tracer
 	settingConfig := engineHandler.BaseSettingConfig()
 	if settingConfig != nil && settingConfig.EnableServiceTracer {

@@ -9,7 +9,8 @@ import (
 	testdata "github.com/ikaiguang/go-srv-services/testdata"
 )
 
-// go test -v -count=1 ./example/integration-test/ping -test.run=TestHTTP_Ping_Hello
+// make run service=ping-service
+// go test -v -count=1 ./integration-test/ping -test.run=TestHTTP_Ping_Hello
 func TestHTTP_Ping_Hello(t *testing.T) {
 	urlPath := "/api/v1/ping/hello"
 	fullURL := testdata.GenURL(urlPath)

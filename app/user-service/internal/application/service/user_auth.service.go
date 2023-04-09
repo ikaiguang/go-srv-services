@@ -9,7 +9,7 @@ import (
 	userservicev1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/services"
 	assemblers "github.com/ikaiguang/go-srv-services/app/user-service/internal/application/assembler"
 	srvs "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/service"
-	authutil "github.com/ikaiguang/go-srv-services/business/auth"
+	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
 )
 
 // userAuth ...

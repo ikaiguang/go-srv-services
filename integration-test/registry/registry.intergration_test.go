@@ -7,32 +7,25 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"github.com/hashicorp/consul/api"
 	pingv1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/resources"
 	pingservicev1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/services"
-	apputil "github.com/ikaiguang/go-srv-kit/kratos/app"
 	logutil "github.com/ikaiguang/go-srv-kit/log"
-	stdlog "log"
 	"testing"
 
-	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
+	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
-// go test -v -count=1 ./example/integration-test/registry -test.run=Test_RegistryDiscovery
+// make run service=ping-service
+// go test -v -count=1 ./integration-test/registry -test.run=Test_RegistryDiscovery
 func Test_RegistryDiscovery(t *testing.T) {
-	consulCli, err := api.NewClient(api.DefaultConfig())
+	consulCli, err := engineHandler.GetConsulClient()
 	if err != nil {
 		panic(err)
 	}
 	r := consul.New(consulCli)
 
 	// 引擎模块
-	engineHandler, err := setuppkg.New()
-	if err != nil {
-		stdlog.Fatalf("%+v\n", err)
-		return
-	}
-	appID := apputil.ID(engineHandler.AppConfig())
+	appID := apppkg.ID(engineHandler.AppConfig())
 	endpoint := "discovery:///" + appID
 
 	// new grpc client
@@ -57,7 +50,7 @@ func Test_RegistryDiscovery(t *testing.T) {
 		http.WithEndpoint(endpoint),
 		http.WithDiscovery(r),
 		// 解析
-		http.WithResponseDecoder(apputil.ResponseDecoder),
+		http.WithResponseDecoder(apppkg.ResponseDecoder),
 	)
 	if err != nil {
 		logutil.Fatal(err)

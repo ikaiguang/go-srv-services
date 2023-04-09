@@ -10,7 +10,7 @@ import (
 
 	iputil "github.com/ikaiguang/go-srv-kit/kit/ip"
 
-	authutil "github.com/ikaiguang/go-srv-services/business/auth"
+	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
 )
 
 // LoggerPrefixField .

@@ -4,7 +4,7 @@ package jwtutil
 import (
 	"github.com/golang-jwt/jwt/v4"
 
-	authutil "github.com/ikaiguang/go-srv-services/business/auth"
+	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
 )
 
 // Option is jwt option.

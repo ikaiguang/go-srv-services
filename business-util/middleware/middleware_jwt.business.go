@@ -8,7 +8,7 @@ import (
 
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
 
-	authutil "github.com/ikaiguang/go-srv-services/business/auth"
+	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
 	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 

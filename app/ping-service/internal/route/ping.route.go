@@ -12,8 +12,8 @@ import (
 	services "github.com/ikaiguang/go-srv-services/app/ping-service/internal/application/service"
 	srvs "github.com/ikaiguang/go-srv-services/app/ping-service/internal/domain/service"
 	"github.com/ikaiguang/go-srv-services/app/ping-service/internal/setup"
-	clientutil "github.com/ikaiguang/go-srv-services/business/client"
-	serviceutil "github.com/ikaiguang/go-srv-services/business/service"
+	clientutil "github.com/ikaiguang/go-srv-services/business-util/client"
+	serviceutil "github.com/ikaiguang/go-srv-services/business-util/service"
 )
 
 // RegisterPingRoutes 注册路由

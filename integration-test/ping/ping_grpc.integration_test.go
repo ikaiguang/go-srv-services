@@ -13,7 +13,8 @@ import (
 	testdata "github.com/ikaiguang/go-srv-services/testdata"
 )
 
-// go test -v -count=1 ./example/integration-test/ping -test.run=TestGRPC_Ping_Hello
+// make run service=ping-service
+// go test -v -count=1 ./integration-test/ping -test.run=TestGRPC_Ping_Hello
 func TestGRPC_Ping_Hello(t *testing.T) {
 	var (
 		ctx  = context.Background()

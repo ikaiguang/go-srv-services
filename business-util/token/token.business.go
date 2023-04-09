@@ -10,7 +10,7 @@ import (
 	contextutil "github.com/ikaiguang/go-srv-kit/kratos/context"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	authutil "github.com/ikaiguang/go-srv-services/business/auth"
+	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
 )
 
 // TokenTypeMap 令牌类型映射

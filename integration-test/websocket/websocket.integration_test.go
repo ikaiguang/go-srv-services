@@ -7,13 +7,14 @@ import (
 	"testing"
 	"time"
 
-	errorv1 "github.com/ikaiguang/go-srv-kit/api/error/v1"
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
 	websocketutil "github.com/ikaiguang/go-srv-kit/kratos/websocket"
 	logutil "github.com/ikaiguang/go-srv-kit/log"
+
+	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 )
 
-// go test -v -count=1 ./example/integration-test/websocket -test.run=TestApi_Websocket
+// go test -v -count=1 ./integration-test/websocket -test.run=TestApi_Websocket
 func TestApi_Websocket(t *testing.T) {
 	urlPath := "/api/v1/testdata/websocket"
 
@@ -26,7 +27,7 @@ func TestApi_Websocket(t *testing.T) {
 	runTestWebsocket(c)
 }
 
-// go test -v -count=1 ./example/integration-test/websocket -test.run=TestWs_Websocket
+// go test -v -count=1 ./integration-test/websocket -test.run=TestWs_Websocket
 func TestWs_Websocket(t *testing.T) {
 	urlPath := "/ws/v1/websocket"
 
@@ -55,7 +56,7 @@ func runTestWebsocket(c *websocket.Conn) {
 					logutil.Infow("websocket close", wsErr.Error())
 					break
 				}
-				err = errorutil.InternalServer(errorv1.ERROR_INTERNAL_SERVER.String(), "ws读取信息失败", wsErr)
+				err = errorutil.InternalServer(commonv1.ERROR_INTERNAL_SERVER.String(), "ws读取信息失败", wsErr)
 				logutil.Error(err)
 				return
 			}
@@ -91,7 +92,7 @@ func runTestWebsocket(c *websocket.Conn) {
 					logutil.Infow("websocket close", wsErr.Error())
 					break
 				}
-				err = errorutil.InternalServer(errorv1.ERROR_INTERNAL_SERVER.String(), "ws读取信息失败", err)
+				err = errorutil.InternalServer(commonv1.ERROR_INTERNAL_SERVER.String(), "ws读取信息失败", err)
 				logutil.Error(err)
 				return
 			}

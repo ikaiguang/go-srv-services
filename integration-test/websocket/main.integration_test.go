@@ -8,11 +8,16 @@ import (
 	"github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 
+var (
+	engineHandler setuppkg.Engine
+)
+
 func TestMain(m *testing.M) {
 	var err error
 
-	configPath := "../../configs"
-	engineHandler, err := setuppkg.New(setuppkg.WithConfigPath(configPath))
+	//configPath := "../app/ping-service/configs"
+	configPath := "./../../app/ping-service/configs/develop"
+	engineHandler, err = setuppkg.New(setuppkg.WithConfigPath(configPath))
 	if err != nil {
 		stdlog.Fatalf("%+v\n", err)
 		return

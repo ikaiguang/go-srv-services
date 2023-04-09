@@ -13,7 +13,7 @@ import (
 	logutil "github.com/ikaiguang/go-srv-kit/log"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	authutil "github.com/ikaiguang/go-srv-services/business/auth"
+	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
 )
 
 // redisToken ...
