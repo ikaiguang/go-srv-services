@@ -1,6 +1,9 @@
 package serviceutil
 
 import (
+	stderrors "errors"
+	"github.com/go-kratos/kratos/v2/transport"
+	iputil "github.com/ikaiguang/go-srv-kit/kit/ip"
 	"sync"
 
 	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
@@ -8,6 +11,10 @@ import (
 
 // ServiceName ...
 type ServiceName string
+
+func (s ServiceName) String() string {
+	return string(s)
+}
 
 // ServiceInstance ...
 type ServiceInstance struct {
@@ -19,7 +26,7 @@ type ServiceInstance struct {
 // GetServiceInstance 获取服务实例
 func GetServiceInstance(serviceName ServiceName) (serviceInstance *ServiceInstance, isExist bool) {
 	serviceInstanceMutex.RLock()
-	defer serviceInstanceMutex.Unlock()
+	defer serviceInstanceMutex.RUnlock()
 
 	serviceInstance, isExist = serviceInstances[serviceName]
 
@@ -27,8 +34,24 @@ func GetServiceInstance(serviceName ServiceName) (serviceInstance *ServiceInstan
 }
 
 // GenLocalEndpoint ...
-func GenLocalEndpoint(serviceName ServiceName) {
+// 例子： 127.0.0.1:11101
+func GenLocalEndpoint(serviceName ServiceName, serviceKind transport.Kind) (string, error) {
+	serviceInstance, isExist := GetServiceInstance(serviceName)
+	if !isExist {
+		err := stderrors.New("service instance not found, serviceName: " + serviceName.String())
+		return "", err
+	}
 
+	var (
+		endpoint = iputil.LocalIP() + ":"
+	)
+	switch serviceKind {
+	case transport.KindGRPC:
+		endpoint += serviceInstance.GRPCPort
+	default:
+		endpoint += serviceInstance.HTTPPort
+	}
+	return endpoint, nil
 }
 
 const (

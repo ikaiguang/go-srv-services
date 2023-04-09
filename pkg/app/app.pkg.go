@@ -2,7 +2,6 @@ package apppkg
 
 import (
 	"strings"
-	"sync"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 )
@@ -10,11 +9,6 @@ import (
 const (
 	_appIDSep      = ":"
 	_configPathSep = "/"
-)
-
-var (
-	_appIDStore      = sync.Map{}
-	_configPathStore = sync.Map{}
 )
 
 // IsDebugMode ...
@@ -30,33 +24,14 @@ func IsDebugMode(appEnv commonv1.EnvEnum_Env) bool {
 // ID 程序ID
 // 例：go-srv-services/DEVELOP/main/v1.0.0/user-service
 func ID(appConfig *commonv1.App) string {
-	v, ok := _appIDStore.Load(appConfig)
-	if ok {
-		if id, ok := v.(string); ok && id != "" {
-			return id
-		}
-	}
-
-	id := appIdentifier(appConfig, _appIDSep)
-	_appIDStore.Store(appConfig, id)
-
-	return id
+	return appIdentifier(appConfig, _appIDSep)
 }
 
 // ConfigPath 配置路径；用于配置中心，如：consul、etcd、...
+// @result = app.BelongTo + "/" + app.Env + "/" + app.Branch + "/" + app.Version + "/" + app.Name
 // 例：go-srv-services/DEVELOP/main/v1.0.0/user-service
 func ConfigPath(appConfig *commonv1.App) string {
-	v, ok := _configPathStore.Load(appConfig)
-	if ok {
-		if p, ok := v.(string); ok && p != "" {
-			return p
-		}
-	}
-
-	p := appIdentifier(appConfig, _configPathSep)
-	_configPathStore.Store(appConfig, p)
-
-	return p
+	return appIdentifier(appConfig, _configPathSep)
 }
 
 // appIdentifier app 唯一标准

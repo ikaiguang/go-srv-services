@@ -11,25 +11,41 @@ import (
 	debugutil "github.com/ikaiguang/go-srv-kit/debug"
 	errorutil "github.com/ikaiguang/go-srv-kit/error"
 	logutil "github.com/ikaiguang/go-srv-kit/log"
+
+	srvs "github.com/ikaiguang/go-srv-services/app/ping-service/internal/domain/service"
 )
 
 // ping .
 type ping struct {
 	pingservicev1.UnimplementedSrvPingServer
 
-	log *log.Helper
+	log     *log.Helper
+	pingSrv *srvs.PingSrv
 }
 
 // NewPingService .
-func NewPingService(logger log.Logger) pingservicev1.SrvPingServer {
+func NewPingService(logger log.Logger, pingSrv *srvs.PingSrv) pingservicev1.SrvPingServer {
 	return &ping{
-		log: log.NewHelper(log.With(logger, "module", "admin/application/service/ping")),
+		log:     log.NewHelper(log.With(logger, "module", "admin/application/service/ping")),
+		pingSrv: pingSrv,
 	}
 }
 
 func (s *ping) Ping(ctx context.Context, in *pingv1.PingReq) (out *pingv1.PingResp, err error) {
 	s.log.WithContext(ctx).Infof("Ping Received: %v", in.GetMessage())
-
+	// ping
+	if in.GetMessage() == "ping-http" {
+		err = s.pingSrv.PingHTTP(ctx)
+		if err != nil {
+			s.log.Errorw("ping-http-error", err)
+		}
+	}
+	if in.GetMessage() == "ping-grpc" {
+		err = s.pingSrv.PingGRPC(ctx)
+		if err != nil {
+			s.log.Errorw("ping-grpc-error", err)
+		}
+	}
 	// 空
 	if in.GetMessage() == "" {
 		err = pingerrorv1.ErrorContentMissing("content missing")

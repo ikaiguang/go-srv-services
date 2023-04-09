@@ -19,7 +19,7 @@ type WebsocketSrv struct {
 // NewWebsocketSrv ...
 func NewWebsocketSrv(logger log.Logger) *WebsocketSrv {
 	return &WebsocketSrv{
-		log: log.NewHelper(log.With(logger, "module", "admin/domain/service/websocket")),
+		log: log.NewHelper(log.With(logger, "module", "ping/domain/service/websocket")),
 	}
 }
 
