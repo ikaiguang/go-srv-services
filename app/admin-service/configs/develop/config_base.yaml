@@ -3,9 +3,9 @@ base:
   # setting 设置
   setting:
     # enable_service_registry 服务注册与发现
-    enable_service_registry: false
+    enable_service_registry: true
     # enable_service_tracer 服务追踪
-    enable_service_tracer: false
+    enable_service_tracer: true
     # enable_snowflake_worker 雪花算法
     enable_snowflake_worker: false
     # enable_migrate_db 数据库迁移

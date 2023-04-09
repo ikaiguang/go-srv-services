@@ -158,7 +158,7 @@ func GetGRPCEndpoint(engineHandler setuppkg.Engine, serviceName serviceutil.Serv
 			grpc.WithDiscovery(r),
 		)
 	default:
-		endpoint, err := serviceutil.GenLocalEndpoint(serviceName, transport.KindHTTP)
+		endpoint, err := serviceutil.GenLocalEndpoint(serviceName, transport.KindGRPC)
 		if err != nil {
 			return nil, err
 		}

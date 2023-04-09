@@ -2,7 +2,6 @@ package srvs
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-kratos/kratos/v2/log"
 	pingv1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/resources"
 	pingservicev1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/services"
@@ -60,14 +59,14 @@ func (s *PingSrv) PingGRPC(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("[GRPC] ping admin res: ", adminPingResp.Message)
+	s.log.Info("[GRPC] ping admin res: ", adminPingResp.Message)
 
 	userPingReq := &pingv1.PingReq{Message: "[GRPC] user ping message"}
 	userPingResp, err := s.userPingGRPCClient.Ping(ctx, userPingReq)
 	if err != nil {
 		return err
 	}
-	fmt.Println("[GRPC] ping user res: ", userPingResp.Message)
+	s.log.Info("[GRPC] ping user res: ", userPingResp.Message)
 
 	return nil
 }

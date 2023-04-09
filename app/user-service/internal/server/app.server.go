@@ -32,12 +32,6 @@ func NewApp(engineHandler setup.Engine) (app *kratos.App, err error) {
 		return app, err
 	}
 
-	// 路由
-	err = routes.RegisterRoutes(engineHandler, hs, gs)
-	if err != nil {
-		return app, err
-	}
-
 	// 服务
 	var servers []transport.Server
 	if cfg := engineHandler.HTTPConfig(); cfg != nil && cfg.Enable {
@@ -79,6 +73,12 @@ func NewApp(engineHandler setup.Engine) (app *kratos.App, err error) {
 		}
 		engineHandler.SetRegistryType(registrypkg.RegistryTypeConsul)
 		appOptions = append(appOptions, kratos.Registrar(r))
+	}
+
+	// 路由；放置在"服务注册"后，否则 engineHandler.RegistryType 不生效
+	err = routes.RegisterRoutes(engineHandler, hs, gs)
+	if err != nil {
+		return app, err
 	}
 
 	app = kratos.New(appOptions...)

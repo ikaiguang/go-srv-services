@@ -38,7 +38,7 @@ config:
 # make consul-config service=xxx
 .PHONY: consul-config
 consul-config:
-	go run ./cmd/consul-config/... -conf=./app/${service}/configs
+	go run ./cmd/consul-config/... -conf=./app/${service}/configs/develop
 
 # ping 请注意端口号
 # 注意，请先运行服务
