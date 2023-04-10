@@ -15,6 +15,7 @@ import (
 	pkgerrors "github.com/pkg/errors"
 	stdgrpc "google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
+	"sync"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 	serviceutil "github.com/ikaiguang/go-srv-services/business-util/service"
@@ -25,6 +26,11 @@ import (
 
 const (
 	defaultTimeout = curlutil.DefaultTimeout
+)
+
+var (
+	_httpConnections = sync.Map{}
+	_grpcConnections = sync.Map{}
 )
 
 // NewDefaultMiddlewares 中间件
@@ -39,6 +45,42 @@ func NewDefaultMiddlewares(logger log.Logger) []middleware.Middleware {
 
 // NewGRPCConnection grpc 链接
 func NewGRPCConnection(engineHandler setuppkg.Engine, serviceName serviceutil.ServiceName, otherOpts ...grpc.ClientOption) (*stdgrpc.ClientConn, error) {
+	cc, ok := _grpcConnections.Load(serviceName)
+	if ok {
+		if conn, ok := cc.(*stdgrpc.ClientConn); ok {
+			return conn, nil
+		}
+	}
+
+	conn, err := newGRPCConnection(engineHandler, serviceName, otherOpts...)
+	if err != nil {
+		return nil, err
+	}
+	_grpcConnections.Store(serviceName, conn)
+
+	return conn, nil
+}
+
+// NewHTTPConnection http 链接
+func NewHTTPConnection(engineHandler setuppkg.Engine, serviceName serviceutil.ServiceName, otherOpts ...http.ClientOption) (*http.Client, error) {
+	cc, ok := _httpConnections.Load(serviceName)
+	if ok {
+		if conn, ok := cc.(*http.Client); ok {
+			return conn, nil
+		}
+	}
+
+	conn, err := newHTTPConnection(engineHandler, serviceName, otherOpts...)
+	if err != nil {
+		return nil, err
+	}
+	_httpConnections.Store(serviceName, conn)
+
+	return conn, nil
+}
+
+// newGRPCConnection grpc 链接
+func newGRPCConnection(engineHandler setuppkg.Engine, serviceName serviceutil.ServiceName, otherOpts ...grpc.ClientOption) (*stdgrpc.ClientConn, error) {
 	mLogger, _, err := engineHandler.LoggerMiddleware()
 	if err != nil {
 		return nil, pkgerrors.WithStack(err)
@@ -71,8 +113,8 @@ func NewGRPCConnection(engineHandler setuppkg.Engine, serviceName serviceutil.Se
 	return conn, nil
 }
 
-// NewHTTPConnection http 链接
-func NewHTTPConnection(engineHandler setuppkg.Engine, serviceName serviceutil.ServiceName, otherOpts ...http.ClientOption) (*http.Client, error) {
+// newHTTPConnection http 链接
+func newHTTPConnection(engineHandler setuppkg.Engine, serviceName serviceutil.ServiceName, otherOpts ...http.ClientOption) (*http.Client, error) {
 	mLogger, _, err := engineHandler.LoggerMiddleware()
 	if err != nil {
 		return nil, pkgerrors.WithStack(err)

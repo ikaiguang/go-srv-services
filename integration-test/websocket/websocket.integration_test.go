@@ -14,9 +14,9 @@ import (
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 )
 
-// go test -v -count=1 ./integration-test/websocket -test.run=TestApi_Websocket
-func TestApi_Websocket(t *testing.T) {
-	urlPath := "/api/v1/testdata/websocket"
+// go test -v -count=1 ./integration-test/websocket -test.run=TestWs_Websocket
+func TestWs_Websocket(t *testing.T) {
+	urlPath := "/ws/v1/websocket"
 
 	// 开启ws
 	u := url.URL{Scheme: "ws", Host: "127.0.0.1:8081", Path: urlPath}
@@ -27,9 +27,10 @@ func TestApi_Websocket(t *testing.T) {
 	runTestWebsocket(c)
 }
 
-// go test -v -count=1 ./integration-test/websocket -test.run=TestWs_Websocket
-func TestWs_Websocket(t *testing.T) {
-	urlPath := "/ws/v1/websocket"
+// go test -v -count=1 ./integration-test/websocket -test.run=TestApi_Websocket
+// Deprecated: 不在使用 contextutil.MatchHTTPContext()
+func TestApi_Websocket(t *testing.T) {
+	urlPath := "/api/v1/testdata/websocket"
 
 	// 开启ws
 	u := url.URL{Scheme: "ws", Host: "127.0.0.1:8081", Path: urlPath}

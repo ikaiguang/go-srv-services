@@ -14,15 +14,18 @@ import (
 func RequestHeader() middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
-			if httpTr, ok := contextutil.MatchHTTPServerContext(ctx); ok {
-				var traceID string
-				if span := trace.SpanContextFromContext(ctx); span.HasTraceID() {
-					traceID = span.TraceID().String()
+			var traceID string
+			if span := trace.SpanContextFromContext(ctx); span.HasTraceID() {
+				traceID = span.TraceID().String()
+			}
+			if traceID == "" {
+				traceID = uuidutil.New()
+				if httpTr, ok := contextutil.MatchHTTPServerContext(ctx); ok {
+					httpTr.RequestHeader().Set(headerutil.RequestID, traceID)
 				}
-				if traceID == "" {
-					traceID = uuidutil.New()
+				if grpcTr, ok := contextutil.MatchGRPCServerContext(ctx); ok {
+					grpcTr.ReplyHeader().Set(headerutil.RequestID, traceID)
 				}
-				headerutil.SetRequestID(httpTr.Request().Header, traceID)
 			}
 			return handler(ctx, req)
 		}

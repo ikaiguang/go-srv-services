@@ -13,7 +13,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/hashicorp/consul/api v1.20.0
-	github.com/ikaiguang/go-srv-kit v0.0.97
+	github.com/ikaiguang/go-srv-kit v0.0.98
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.0.3

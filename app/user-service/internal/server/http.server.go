@@ -8,7 +8,6 @@ import (
 
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
 	middlewareutil "github.com/ikaiguang/go-srv-services/business-util/middleware"
-	serviceutil "github.com/ikaiguang/go-srv-services/business-util/service"
 	"github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
@@ -45,7 +44,7 @@ func NewHTTPServer(engineHandler setup.Engine) (srv *http.Server, err error) {
 	opts = append(opts, http.ErrorEncoder(apppkg.ErrorEncoder))
 
 	// ===== 中间件 =====
-	var middlewareSlice = serviceutil.NewDefaultMiddlewares()
+	var middlewareSlice = middlewareutil.NewDefaultMiddlewares()
 	// tracer
 	settingConfig := engineHandler.BaseSettingConfig()
 	if settingConfig != nil && settingConfig.EnableServiceTracer {

@@ -2,6 +2,8 @@ package setuppkg
 
 import (
 	"context"
+	contextutil "github.com/ikaiguang/go-srv-kit/kratos/context"
+	headerutil "github.com/ikaiguang/go-srv-kit/kratos/header"
 	"go.opentelemetry.io/otel/trace"
 	"os"
 	"strconv"
@@ -48,20 +50,34 @@ func (s *engines) withLoggerPrefix(logger log.Logger) log.Logger {
 	//	s.LoggerPrefixField().String(),
 	//}
 	var kvs = s.LoggerPrefixField().Prefix()
-	if cfg := s.BaseSettingConfig(); cfg != nil && cfg.EnableServiceTracer {
-		kvs = append(kvs, "tracer", s.withLoggerTracer())
-	}
+	kvs = append(kvs, "tracer", s.withLoggerTracer())
 	return log.With(logger, kvs...)
 }
 
 // withLoggerTracer returns a traceid valuer.
 func (s *engines) withLoggerTracer() log.Valuer {
 	return func(ctx context.Context) interface{} {
-		var res string
-		if span := trace.SpanContextFromContext(ctx); span.HasTraceID() {
+		var (
+			res        string
+			hasTraceId bool
+		)
+		span := trace.SpanContextFromContext(ctx)
+		if span.HasTraceID() {
+			hasTraceId = true
 			res += `traceId="` + span.TraceID().String() + `"`
 		}
-		if span := trace.SpanContextFromContext(ctx); span.HasSpanID() {
+		if !hasTraceId {
+			if httpTr, ok := contextutil.MatchHTTPServerContext(ctx); ok {
+				if traceId := httpTr.RequestHeader().Get(headerutil.RequestID); traceId != "" {
+					res += `traceId="` + traceId + `"`
+				}
+			} else if grpcTr, ok := contextutil.MatchGRPCServerContext(ctx); ok {
+				if traceId := grpcTr.RequestHeader().Get(headerutil.RequestID); traceId != "" {
+					res += `traceId="` + traceId + `"`
+				}
+			}
+		}
+		if span.HasSpanID() {
 			res += ` spanId="` + span.SpanID().String() + `"`
 		}
 		if claims, ok := authutil.FromAuthContext(ctx); ok && claims.Payload != nil {

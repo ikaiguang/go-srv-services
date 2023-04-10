@@ -8,7 +8,6 @@ import (
 
 	"github.com/ikaiguang/go-srv-services/app/user-service/internal/setup"
 	middlewareutil "github.com/ikaiguang/go-srv-services/business-util/middleware"
-	serviceutil "github.com/ikaiguang/go-srv-services/business-util/service"
 	loggingpkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
@@ -38,7 +37,7 @@ func NewGRPCServer(engineHandler setup.Engine) (srv *grpc.Server, err error) {
 	}
 
 	// ===== 中间件 =====
-	var middlewareSlice = serviceutil.NewDefaultMiddlewares()
+	var middlewareSlice = middlewareutil.NewDefaultMiddlewares()
 	// tracer
 	settingConfig := engineHandler.BaseSettingConfig()
 	if settingConfig != nil && settingConfig.EnableServiceTracer {
