@@ -37,7 +37,7 @@ func NewGRPCServer(engineHandler setup.Engine) (srv *grpc.Server, err error) {
 	}
 
 	// ===== 中间件 =====
-	var middlewareSlice = middlewareutil.NewDefaultMiddlewares()
+	var middlewareSlice = middlewareutil.DefaultMiddlewares()
 	// tracer
 	settingConfig := engineHandler.BaseSettingConfig()
 	if settingConfig != nil && settingConfig.EnableServiceTracer {

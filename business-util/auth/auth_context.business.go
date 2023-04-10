@@ -32,7 +32,7 @@ type redisAuthKey struct{}
 
 const (
 	// _authInfoKey 存储验证信息到Token.Header中
-	_authInfoKey = "kit:auth:v1:auth_info"
+	_authInfoKey = "kit:auth_info"
 )
 
 // SaveAuthInfo 存储 验证信息到Token.Header

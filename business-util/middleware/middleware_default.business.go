@@ -6,8 +6,8 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 )
 
-// NewDefaultMiddlewares 中间件
-func NewDefaultMiddlewares() []middleware.Middleware {
+// DefaultMiddlewares 中间件
+func DefaultMiddlewares() []middleware.Middleware {
 	return []middleware.Middleware{
 		recovery.Recovery(),
 		metadata.Server(),
