@@ -210,6 +210,8 @@ github.com/ikaiguang/go-srv-kit v0.0.97 h1:VM8VrN9lha1SCgDxOl0Wl0h3T44iKk5i0W/Kk
 github.com/ikaiguang/go-srv-kit v0.0.97/go.mod h1:OvAhKC/vSCuAT8c6ky78NHTquGhHWlwohILcNMMVvzU=
 github.com/ikaiguang/go-srv-kit v0.0.98 h1:XBrdXl9MtU4v5CC/nZcBPyeyiiT+bKHap++1+EXQ1cs=
 github.com/ikaiguang/go-srv-kit v0.0.98/go.mod h1:OvAhKC/vSCuAT8c6ky78NHTquGhHWlwohILcNMMVvzU=
+github.com/ikaiguang/go-srv-kit v0.0.99 h1:r1PDY7KyCdVs9RVQJL5UZdObiTk7YiyLLEpVmyXjLLU=
+github.com/ikaiguang/go-srv-kit v0.0.99/go.mod h1:OvAhKC/vSCuAT8c6ky78NHTquGhHWlwohILcNMMVvzU=
 github.com/imdario/mergo v0.3.12 h1:b6R2BslTbIEToALKP7LxUvijTsNI9TAe80pLWN2g/HU=
 github.com/imdario/mergo v0.3.12/go.mod h1:jmQim1M+e3UYxmgPu/WyfjB3N3VflVyUjjjwH0dnCYA=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package service.api.snowflakeservicev1;
+
+option go_package = "github.com/ikaiguang/go-srv-services/api/snowflake-service/v1/services;snowflakeservicev1";
+option java_multiple_files = true;
+option java_package = "service.api.snowflakeservicev1";
+option java_outer_classname = "ServiceApiSnowflakeServiceV1";
+
+import "google/api/annotations.proto";
+import "github.com/ikaiguang/go-srv-services/api/snowflake-service/v1/resources/snowflake.resource.v1.proto";
+
+// SrvSnowflakeNode 服务
+service SrvSnowflakeNode {
+  rpc GetNodeId(service.api.snowflakev1.GetNodeIdReq) returns (service.api.snowflakev1.GetNodeIdResp) {
+    option (google.api.http) = {
+      post : "/api/v1/snowflake/nodeid/get"
+      body : "*"
+    };
+  }
+
+  rpc ExtendNodeId(service.api.snowflakev1.ExtendNodeIdReq) returns (service.api.snowflakev1.ExtendNodeIdResp) {
+    option (google.api.http) = {
+      post : "/api/v1/snowflake/nodeid/extend"
+      body : "*"
+    };
+  }
+}

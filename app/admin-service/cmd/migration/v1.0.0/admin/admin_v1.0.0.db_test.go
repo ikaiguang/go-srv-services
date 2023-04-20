@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// go test -v -count=1 ./cmd/migration/v1.0.0/admin -test.run=TestMigrator_CreateTableAdmin
+// go test -v -count=1 ./app/admin-service/cmd/migration/v1.0.0/admin -test.run=TestMigrator_CreateTableAdmin
 func TestMigrator_CreateTableAdmin(t *testing.T) {
 	err := upHandler.CreateTableAdmin()
 	require.Nil(t, err)

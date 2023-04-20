@@ -55,20 +55,29 @@ func GenLocalEndpoint(serviceName ServiceName, serviceKind transport.Kind) (stri
 }
 
 const (
-	AdminService ServiceName = "admin-service" // 定义后记得添加 serviceInstances
-	UserService  ServiceName = "user-service"  // 定义后记得添加 serviceInstances
+	PingService      ServiceName = "ping-service"      // 定义后记得添加 serviceInstances
+	SnowflakeService ServiceName = "snowflake-service" // 定义后记得添加 serviceInstances
+	AdminService     ServiceName = "admin-service"     // 定义后记得添加 serviceInstances
+	UserService      ServiceName = "user-service"      // 定义后记得添加 serviceInstances
 )
 
 var (
 	serviceInstanceMutex = sync.RWMutex{}
 	serviceInstances     = map[ServiceName]*ServiceInstance{
-		AdminService: {
+		PingService: {
+			HTTPPort: "11001",
+			GRPCPort: "11002",
+		},
+		SnowflakeService: {
 			HTTPPort: "11101",
 			GRPCPort: "11102",
+		}, AdminService: {
+			HTTPPort: "11201",
+			GRPCPort: "11203",
 		},
 		UserService: {
-			HTTPPort: "11201",
-			GRPCPort: "11202",
+			HTTPPort: "11301",
+			GRPCPort: "11302",
 		},
 	}
 )

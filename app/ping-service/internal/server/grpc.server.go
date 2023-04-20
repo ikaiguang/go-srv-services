@@ -8,7 +8,7 @@ import (
 
 	"github.com/ikaiguang/go-srv-services/app/ping-service/internal/setup"
 	middlewareutil "github.com/ikaiguang/go-srv-services/business-util/middleware"
-	loggingpkg "github.com/ikaiguang/go-srv-services/pkg/app"
+	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 var _ metadata.Option
@@ -54,7 +54,7 @@ func NewGRPCServer(engineHandler setup.Engine) (srv *grpc.Server, err error) {
 	}
 	// 日志输出
 	//errorutil.DefaultStackTracerDepth += 2
-	middlewareSlice = append(middlewareSlice, loggingpkg.ServerLog(
+	middlewareSlice = append(middlewareSlice, apppkg.ServerLog(
 		middleLogger,
 		//middlewareutil.WithDefaultSkip(),
 	))

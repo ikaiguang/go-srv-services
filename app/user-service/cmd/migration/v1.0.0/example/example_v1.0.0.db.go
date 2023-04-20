@@ -8,6 +8,20 @@ import (
 	schemas "github.com/ikaiguang/go-srv-services/app/user-service/internal/infra/schema"
 )
 
+// Migrate 数据库迁移
+type Migrate struct {
+	dbConn      *gorm.DB
+	migrateRepo migrationutil.MigrateRepo
+}
+
+// NewMigrateHandler 处理手柄
+func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *Migrate {
+	return &Migrate{
+		dbConn:      dbConn,
+		migrateRepo: migrateRepo,
+	}
+}
+
 // Upgrade .
 func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error) {
 	upgradeHandler := NewMigrateHandler(dbConn, migrateRepo)
@@ -20,22 +34,8 @@ func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error)
 	return err
 }
 
-// migrate 数据库迁移
-type migrate struct {
-	dbConn      *gorm.DB
-	migrateRepo migrationutil.MigrateRepo
-}
-
-// NewMigrateHandler 处理手柄
-func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *migrate {
-	return &migrate{
-		dbConn:      dbConn,
-		migrateRepo: migrateRepo,
-	}
-}
-
 // CreateTableExample ...
-func (s *migrate) CreateTableExample() (err error) {
+func (s *Migrate) CreateTableExample() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.ExampleSchema) {
 		return err
 	}

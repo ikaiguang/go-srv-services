@@ -13,9 +13,14 @@ import (
 	stdlog "log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
 	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
+)
+
+const (
+	serverNameSuffix = "-service"
 )
 
 var (
@@ -89,9 +94,10 @@ func loadingConfig() (*commonv1.Bootstrap, error) {
 
 // ConsulConfig ...
 type ConsulConfig struct {
-	config *commonv1.Bootstrap
-	cc     *api.Client
-	path   string
+	config     *commonv1.Bootstrap
+	cc         *api.Client
+	path       string
+	serverName string
 }
 
 // NewConsulConfig 初始化
@@ -109,10 +115,24 @@ func NewConsulConfig(config *commonv1.Bootstrap) (*ConsulConfig, error) {
 		return nil, pkgerrors.WithStack(err)
 	}
 
+	var serverName string
+	ps := strings.Split(_conf, string(filepath.Separator))
+	for i := range ps {
+		if strings.HasSuffix(ps[i], serverNameSuffix) {
+			serverName = ps[i]
+			break
+		}
+	}
+	if serverName == "" {
+		err = fmt.Errorf("查找不到服务名；配置路径: %s， 查找的服务名后缀：%s", _conf, serverName)
+		return nil, pkgerrors.WithStack(err)
+	}
+
 	return &ConsulConfig{
-		config: config,
-		cc:     cc,
-		path:   absPath,
+		config:     config,
+		cc:         cc,
+		path:       absPath,
+		serverName: serverName,
 	}, nil
 }
 
@@ -126,6 +146,7 @@ func (s *ConsulConfig) StoreToConsul() error {
 	opt := &api.WriteOptions{}
 	opt = opt.WithContext(ctx)
 	for key := range configDataM {
+		stdlog.Println("|*** Consul配置文件：", key)
 		kv := &api.KVPair{
 			Key:   key,
 			Value: configDataM[key],
@@ -145,7 +166,17 @@ func (s *ConsulConfig) ReadConfigFiles() (map[string][]byte, error) {
 		return nil, pkgerrors.WithStack(err)
 	}
 
+	if s.serverName != s.config.App.Name {
+		format := `配置中的服务名与配置路径中的服务名不一致；
+	配置中的服务名：%s；
+	配置路径：%s；
+	配置路中的服务名：%s；`
+		err = fmt.Errorf(format, s.config.App.Name, _conf, s.serverName)
+		return nil, pkgerrors.WithStack(err)
+	}
 	consulPath := apppkg.ConfigPath(s.config.App)
+	stdlog.Println("|*** 本地配置路径：	", _conf)
+	stdlog.Println("|*** Consul配置路径：", consulPath)
 	configDataM := make(map[string][]byte)
 	for i := range fs {
 		if fs[i].IsDir() {

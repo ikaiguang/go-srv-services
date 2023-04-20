@@ -7,6 +7,20 @@ import (
 	schemas "github.com/ikaiguang/go-srv-services/app/admin-service/internal/infra/schema"
 )
 
+// Migrate 数据库迁移
+type Migrate struct {
+	dbConn      *gorm.DB
+	migrateRepo migrationutil.MigrateRepo
+}
+
+// NewMigrateHandler 处理手柄
+func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *Migrate {
+	return &Migrate{
+		dbConn:      dbConn,
+		migrateRepo: migrateRepo,
+	}
+}
+
 // Upgrade .
 func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error) {
 	upgradeHandler := NewMigrateHandler(dbConn, migrateRepo)
@@ -40,22 +54,8 @@ func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error)
 	return err
 }
 
-// migrate 数据库迁移
-type migrate struct {
-	dbConn      *gorm.DB
-	migrateRepo migrationutil.MigrateRepo
-}
-
-// NewMigrateHandler 处理手柄
-func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *migrate {
-	return &migrate{
-		dbConn:      dbConn,
-		migrateRepo: migrateRepo,
-	}
-}
-
 // CreateTableAdmin ...
-func (s *migrate) CreateTableAdmin() (err error) {
+func (s *Migrate) CreateTableAdmin() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.AdminSchema) {
 		return err
 	}
@@ -63,7 +63,7 @@ func (s *migrate) CreateTableAdmin() (err error) {
 }
 
 // CreateTableAdminRegEmail ...
-func (s *migrate) CreateTableAdminRegEmail() (err error) {
+func (s *Migrate) CreateTableAdminRegEmail() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.AdminRegEmailSchema) {
 		return err
 	}
@@ -71,7 +71,7 @@ func (s *migrate) CreateTableAdminRegEmail() (err error) {
 }
 
 // CreateTableAdminRegMobile ...
-func (s *migrate) CreateTableAdminRegMobile() (err error) {
+func (s *Migrate) CreateTableAdminRegMobile() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.AdminRegMobileSchema) {
 		return err
 	}
@@ -79,7 +79,7 @@ func (s *migrate) CreateTableAdminRegMobile() (err error) {
 }
 
 // CreateTableAdminRegUsername ...
-func (s *migrate) CreateTableAdminRegUsername() (err error) {
+func (s *Migrate) CreateTableAdminRegUsername() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.AdminRegUsernameSchema) {
 		return err
 	}
@@ -87,7 +87,7 @@ func (s *migrate) CreateTableAdminRegUsername() (err error) {
 }
 
 // InitializeAdmin 初始化管理员
-func (s *migrate) InitializeAdmin() (err error) {
+func (s *Migrate) InitializeAdmin() (err error) {
 	var (
 		serverVersion     = "v1.0.0"
 		migrateIdentifier = serverVersion + "admin:InitializeAdmin"

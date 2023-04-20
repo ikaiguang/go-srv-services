@@ -11,7 +11,7 @@ import (
 )
 
 // upHandler handler
-var upHandler *migrate
+var upHandler *Migrate
 
 func TestMain(m *testing.M) {
 	// 初始化

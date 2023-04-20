@@ -7,6 +7,20 @@ import (
 	schemas "github.com/ikaiguang/go-srv-services/app/user-service/internal/infra/schema"
 )
 
+// Migrate 数据库迁移
+type Migrate struct {
+	dbConn      *gorm.DB
+	migrateRepo migrationutil.MigrateRepo
+}
+
+// NewMigrateHandler 处理手柄
+func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *Migrate {
+	return &Migrate{
+		dbConn:      dbConn,
+		migrateRepo: migrateRepo,
+	}
+}
+
 // Upgrade .
 func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error) {
 	upgradeHandler := NewMigrateHandler(dbConn, migrateRepo)
@@ -40,22 +54,8 @@ func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error)
 	return err
 }
 
-// migrate 数据库迁移
-type migrate struct {
-	dbConn      *gorm.DB
-	migrateRepo migrationutil.MigrateRepo
-}
-
-// NewMigrateHandler 处理手柄
-func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *migrate {
-	return &migrate{
-		dbConn:      dbConn,
-		migrateRepo: migrateRepo,
-	}
-}
-
 // CreateTableUser ...
-func (s *migrate) CreateTableUser() (err error) {
+func (s *Migrate) CreateTableUser() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.UserSchema) {
 		return err
 	}
@@ -63,7 +63,7 @@ func (s *migrate) CreateTableUser() (err error) {
 }
 
 // CreateTableUserRegEmail ...
-func (s *migrate) CreateTableUserRegEmail() (err error) {
+func (s *Migrate) CreateTableUserRegEmail() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.UserRegEmailSchema) {
 		return err
 	}
@@ -71,7 +71,7 @@ func (s *migrate) CreateTableUserRegEmail() (err error) {
 }
 
 // CreateTableUserRegMobile ...
-func (s *migrate) CreateTableUserRegMobile() (err error) {
+func (s *Migrate) CreateTableUserRegMobile() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.UserRegMobileSchema) {
 		return err
 	}
@@ -79,7 +79,7 @@ func (s *migrate) CreateTableUserRegMobile() (err error) {
 }
 
 // CreateTableUserRegUsername ...
-func (s *migrate) CreateTableUserRegUsername() (err error) {
+func (s *Migrate) CreateTableUserRegUsername() (err error) {
 	if s.dbConn.Migrator().HasTable(schemas.UserRegUsernameSchema) {
 		return err
 	}
@@ -87,7 +87,7 @@ func (s *migrate) CreateTableUserRegUsername() (err error) {
 }
 
 // InitializeUser 初始化管理员
-func (s *migrate) InitializeUser() (err error) {
+func (s *Migrate) InitializeUser() (err error) {
 	var (
 		serverVersion     = "v1.0.0"
 		migrateIdentifier = serverVersion + "user:InitializeUser"

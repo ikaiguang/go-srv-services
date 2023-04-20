@@ -1,4 +1,4 @@
-// Package apputil
+// Package apppkg
 // from github.com/go-kratos/kratos/v2/encoding/json
 package apppkg
 
