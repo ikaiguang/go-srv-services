@@ -1,7 +1,8 @@
 package dbmigrate
 
 import (
-	migrationuitl "github.com/ikaiguang/go-srv-kit/data/migration"
+	"context"
+	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 	logutil "github.com/ikaiguang/go-srv-kit/log"
 	stdlog "log"
 
@@ -42,15 +43,18 @@ func Run(opts ...Option) {
 	}
 
 	// migrateHandler 迁移手柄
-	migrateRepo := migrationuitl.NewMigrateRepo(dbConn)
+	var (
+		ctx         = context.Background()
+		migrateRepo = migrationutil.NewMigrateRepo(dbConn)
+	)
 
 	// 初始化迁移记录
-	if err = migrateRepo.InitializeMigrationSchema(); err != nil {
+	if err = migrateRepo.InitializeSchema(ctx); err != nil {
 		logutil.Fatalw("migrateHandler.InitializeMigrationSchema failed", err)
 	}
 
 	// v1.0.0
-	if err = dbv1_0_0.Upgrade(dbConn, migrateRepo); err != nil {
+	if err = dbv1_0_0.Upgrade(ctx, dbConn, migrateRepo); err != nil {
 		logutil.Fatalw("dbv1_0_0.Upgrade failed", err)
 	}
 }

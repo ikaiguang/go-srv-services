@@ -1,7 +1,7 @@
 package dbv1_0_0_user
 
 import (
-	migrationuitl "github.com/ikaiguang/go-srv-kit/data/migration"
+	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 	stdlog "log"
 	"os"
 	"testing"
@@ -39,7 +39,7 @@ func TestMain(m *testing.M) {
 	}
 
 	// migrateHandler 迁移手柄
-	migrateRepo := migrationuitl.NewMigrateRepo(dbConn)
+	migrateRepo := migrationutil.NewMigrateRepo(dbConn)
 
 	// handler
 	upHandler = NewMigrateHandler(dbConn, migrateRepo)

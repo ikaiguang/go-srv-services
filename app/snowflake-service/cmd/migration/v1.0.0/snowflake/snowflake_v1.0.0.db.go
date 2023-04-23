@@ -1,8 +1,10 @@
 package dbv1_0_0_snowflake
 
 import (
+	"context"
 	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 	schemas "github.com/ikaiguang/go-srv-services/app/snowflake-service/internal/infra/schema"
+	pkgerrors "github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
@@ -20,22 +22,23 @@ func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *
 	}
 }
 
-// Upgrade .
-func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error) {
-	upgradeHandler := NewMigrateHandler(dbConn, migrateRepo)
+// Upgrade ...
+func (s *Migrate) Upgrade(ctx context.Context) error {
+	var (
+		mr       migrationutil.MigrationInterface
+		migrator = s.dbConn.WithContext(ctx).Migrator()
+	)
 
-	// 创建表 example
-	err = upgradeHandler.CreateTableSnowflakeNodeID()
-	if err != nil {
-		return err
+	// 创建表
+	mr = schemas.SnowflakeNodeIDSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
 	}
-	return err
-}
 
-// CreateTableSnowflakeNodeID ...
-func (s *Migrate) CreateTableSnowflakeNodeID() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.SnowflakeNodeIDSchema) {
-		return err
+	// 创建索引
+	mr = schemas.SnowflakeNodeIDSchema.CreateUniqueIndexForInstanceIDAndNodeID(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
 	}
-	return s.dbConn.Migrator().CreateTable(schemas.SnowflakeNodeIDSchema)
+	return nil
 }

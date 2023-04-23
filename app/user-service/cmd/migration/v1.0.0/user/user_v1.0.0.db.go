@@ -1,7 +1,9 @@
 package dbv1_0_0_user
 
 import (
+	"context"
 	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
+	pkgerrors "github.com/pkg/errors"
 	"gorm.io/gorm"
 
 	schemas "github.com/ikaiguang/go-srv-services/app/user-service/internal/infra/schema"
@@ -21,95 +23,37 @@ func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *
 	}
 }
 
-// Upgrade .
-func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error) {
-	upgradeHandler := NewMigrateHandler(dbConn, migrateRepo)
-
-	// 创建表 user
-	err = upgradeHandler.CreateTableUser()
-	if err != nil {
-		return err
-	}
-	// 创建表 user
-	err = upgradeHandler.CreateTableUserRegEmail()
-	if err != nil {
-		return err
-	}
-	// 创建表 user
-	err = upgradeHandler.CreateTableUserRegMobile()
-	if err != nil {
-		return err
-	}
-	// 创建表 user
-	err = upgradeHandler.CreateTableUserRegUsername()
-	if err != nil {
-		return err
-	}
-
-	// 初始化用户
-	err = upgradeHandler.InitializeUser()
-	if err != nil {
-		return err
-	}
-	return err
-}
-
-// CreateTableUser ...
-func (s *Migrate) CreateTableUser() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.UserSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.UserSchema)
-}
-
-// CreateTableUserRegEmail ...
-func (s *Migrate) CreateTableUserRegEmail() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.UserRegEmailSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.UserRegEmailSchema)
-}
-
-// CreateTableUserRegMobile ...
-func (s *Migrate) CreateTableUserRegMobile() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.UserRegMobileSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.UserRegMobileSchema)
-}
-
-// CreateTableUserRegUsername ...
-func (s *Migrate) CreateTableUserRegUsername() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.UserRegUsernameSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.UserRegUsernameSchema)
-}
-
-// InitializeUser 初始化管理员
-func (s *Migrate) InitializeUser() (err error) {
+// Upgrade ...
+func (s *Migrate) Upgrade(ctx context.Context) error {
 	var (
-		serverVersion     = "v1.0.0"
-		migrateIdentifier = serverVersion + "user:InitializeUser"
+		mr       migrationutil.MigrationInterface
+		migrator = s.dbConn.WithContext(ctx).Migrator()
 	)
-	// 已进行数据库迁移
-	dataModel, _, err := s.migrateRepo.QueryOneByIdentifier(migrateIdentifier)
-	if err != nil {
-		return
-	}
-	if dataModel.Id > 0 {
-		return
-	}
-	// 记录数据库迁移
-	defer func() {
-		if err == nil {
-			err = s.migrateRepo.CreateDefaultRecord(serverVersion, migrateIdentifier)
-		}
-	}()
 
-	err = schemas.UserSchema.Initialize(s.dbConn)
-	if err != nil {
-		return err
+	// 创建表
+	mr = schemas.UserSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
 	}
-	return
+	// 创建表
+	mr = schemas.UserRegMobileSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	// 创建表
+	mr = schemas.UserRegEmailSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	// 创建表
+	mr = schemas.UserRegUsernameSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	// 初始化用户
+	mr = schemas.UserSchema.InitializeUser(s.dbConn)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	return nil
 }

@@ -3,6 +3,7 @@
 package entities
 
 import (
+	schemas "github.com/ikaiguang/go-srv-services/app/user-service/internal/infra/schema"
 	"time"
 )
 
@@ -19,5 +20,5 @@ type UserRegUsername struct {
 
 // TableName table name
 func (s *UserRegUsername) TableName() string {
-	return "srv_user_reg_username"
+	return schemas.UserRegUsernameSchema.TableName()
 }

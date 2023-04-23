@@ -3,7 +3,7 @@
 package schemas
 
 import (
-	migrationuitl "github.com/ikaiguang/go-srv-kit/data/migration"
+	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 	gorm "gorm.io/gorm"
 	"time"
 )
@@ -33,11 +33,11 @@ func (s *AdminRegUsername) TableName() string {
 }
 
 // CreateTableMigrator create table migrator
-func (s *AdminRegUsername) CreateTableMigrator(migrator gorm.Migrator) migrationuitl.MigrationRepo {
-	return migrationuitl.NewCreateTable(migrator, s)
+func (s *AdminRegUsername) CreateTableMigrator(migrator gorm.Migrator) migrationutil.MigrationInterface {
+	return migrationutil.NewCreateTable(migrator, migrationutil.Version, s)
 }
 
 // DropTableMigrator create table migrator
-func (s *AdminRegUsername) DropTableMigrator(migrator gorm.Migrator) migrationuitl.MigrationRepo {
-	return migrationuitl.NewDropTable(migrator, s)
+func (s *AdminRegUsername) DropTableMigrator(migrator gorm.Migrator) migrationutil.MigrationInterface {
+	return migrationutil.NewDropTable(migrator, migrationutil.Version, s)
 }

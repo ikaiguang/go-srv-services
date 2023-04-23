@@ -6,7 +6,7 @@ import (
 	gorm "gorm.io/gorm"
 	"time"
 
-	migrationuitl "github.com/ikaiguang/go-srv-kit/data/migration"
+	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 )
 
 var _ = time.Time{}
@@ -35,11 +35,11 @@ func (s *Example) TableName() string {
 }
 
 // CreateTableMigrator create table migrator
-func (s *Example) CreateTableMigrator(migrator gorm.Migrator) migrationuitl.MigrationRepo {
-	return migrationuitl.NewCreateTable(migrator, s)
+func (s *Example) CreateTableMigrator(migrator gorm.Migrator) migrationutil.MigrationInterface {
+	return migrationutil.NewCreateTable(migrator, migrationutil.Version, s)
 }
 
 // DropTableMigrator create table migrator
-func (s *Example) DropTableMigrator(migrator gorm.Migrator) migrationuitl.MigrationRepo {
-	return migrationuitl.NewDropTable(migrator, s)
+func (s *Example) DropTableMigrator(migrator gorm.Migrator) migrationutil.MigrationInterface {
+	return migrationutil.NewDropTable(migrator, migrationutil.Version, s)
 }

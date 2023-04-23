@@ -3,7 +3,7 @@
 package schemas
 
 import (
-	migrationuitl "github.com/ikaiguang/go-srv-kit/data/migration"
+	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 	gorm "gorm.io/gorm"
 	"time"
 )
@@ -21,8 +21,8 @@ func NewSnowflakeNodeID() *SnowflakeNodeID {
 // SnowflakeNodeID ENGINE InnoDB CHARSET utf8mb4 COMMENT '雪花算法节点ID'
 type SnowflakeNodeID struct {
 	Id                   uint64    `gorm:"column:id;primaryKey;type:uint;autoIncrement;comment:id" json:"id"`
-	InstanceId           string    `gorm:"column:instance_id;uniqueIndex:idx_srv_snowflake_node_id_instance_id_nid;type:string;size:255;not null;default:'';comment:实例ID" json:"instance_id"`
-	SnowflakeNodeId      int32     `gorm:"column:snowflake_node_id;uniqueIndex:idx_srv_snowflake_node_id_instance_id_nid;type:int;not null;default:0;comment:雪花算法节点id" json:"snowflake_node_id"`
+	InstanceId           string    `gorm:"column:instance_id;type:string;size:255;not null;default:'';comment:实例ID" json:"instance_id"`
+	SnowflakeNodeId      int32     `gorm:"column:snowflake_node_id;type:int;not null;default:0;comment:雪花算法节点id" json:"snowflake_node_id"`
 	InstanceLaunchTime   time.Time `gorm:"column:instance_launch_time;type:time;not null;comment:实例启动时间" json:"instance_launch_time"`
 	InstanceExtendTime   time.Time `gorm:"column:instance_extend_time;index;type:time;not null;comment:实例续期时间" json:"instance_extend_time"`
 	InstanceName         string    `gorm:"column:instance_name;type:string;size:255;not null;default:'';comment:实例名称" json:"instance_name"`
@@ -37,16 +37,51 @@ func (s *SnowflakeNodeID) TableName() string {
 }
 
 // CreateTableMigrator create table migrator
-func (s *SnowflakeNodeID) CreateTableMigrator(migrator gorm.Migrator) migrationuitl.MigrationRepo {
-	return migrationuitl.NewCreateTable(migrator, s)
+func (s *SnowflakeNodeID) CreateTableMigrator(migrator gorm.Migrator) migrationutil.MigrationInterface {
+	return migrationutil.NewCreateTable(migrator, migrationutil.Version, s)
 }
 
 // DropTableMigrator create table migrator
-func (s *SnowflakeNodeID) DropTableMigrator(migrator gorm.Migrator) migrationuitl.MigrationRepo {
-	return migrationuitl.NewDropTable(migrator, s)
+func (s *SnowflakeNodeID) DropTableMigrator(migrator gorm.Migrator) migrationutil.MigrationInterface {
+	return migrationutil.NewDropTable(migrator, migrationutil.Version, s)
+}
+
+// SnowflakeNodeIDUniqueIndex ...
+type SnowflakeNodeIDUniqueIndex struct {
+	InstanceId      string `gorm:"column:instance_id;uniqueIndex:idx_srv_snowflake_node_id_instance_id_nid;type:string;size:255;not null;default:'';comment:实例ID" json:"instance_id"`
+	SnowflakeNodeId int32  `gorm:"column:snowflake_node_id;uniqueIndex:idx_srv_snowflake_node_id_instance_id_nid;type:int;not null;default:0;comment:雪花算法节点id" json:"snowflake_node_id"`
+}
+
+// TableName table name
+func (s *SnowflakeNodeIDUniqueIndex) TableName() string {
+	return SnowflakeNodeIDSchema.TableName()
 }
 
 // CreateUniqueIndexForInstanceIDAndNodeID 创建唯一索引
-func (s *SnowflakeNodeID) CreateUniqueIndexForInstanceIDAndNodeID(migrator gorm.Migrator) {
-	//migrator.CreateIndex()
+func (s *SnowflakeNodeID) CreateUniqueIndexForInstanceIDAndNodeID(migrator gorm.Migrator) migrationutil.MigrationInterface {
+	var (
+		dataModel           = &SnowflakeNodeIDUniqueIndex{}
+		indexName           = "idx_srv_snowflake_node_id_instance_id_nid"
+		migrationVersion    = migrationutil.Version
+		migrationIdentifier = migrationVersion + ":" + s.TableName() + ":create_unique_index:" + indexName
+	)
+	migrationUp := func() error {
+		if migrator.HasIndex(dataModel, indexName) {
+			return nil
+		}
+		return migrator.CreateIndex(dataModel, indexName)
+	}
+	migrationDown := func() error {
+		if migrator.HasIndex(dataModel, indexName) {
+			return nil
+		}
+		return migrator.DropIndex(dataModel, indexName)
+	}
+
+	return migrationutil.NewAnyMigrator(
+		migrationVersion,
+		migrationIdentifier,
+		migrationUp,
+		migrationDown,
+	)
 }

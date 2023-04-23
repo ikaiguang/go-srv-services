@@ -1,7 +1,7 @@
 package dbv1_0_0_snowflake
 
 import (
-	migrationuitl "github.com/ikaiguang/go-srv-kit/data/migration"
+	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 	"github.com/ikaiguang/go-srv-services/app/snowflake-service/internal/setup"
 	"github.com/ikaiguang/go-srv-services/pkg/setup"
 	stdlog "log"
@@ -38,7 +38,7 @@ func TestMain(m *testing.M) {
 	}
 
 	// migrateHandler 迁移手柄
-	migrateRepo := migrationuitl.NewMigrateRepo(dbConn)
+	migrateRepo := migrationutil.NewMigrateRepo(dbConn)
 
 	// handler
 	upHandler = NewMigrateHandler(dbConn, migrateRepo)

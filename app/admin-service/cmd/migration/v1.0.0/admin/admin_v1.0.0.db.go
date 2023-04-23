@@ -1,7 +1,9 @@
 package dbv1_0_0_admin
 
 import (
+	"context"
 	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
+	pkgerrors "github.com/pkg/errors"
 	"gorm.io/gorm"
 
 	schemas "github.com/ikaiguang/go-srv-services/app/admin-service/internal/infra/schema"
@@ -21,95 +23,37 @@ func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *
 	}
 }
 
-// Upgrade .
-func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error) {
-	upgradeHandler := NewMigrateHandler(dbConn, migrateRepo)
-
-	// CreateTableAdmin 创建表 admin
-	err = upgradeHandler.CreateTableAdmin()
-	if err != nil {
-		return err
-	}
-	// 创建表 admin
-	err = upgradeHandler.CreateTableAdminRegEmail()
-	if err != nil {
-		return err
-	}
-	// 创建表 admin
-	err = upgradeHandler.CreateTableAdminRegMobile()
-	if err != nil {
-		return err
-	}
-	// 创建表 admin
-	err = upgradeHandler.CreateTableAdminRegUsername()
-	if err != nil {
-		return err
-	}
-
-	// 初始化管理员
-	err = upgradeHandler.InitializeAdmin()
-	if err != nil {
-		return err
-	}
-	return err
-}
-
-// CreateTableAdmin ...
-func (s *Migrate) CreateTableAdmin() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.AdminSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.AdminSchema)
-}
-
-// CreateTableAdminRegEmail ...
-func (s *Migrate) CreateTableAdminRegEmail() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.AdminRegEmailSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.AdminRegEmailSchema)
-}
-
-// CreateTableAdminRegMobile ...
-func (s *Migrate) CreateTableAdminRegMobile() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.AdminRegMobileSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.AdminRegMobileSchema)
-}
-
-// CreateTableAdminRegUsername ...
-func (s *Migrate) CreateTableAdminRegUsername() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.AdminRegUsernameSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.AdminRegUsernameSchema)
-}
-
-// InitializeAdmin 初始化管理员
-func (s *Migrate) InitializeAdmin() (err error) {
+// Upgrade ...
+func (s *Migrate) Upgrade(ctx context.Context) error {
 	var (
-		serverVersion     = "v1.0.0"
-		migrateIdentifier = serverVersion + "admin:InitializeAdmin"
+		mr       migrationutil.MigrationInterface
+		migrator = s.dbConn.WithContext(ctx).Migrator()
 	)
-	// 已进行数据库迁移
-	dataModel, _, err := s.migrateRepo.QueryOneByIdentifier(migrateIdentifier)
-	if err != nil {
-		return
-	}
-	if dataModel.Id > 0 {
-		return
-	}
-	// 记录数据库迁移
-	defer func() {
-		if err == nil {
-			err = s.migrateRepo.CreateDefaultRecord(serverVersion, migrateIdentifier)
-		}
-	}()
 
-	err = schemas.AdminSchema.Initialize(s.dbConn)
-	if err != nil {
-		return err
+	// 创建表
+	mr = schemas.AdminSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
 	}
-	return
+	// 创建表
+	mr = schemas.AdminRegMobileSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	// 创建表
+	mr = schemas.AdminRegEmailSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	// 创建表
+	mr = schemas.AdminRegUsernameSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	// 初始化用户
+	mr = schemas.AdminSchema.InitializeAdmin(s.dbConn)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
+	}
+	return nil
 }

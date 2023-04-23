@@ -1,6 +1,8 @@
 package dbv1_0_0_example
 
 import (
+	"context"
+	pkgerrors "github.com/pkg/errors"
 	"gorm.io/gorm"
 
 	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
@@ -22,22 +24,17 @@ func NewMigrateHandler(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) *
 	}
 }
 
-// Upgrade .
-func Upgrade(dbConn *gorm.DB, migrateRepo migrationutil.MigrateRepo) (err error) {
-	upgradeHandler := NewMigrateHandler(dbConn, migrateRepo)
+// Upgrade ...
+func (s *Migrate) Upgrade(ctx context.Context) error {
+	var (
+		mr       migrationutil.MigrationInterface
+		migrator = s.dbConn.WithContext(ctx).Migrator()
+	)
 
-	// 创建表 example
-	err = upgradeHandler.CreateTableExample()
-	if err != nil {
-		return err
+	// 创建表
+	mr = schemas.ExampleSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		return pkgerrors.WithStack(err)
 	}
-	return err
-}
-
-// CreateTableExample ...
-func (s *Migrate) CreateTableExample() (err error) {
-	if s.dbConn.Migrator().HasTable(schemas.ExampleSchema) {
-		return err
-	}
-	return s.dbConn.Migrator().CreateTable(schemas.ExampleSchema)
+	return nil
 }

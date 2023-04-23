@@ -3,6 +3,7 @@
 package entities
 
 import (
+	schemas "github.com/ikaiguang/go-srv-services/app/admin-service/internal/infra/schema"
 	"time"
 )
 
@@ -31,5 +32,5 @@ type Admin struct {
 
 // TableName table name
 func (s *Admin) TableName() string {
-	return "srv_admin"
+	return schemas.AdminSchema.TableName()
 }

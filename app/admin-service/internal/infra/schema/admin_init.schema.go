@@ -1,24 +1,69 @@
 package schemas
 
 import (
+	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
 	passwordutil "github.com/ikaiguang/go-srv-kit/kit/password"
-	uuidutil "github.com/ikaiguang/go-srv-kit/kit/uuid"
 	"gorm.io/gorm"
 	"time"
 
 	adminenumv1 "github.com/ikaiguang/go-srv-services/api/admin-service/v1/enums"
 )
 
-// Initialize 初始化
-func (s *Admin) Initialize(dbConn *gorm.DB) (err error) {
-	return s.initialize(dbConn)
+// InitializeAdmin 初始化
+// admin@admin.admin : Admin.123456
+func (s *Admin) InitializeAdmin(dbConn *gorm.DB) migrationutil.MigrationInterface {
+	var (
+		adminEmail          = "admin@admin.admin"
+		adminUuid           = adminEmail
+		migrationVersion    = migrationutil.Version
+		migrationIdentifier = migrationVersion + ":" + s.TableName() + ":initializeAdmin:" + adminEmail
+	)
+	migrationUp := func() error {
+		return s.initializeAdminUp(dbConn, adminUuid, adminEmail)
+	}
+	migrationDown := func() error {
+		return s.initializeAdminDown(dbConn, adminUuid, adminEmail)
+	}
+	return migrationutil.NewAnyMigrator(
+		migrationVersion,
+		migrationIdentifier,
+		migrationUp,
+		migrationDown,
+	)
 }
 
-// initialize 初始化
-func (s *Admin) initialize(dbConn *gorm.DB) (err error) {
+// initializeAdminDown 初始化
+func (s *Admin) initializeAdminDown(dbConn *gorm.DB, adminUuid, adminEmail string) (err error) {
+	tx := dbConn.Begin()
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback().Error
+		}
+	}()
+
+	err = tx.Table(AdminRegEmailSchema.TableName()).
+		Where("admin_email = ?", adminEmail).
+		Delete(AdminRegEmail{}).Error
+	if err != nil {
+		return err
+	}
+	err = tx.Table(AdminSchema.TableName()).
+		Where("admin_uuid = ?", adminUuid).
+		Delete(Admin{}).Error
+	if err != nil {
+		return err
+	}
+	err = tx.Commit().Error
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+// initializeAdminUp 初始化
+func (s *Admin) initializeAdminUp(dbConn *gorm.DB, adminUuid, adminEmail string) (err error) {
 	// 检查是否存在
 	var (
-		adminEmail      = "admin@admin.admin"
 		existEmailModel = &AdminRegEmail{}
 	)
 	err = dbConn.Table(AdminRegEmailSchema.TableName()).
@@ -39,7 +84,6 @@ func (s *Admin) initialize(dbConn *gorm.DB) (err error) {
 	var (
 		now             = time.Now()
 		activeEndTime   = now.Add(time.Hour * 24 * 365 * 10)
-		adminUuid       = uuidutil.New()
 		adminNickname   = "admin"
 		passwordHash, _ = passwordutil.Encrypt("Admin.123456")
 		registerFrom    = "EMAIL"
@@ -81,5 +125,8 @@ func (s *Admin) initialize(dbConn *gorm.DB) (err error) {
 	}
 
 	err = tx.Commit().Error
+	if err != nil {
+		return err
+	}
 	return err
 }
