@@ -13,8 +13,9 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/hashicorp/consul/api v1.20.0
-	github.com/ikaiguang/go-srv-kit v0.1.2
+	github.com/ikaiguang/go-srv-kit v0.1.3
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
+	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.0.3
 	github.com/stretchr/testify v1.8.2

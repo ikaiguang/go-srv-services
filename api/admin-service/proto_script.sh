@@ -1,6 +1,5 @@
 #!/bin/bash
 
-kratos proto client --proto_path=. --proto_path=$GOPATH/src api/admin-service/v1/common/admin.common.v1.proto
 kratos proto client --proto_path=. --proto_path=$GOPATH/src api/admin-service/v1/enums/admin.enum.v1.proto
 kratos proto client --proto_path=. --proto_path=$GOPATH/src api/admin-service/v1/errors/admin.error.v1.proto
 kratos proto client --proto_path=. --proto_path=$GOPATH/src api/admin-service/v1/resources/admin.resource.v1.proto

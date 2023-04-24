@@ -1,19 +1,23 @@
 package setup
 
 import (
+	configv1 "github.com/ikaiguang/go-srv-services/app/snowflake-service/internal/conf"
+	setuppkg2 "github.com/ikaiguang/go-srv-services/business-kit/setup"
 	"sync"
-
-	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 
 // Engine ...
 type Engine interface {
-	setuppkg.Engine
+	setuppkg2.Engine
+
+	SnowflakeNodeIDConfig() *configv1.SnowflakeNodeID
 }
 
 // engines ...
 type engines struct {
-	setuppkg.Engine
+	setuppkg2.Engine
+
+	snowflakeConfig *configv1.SnowflakeNodeID
 }
 
 var (
@@ -23,10 +27,10 @@ var (
 )
 
 // Init 启动与配置与设置存储Packages
-func Init(opts ...setuppkg.Option) (err error) {
+func Init(opts ...setuppkg2.Option) (err error) {
 	initEngineMutex.Do(func() {
-		var e setuppkg.Engine
-		e, err = setuppkg.New(opts...)
+		var e setuppkg2.Engine
+		e, err = setuppkg2.New(opts...)
 		engineInstance = &engines{
 			Engine: e,
 		}
@@ -56,4 +60,17 @@ func Close() error {
 		return err
 	}
 	return nil
+}
+
+// SnowflakeNodeIDConfig ...
+func (s *engines) SnowflakeNodeIDConfig() *configv1.SnowflakeNodeID {
+	if s.snowflakeConfig != nil {
+		return s.snowflakeConfig
+	}
+	conf := &configv1.SnowflakeNodeID{}
+	_ = s.Scan("snowflake_node_id", conf)
+	if conf.EnableRedisLocker || conf.MaxNodeId > 0 || conf.IdleDuration != nil {
+		s.snowflakeConfig = conf
+	}
+	return conf
 }

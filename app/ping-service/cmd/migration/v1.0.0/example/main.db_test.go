@@ -2,6 +2,7 @@ package dbv1_0_0_example
 
 import (
 	migrationutil "github.com/ikaiguang/go-srv-kit/data/migration"
+	"github.com/ikaiguang/go-srv-services/business-kit/setup"
 	stdlog "log"
 	"os"
 	"testing"
@@ -16,7 +17,7 @@ var upHandler *Migrate
 func TestMain(m *testing.M) {
 	// 初始化
 	configPath := "./../../../../configs"
-	if err := setup.Init(setuppkg.WithConfigPath(configPath)); err != nil {
+	if err := setup.Init(setuputil.setuppkg.WithConfigPath(configPath)); err != nil {
 		stdlog.Fatalf("%+v\n", err)
 		return
 	}

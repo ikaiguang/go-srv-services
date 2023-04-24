@@ -8,7 +8,7 @@ option java_package = "service.api.userservicev1";
 option java_outer_classname = "ServiceApiUserServiceV1";
 
 import "google/api/annotations.proto";
-import "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources/user_auth.resource.v1.proto";
+import "api/user-service/v1/resources/user_auth.resource.v1.proto";
 
 // SrvUserAuth 管理员服务
 service SrvUserAuth {

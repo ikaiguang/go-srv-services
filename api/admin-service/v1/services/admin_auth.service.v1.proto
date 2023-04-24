@@ -8,7 +8,7 @@ option java_package = "service.api.adminservicev1";
 option java_outer_classname = "ServiceApiAdminServiceV1";
 
 import "google/api/annotations.proto";
-import "github.com/ikaiguang/go-srv-services/api/admin-service/v1/resources/admin_auth.resource.v1.proto";
+import "api/admin-service/v1/resources/admin_auth.resource.v1.proto";
 
 // SrvAdminAuth 管理员服务
 service SrvAdminAuth {

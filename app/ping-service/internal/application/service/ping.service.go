@@ -26,7 +26,7 @@ type ping struct {
 // NewPingService .
 func NewPingService(logger log.Logger, pingSrv *srvs.PingSrv) pingservicev1.SrvPingServer {
 	return &ping{
-		log:     log.NewHelper(log.With(logger, "module", "admin/application/service/ping")),
+		log:     log.NewHelper(log.With(logger, "module", "ping/application/service/ping")),
 		pingSrv: pingSrv,
 	}
 }

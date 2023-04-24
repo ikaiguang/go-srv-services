@@ -4,11 +4,11 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/metadata"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/ikaiguang/go-srv-services/business-kit/app"
 	stdlog "log"
 
 	"github.com/ikaiguang/go-srv-services/app/admin-service/internal/setup"
-	middlewareutil "github.com/ikaiguang/go-srv-services/business-util/middleware"
-	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
+	middlewareutil "github.com/ikaiguang/go-srv-services/business-kit/middleware"
 )
 
 var _ metadata.Option
@@ -54,7 +54,7 @@ func NewGRPCServer(engineHandler setup.Engine) (srv *grpc.Server, err error) {
 	}
 	// 日志输出
 	//errorutil.DefaultStackTracerDepth += 2
-	middlewareSlice = append(middlewareSlice, apppkg.ServerLog(
+	middlewareSlice = append(middlewareSlice, apputil.ServerLog(
 		middleLogger,
 		//middlewareutil.WithDefaultSkip(),
 	))

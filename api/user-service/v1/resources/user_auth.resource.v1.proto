@@ -7,7 +7,7 @@ option java_multiple_files = true;
 option java_package = "service.api.userv1";
 option java_outer_classname = "ServiceApiUserV1";
 
-import "github.com/ikaiguang/go-srv-services/api/user-service/v1/enums/user.enum.v1.proto";
+import "api/user-service/v1/enums/user.enum.v1.proto";
 
 // Info 用户信息
 message Info {

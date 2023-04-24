@@ -14,12 +14,12 @@ info:
 # make run service=xxx-service
 .PHONY: run
 run:
-	go run ./app/${service}/cmd/main/... -conf=./app/${service}/configs
+	go run ./app/${service}/cmd/${service}/... -conf=./app/${service}/configs
 
 # make dev service=xxx-service
 .PHONY: dev
 dev:
-	go run ./app/${service}/cmd/main/... -conf-consul=./app/${service}/configs/consul
+	go run ./app/${service}/cmd/${service}/... -conf-consul=./app/${service}/configs/consul
 
 # make migrate service=xxx-service
 .PHONY: migrate

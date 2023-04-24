@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/consul/api"
 	consulutil "github.com/ikaiguang/go-srv-kit/data/consul"
 	filepathutil "github.com/ikaiguang/go-srv-kit/kit/filepath"
+	"github.com/ikaiguang/go-srv-services/business-kit/app"
 	pkgerrors "github.com/pkg/errors"
 	stdlog "log"
 	"os"
@@ -16,7 +17,6 @@ import (
 	"strings"
 
 	commonv1 "github.com/ikaiguang/go-srv-services/api/common/v1"
-	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 const (
@@ -174,7 +174,7 @@ func (s *ConsulConfig) ReadConfigFiles() (map[string][]byte, error) {
 		err = fmt.Errorf(format, s.config.App.Name, _conf, s.serverName)
 		return nil, pkgerrors.WithStack(err)
 	}
-	consulPath := apppkg.ConfigPath(s.config.App)
+	consulPath := apputil.ConfigPath(s.config.App)
 	stdlog.Println("|*** 本地配置路径：	", _conf)
 	stdlog.Println("|*** Consul配置路径：", consulPath)
 	configDataM := make(map[string][]byte)

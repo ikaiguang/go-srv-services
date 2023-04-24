@@ -7,8 +7,8 @@ option java_multiple_files = true;
 option java_package = "service.api.snowflakev1";
 option java_outer_classname = "ServiceApiSnowflakeV1";
 
-// SnowflakeNode ENGINE InnoDB CHARSET utf8mb4 COMMENT '雪花算法节点ID'
-message SnowflakeNode {
+// SnowflakeNodeID ENGINE InnoDB CHARSET utf8mb4 COMMENT '雪花算法节点ID'
+message SnowflakeNodeID {
   // id 数据库ID
   uint64 id = 1;
   // instance_launch_time 实例启动时间
@@ -39,12 +39,6 @@ message GetNodeIdReq {
   repeated string endpoints = 3;
   // metadata 实例元数据
   map<string, string> metadata = 4;
-}
-
-// GetNodeIdResp process result
-message GetNodeIdResp {
-  // success true or false
-  bool success = 1;
 }
 
 // ExtendNodeIdReq 节点需求请求

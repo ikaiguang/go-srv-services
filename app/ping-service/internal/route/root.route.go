@@ -4,12 +4,12 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/gorilla/mux"
+	"github.com/ikaiguang/go-srv-services/business-kit/app"
 	stdlog "log"
 
 	pingv1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/resources"
 
 	"github.com/ikaiguang/go-srv-services/app/ping-service/internal/setup"
-	"github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 // RegisterRootRoutes 注册路由
@@ -19,9 +19,9 @@ func RegisterRootRoutes(engineHandler setup.Engine, hs *http.Server, gs *grpc.Se
 		data := &pingv1.PingResp{
 			Message: "Hello World!",
 		}
-		err := apppkg.ResponseEncoder(w, r, data)
+		err := apputil.ResponseEncoder(w, r, data)
 		if err != nil {
-			apppkg.ErrorEncoder(w, r, err)
+			apputil.ErrorEncoder(w, r, err)
 		}
 	})
 

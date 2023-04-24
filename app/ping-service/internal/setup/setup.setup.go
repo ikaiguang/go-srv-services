@@ -1,19 +1,18 @@
 package setup
 
 import (
+	setuppkg2 "github.com/ikaiguang/go-srv-services/business-kit/setup"
 	"sync"
-
-	setuppkg "github.com/ikaiguang/go-srv-services/pkg/setup"
 )
 
 // Engine ...
 type Engine interface {
-	setuppkg.Engine
+	setuppkg2.Engine
 }
 
 // engines ...
 type engines struct {
-	setuppkg.Engine
+	setuppkg2.Engine
 }
 
 var (
@@ -23,10 +22,10 @@ var (
 )
 
 // Init 启动与配置与设置存储Packages
-func Init(opts ...setuppkg.Option) (err error) {
+func Init(opts ...setuppkg2.Option) (err error) {
 	initEngineMutex.Do(func() {
-		var e setuppkg.Engine
-		e, err = setuppkg.New(opts...)
+		var e setuppkg2.Engine
+		e, err = setuppkg2.New(opts...)
 		engineInstance = &engines{
 			Engine: e,
 		}

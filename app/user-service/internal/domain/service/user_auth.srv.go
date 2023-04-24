@@ -15,8 +15,8 @@ import (
 	userv1 "github.com/ikaiguang/go-srv-services/api/user-service/v1/resources"
 	entities "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/entity"
 	repos "github.com/ikaiguang/go-srv-services/app/user-service/internal/domain/repo"
-	authutil "github.com/ikaiguang/go-srv-services/business-util/auth"
-	tokenutil "github.com/ikaiguang/go-srv-services/business-util/token"
+	authutil "github.com/ikaiguang/go-srv-services/business-kit/auth"
+	tokenutil "github.com/ikaiguang/go-srv-services/business-kit/token"
 )
 
 // UserAuthSrv ...

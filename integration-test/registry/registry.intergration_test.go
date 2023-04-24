@@ -10,9 +10,8 @@ import (
 	pingv1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/resources"
 	pingservicev1 "github.com/ikaiguang/go-srv-kit/api/ping/v1/services"
 	logutil "github.com/ikaiguang/go-srv-kit/log"
+	apppkg2 "github.com/ikaiguang/go-srv-services/business-kit/app"
 	"testing"
-
-	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
 )
 
 // make run service=ping-service
@@ -25,7 +24,7 @@ func Test_RegistryDiscovery(t *testing.T) {
 	r := consul.New(consulCli)
 
 	// 引擎模块
-	appID := apppkg.ID(engineHandler.AppConfig())
+	appID := apppkg2.ID(engineHandler.AppConfig())
 	endpoint := "discovery:///" + appID
 
 	// new grpc client
@@ -50,7 +49,7 @@ func Test_RegistryDiscovery(t *testing.T) {
 		http.WithEndpoint(endpoint),
 		http.WithDiscovery(r),
 		// 解析
-		http.WithResponseDecoder(apppkg.ResponseDecoder),
+		http.WithResponseDecoder(apppkg2.ResponseDecoder),
 	)
 	if err != nil {
 		logutil.Fatal(err)

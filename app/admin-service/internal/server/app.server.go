@@ -4,13 +4,13 @@ import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/ikaiguang/go-srv-services/business-kit/app"
+	"github.com/ikaiguang/go-srv-services/business-kit/registry"
 	pkgerrors "github.com/pkg/errors"
 	stdlog "log"
 
 	routes "github.com/ikaiguang/go-srv-services/app/admin-service/internal/route"
 	"github.com/ikaiguang/go-srv-services/app/admin-service/internal/setup"
-	apppkg "github.com/ikaiguang/go-srv-services/pkg/app"
-	registrypkg "github.com/ikaiguang/go-srv-services/pkg/registry"
 )
 
 // NewApp .
@@ -48,7 +48,7 @@ func NewApp(engineHandler setup.Engine) (app *kratos.App, err error) {
 	// app
 	var (
 		appConfig  = engineHandler.AppConfig()
-		appID      = apppkg.ID(appConfig)
+		appID      = apputil.ID(appConfig)
 		appOptions = []kratos.Option{
 			kratos.ID(appID),
 			kratos.Name(appID),
@@ -67,11 +67,11 @@ func NewApp(engineHandler setup.Engine) (app *kratos.App, err error) {
 		if err != nil {
 			return app, err
 		}
-		r, err := registrypkg.NewConsulRegistry(consulClient)
+		r, err := registryutil.NewConsulRegistry(consulClient)
 		if err != nil {
 			return app, err
 		}
-		engineHandler.SetRegistryType(registrypkg.RegistryTypeConsul)
+		engineHandler.SetRegistryType(registryutil.RegistryTypeConsul)
 		appOptions = append(appOptions, kratos.Registrar(r))
 	}
 
